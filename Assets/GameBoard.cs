@@ -9,18 +9,111 @@
 //------------------------------------------------------------------------------
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 namespace AssemblyCSharp
 {
 	public class GameBoard
 	{
+		public static IntVector2[] directions = new IntVector2[]{new IntVector2(1,0), new IntVector2(0,1), new IntVector2(-1,0), new IntVector2(0,-1)};
 		public bool[,] board;
 
 		public GameBoard (bool[,] board)
 		{
 			this.board = board;
 		}
+		public bool isOpen( IntVector2 v )
+		{
+			return isOpen( v.x, v.y );
+		}
+		public bool isOpen( int x, int y )
+		{
+			if ( x < 0 ) return false;
+			if ( y < 0 ) return false;
+			if ( x >= board.GetLength(1) ) return false;
+			if ( y >= board.GetLength(0) ) return false;
+			return !board[y,x];
+		}
 
-		public Vector2 tryMove( Vector3 pos, Vector2 vel )
+		public Vector2 getCellLocation( Vector3 pos )
+		{
+			// the tile coordinates
+			int x = (int)pos.x;
+			int y = (int)pos.y;
+			
+			// the position within the tile, center is (0,0), +y is up
+			float cellPosX = pos.x - x - .5f;
+			float cellPosY = pos.y - y - .5f;
+			
+			return new Vector2( cellPosX, cellPosY );
+		}
+
+
+		public Vector2 moveTowards( Vector3 pos, Vector3 target, float maxSpeed )
+		{
+			if ( pos.x > 10 )
+			{
+				int x = 0; 
+				x++;
+			}
+			// get grid positions
+			IntVector2 thisPos = new IntVector2( (int)pos.x, (int)pos.y );
+			IntVector2 targetPos = new IntVector2( (int)target.x, (int)target.y );
+
+			HashSet<IntVector2> visited = new HashSet<IntVector2>();
+			Dictionary<IntVector2, IntVector2> previous = new Dictionary<IntVector2, IntVector2>();
+
+			LinkedList<IntVector2> queue = new LinkedList<IntVector2>();
+			queue.AddLast( thisPos );
+
+			while ( queue.Count > 0 )
+			{
+				IntVector2 p = queue.First.Value;
+				queue.RemoveFirst();
+				if ( p.Equals( targetPos ) ) break;
+				foreach ( IntVector2 dir in directions )
+				{
+					IntVector2 posToVisit = dir + p;
+					if ( !isOpen( posToVisit ) ) continue;
+					if ( visited.Contains( posToVisit ) ) continue;
+					visited.Add( posToVisit );
+					previous[posToVisit] = p;
+					queue.AddLast( posToVisit );
+				}
+			}
+
+			LinkedList<IntVector2> path = new LinkedList<IntVector2>();
+			IntVector2 curr = targetPos;
+			while ( !curr.Equals( thisPos ) )
+			{
+				path.AddFirst( curr );
+				curr = previous[curr];
+			}
+
+			// there is a path and its length is not 0
+			if ( path.Count > 0 )
+			{
+				// head in the direction of first
+				Vector2 direction = new Vector2( path.First.Value.x, path.First.Value.y) - new Vector2(thisPos.x, thisPos.y);
+				direction.Normalize();
+				direction *= maxSpeed;
+
+				// direction will be orthogonal
+				Vector3 afterMove = tryMove( pos, direction );
+				if ( Vector3.Distance( afterMove, pos ) > maxSpeed / 2 )
+				{
+					// move there
+					return direction;
+				}
+			}
+			//otherwise move towards center of current square
+			Vector2 cellPos = getCellLocation( pos );
+			cellPos.Normalize();
+			cellPos *= -maxSpeed;
+			return cellPos;
+
+		}
+
+		public Vector3 tryMove( Vector3 pos, Vector2 vel )
 		{
 			// the tile coordinates
 			int x = (int)pos.x;
@@ -34,10 +127,10 @@ namespace AssemblyCSharp
 			cellPosY += vel.y;
 
 			// array representing whether there is a path to the right, up, left, and down respectively
-			bool[] roads = new bool[4]{ x < board.GetLength(1) - 1 && !board[y, x+1], 
-				                        y < board.GetLength(0) - 1 && !board[y+1,x], 
-				                        x > 0 && !board[y,x-1], 
-				                        y > 0 && !board[y-1,x]};
+			bool[] roads = new bool[4]{ isOpen(x + 1,y), 
+				                        isOpen(x, y + 1), 
+				                        isOpen(x - 1,y), 
+				                        isOpen(x, y - 1)};
 
 			// force position to an axis when there is not a road in the direction the position is off
 			if ( cellPosX > 0 && !roads[0] ) cellPosX = 0;

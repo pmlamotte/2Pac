@@ -10,6 +10,7 @@ public class NetworkManager : MonoBehaviour {
 	{
 		Network.InitializeServer(4, 25000, !Network.HavePublicAddress());
 		MasterServer.RegisterHost(typeName, gameName);
+
 	}
 
 	void OnServerInitialized()
@@ -55,7 +56,8 @@ public class NetworkManager : MonoBehaviour {
 	{
 		Network.Connect(hostData);
 	}
-	
+
+
 	void OnConnectedToServer()
 	{
 		Debug.Log("Server Joined");
@@ -69,6 +71,7 @@ public class NetworkManager : MonoBehaviour {
 	} 
 	
 	public GameObject playerPrefab;
+	public GameObject ghostPrefab;
 
 	
 	private void SpawnPlayer()
@@ -80,19 +83,40 @@ public class NetworkManager : MonoBehaviour {
 		case 2: pos.x = 1.5f; pos.y = 8.5f; break;
 		case 3: pos.x = 17.5f; pos.y = 8.5f; break;
 		}
-
+		
 		GameObject player = (GameObject) Network.Instantiate(playerPrefab, pos, Quaternion.identity, 0);
-
-
+		
+		
 		PacmanAnimate animate = (PacmanAnimate) player.GetComponent("PacmanAnimate");
-		animate.maxSpeed = 0.049f;
+		animate.maxSpeed = 0.0049f;
 		animate.direction.x = 0;
 		player.transform.position = pos;
+		OnStart onStart =(OnStart)GameObject.Find( "StartUp" ).GetComponent( "OnStart" );
+		onStart.players.Add( player );
+		SpawnGhost();
+	}
+
+	private void SpawnGhost()
+	{
+		Vector3 pos = new Vector3(0,0,0);
+		switch (Network.connections.Length) {
+		case 0: pos.x = 1.5f; pos.y = 1.5f; break;
+		case 1: pos.x = 17.5f; pos.y = 1.5f; break;
+		case 2: pos.x = 1.5f; pos.y = 8.5f; break;
+		default: pos.x = 17.5f; pos.y = 8.5f; break;
+		} // todo spawn location
+		
+		GameObject player = (GameObject) Network.Instantiate(ghostPrefab, pos, Quaternion.identity, 0);
+		
+		
+		GhostMovement animate = (GhostMovement) player.GetComponent("GhostMovement");
+		animate.maxSpeed = 0.03f;
+		player.transform.position = pos;
+
 	}
 
 	// Use this for initialization
 	void Start () {
-	
 	}
 	
 	// Update is called once per frame

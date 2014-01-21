@@ -13,6 +13,9 @@ public class PacmanAnimate : MonoBehaviour {
 	
 	void Update () {
 		if (networkView.isMine) {
+			// make game frame rate independent
+			float maxSpeed = this.maxSpeed * (1000 * Time.deltaTime );
+
 			Vector3 startPos = transform.position;
 			Vector2 newDirection = new Vector2( 0, 0 );
 
@@ -51,6 +54,11 @@ public class PacmanAnimate : MonoBehaviour {
 					transform.rotation = Quaternion.Euler( new Vector3(0, 0, i * 90 ));
 				}
 			}
+
+			Animator a = (Animator) GetComponent( "Animator" );
+
+			// if not moving turn off the animation
+			a.enabled = Vector3.Distance( transform.position, startPos ) >= maxSpeed / 2;
 		}
 	}
 }

@@ -165,7 +165,7 @@ GameObject:
   - 114: {fileID: 1055511216}
   - 114: {fileID: 1055511217}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: StartUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -194,6 +194,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   filledCell: {fileID: 100000, guid: 86b243d9a648d6f4d95fc80cea9bdea5, type: 2}
+  players: []
+  ghosts: []
 --- !u!114 &1055511217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,3 +208,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 100000, guid: cc25a6c51a5b886428d99fe01749ce02, type: 2}
+  ghostPrefab: {fileID: 100000, guid: 6bcc3af4a268f9545ad18877ff8753ff, type: 2}

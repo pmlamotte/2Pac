@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using AssemblyCSharp;
+using System.Collections.Generic;
 
 public class OnStart : MonoBehaviour {
 
 	public GameObject filledCell;
+	public List<GameObject> players = new List<GameObject>();
+	public List<GameObject> ghosts = new List<GameObject>();
 	public static GameBoard board;
 
 	public void createCell( int x, int y, bool fill )
