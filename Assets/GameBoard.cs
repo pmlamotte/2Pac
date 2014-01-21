@@ -22,34 +22,34 @@ namespace AssemblyCSharp
 
 		public Vector2 tryMove( Vector3 pos, Vector2 vel )
 		{
+			// the tile coordinates
 			int x = (int)pos.x;
 			int y = (int)pos.y;
-			
+
+			// the position within the tile, center is (0,0), +y is up
 			float cellPosX = pos.x - x - .5f;
 			float cellPosY = pos.y - y - .5f;
 
 			cellPosX += vel.x;
 			cellPosY += vel.y;
 
+			// array representing whether there is a path to the right, up, left, and down respectively
 			bool[] roads = new bool[4]{ x < board.GetLength(1) - 1 && !board[y, x+1], 
 				                        y < board.GetLength(0) - 1 && !board[y+1,x], 
 				                        x > 0 && !board[y,x-1], 
 				                        y > 0 && !board[y-1,x]};
-			
+
+			// force position to an axis when there is not a road in the direction the position is off
 			if ( cellPosX > 0 && !roads[0] ) cellPosX = 0;
 			if ( cellPosX < 0 && !roads[2] ) cellPosX = 0;
 			if ( cellPosY > 0 && !roads[1] ) cellPosY = 0;
 			if ( cellPosY < 0 && !roads[3] ) cellPosY = 0;
 
-
+			// force to the closer axis
 			if ( Math.Abs( cellPosX ) > Math.Abs( cellPosY ) ) cellPosY = 0;
 			else cellPosX = 0;
 
-			if ( x <= 0 || board[y, x-1] ) cellPosX = Math.Max( cellPosX, 0 );
-			if ( y <= 0 || board[y-1, x] ) cellPosY = Math.Max( cellPosY, 0 );
-			if ( x >= board.GetLength(1) - 1 || board[y, x+1] ) cellPosX = Math.Min( cellPosX, 0 );
-			if ( y >= board.GetLength(0) || board[y + 1, x] ) cellPosY = Math.Min( cellPosY, 0 );
-			
+			// translate back to world coords and return
 			return new Vector3( cellPosX + x + .5f, cellPosY + y + .5f, 0 );
 
 		}
