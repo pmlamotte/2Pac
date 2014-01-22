@@ -83,11 +83,12 @@ public class NetworkManager : MonoBehaviour {
 
 	[RPC] void SpawnPlayer(int num)
 	{
+		Debug.Log("player num: " + num);
 		playerNum = num;
 		BoardLocation pos = new BoardLocation( new IntVector2(0,0), new IntVector2( 0, 0 ) );
 		int x = 1;
 		int y = 1;
-		switch (Network.connections.Length) 
+		switch (num) 
 		{
 			case 0: x = 1; y = 1; break;
 			case 1: x = 17; y = 1; break;

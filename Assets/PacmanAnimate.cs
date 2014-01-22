@@ -21,7 +21,7 @@ public class PacmanAnimate : MonoBehaviour {
 	[RPC] public void setPlayerNum(int num) {
 		playerNum = num;
 		if (networkView.isMine) {
-			networkView.RPC("setPlayerNum", RPCMode.Others, num);
+			networkView.RPC("setPlayerNum", RPCMode.OthersBuffered, num);
 		}
 	}
 	
