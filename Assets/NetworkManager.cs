@@ -4,10 +4,13 @@ using System.Collections;
 public class NetworkManager : MonoBehaviour {
 
 	private const string typeName = "2Pac";
-	private const string gameName = "2Pac Test Room";
+	private string gameName = "";
+	private int playerNum = 0;
+	private int playerCount = 1;
 	
 	private void StartServer()
 	{
+		gameName = Random.value + "";
 		Network.InitializeServer(4, 25000, !Network.HavePublicAddress());
 		MasterServer.RegisterHost(typeName, gameName);
 
@@ -15,7 +18,7 @@ public class NetworkManager : MonoBehaviour {
 
 	void OnServerInitialized()
 	{
-		SpawnPlayer();
+		SpawnPlayer(playerNum);
 	}
 
 	void OnGUI()
@@ -57,11 +60,14 @@ public class NetworkManager : MonoBehaviour {
 		Network.Connect(hostData);
 	}
 
+	void OnPlayerConnected(NetworkPlayer player) {
+		networkView.RPC("SpawnPlayer", player, playerCount);
+		playerCount++;
+	}
 
 	void OnConnectedToServer()
 	{
 		Debug.Log("Server Joined");
-		SpawnPlayer();
 	}
 
 	void OnPlayerDisconnected(NetworkPlayer player)
@@ -72,10 +78,10 @@ public class NetworkManager : MonoBehaviour {
 	
 	public GameObject playerPrefab;
 	public GameObject ghostPrefab;
-	public GameObject textPrefab;
-	
-	private void SpawnPlayer()
+
+	[RPC] void SpawnPlayer(int num)
 	{
+		playerNum = num;
 		Vector3 pos = new Vector3(0,0,0);
 		switch (Network.connections.Length) {
 		case 0: pos.x = 1.5f; pos.y = 1.5f; break;
@@ -94,24 +100,13 @@ public class NetworkManager : MonoBehaviour {
 		OnStart onStart =(OnStart)GameObject.Find( "StartUp" ).GetComponent( "OnStart" );
 		onStart.players.Add( player );
 
-		// players score
-		GameObject playerText = (GameObject) Network.Instantiate( textPrefab, new Vector3(0,0,0) , Quaternion.identity, 0 );
-
-		animate.text = (GUIText) playerText.GetComponent("GUIText");
-		animate.text.transform.position = new Vector3( 0, 1 - .1f * Network.connections.Length, 0 ); 
-		animate.text.text = "Player " + Network.connections.Length + ": ";
+		animate.setPlayerNum(playerNum);
 
 		SpawnGhost();
-
-
-
-
 	}
 
 	private void SpawnGhost()
 	{	
-
-
 		GameObject ghost = (GameObject) Network.Instantiate(ghostPrefab, new Vector3(0,0,0), Quaternion.identity, 0);
 		
 		OnStart.board.insertGhost( ghost );
