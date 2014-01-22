@@ -12,6 +12,8 @@ GameObject:
   - 114: {fileID: 11400000}
   - 95: {fileID: 9500000}
   - 148: {fileID: 14800000}
+  - 114: {fileID: 11400002}
+  - 148: {fileID: 14800002}
   m_Layer: 0
   m_Name: Pacman
   m_TagString: Untagged
@@ -56,6 +58,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: .100000001
+  direction: {x: -1, y: 0}
+  score: 0
+  spawnPosition: {x: 1.5, y: 1.5, z: 0}
+  playerNum: 0
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ac102d74b02dc4da5bd05d57263035, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: 0
+  textPrefab: {fileID: 100000, guid: 18a205e468813d74695c32026abc899b, type: 2}
 --- !u!148 &14800000
 NetworkView:
   m_ObjectHideFlags: 1
@@ -65,6 +84,18 @@ NetworkView:
   m_Enabled: 1
   m_StateSynchronization: 1
   m_Observed: {fileID: 400000}
+  m_ViewID:
+    m_ID: 0
+    m_Type: 0
+--- !u!148 &14800002
+NetworkView:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_StateSynchronization: 1
+  m_Observed: {fileID: 11400002}
   m_ViewID:
     m_ID: 0
     m_Type: 0

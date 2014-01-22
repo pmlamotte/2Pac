@@ -9,7 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400000}
   - 132: {fileID: 13200000}
-  - 148: {fileID: 14800000}
   - 148: {fileID: 14800002}
   m_Layer: 0
   m_Name: GUI Text
@@ -52,18 +51,6 @@ GUIText:
     rgba: 4294967295
   m_PixelCorrect: 1
   m_RichText: 1
---- !u!148 &14800000
-NetworkView:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_StateSynchronization: 1
-  m_Observed: {fileID: 13200000}
-  m_ViewID:
-    m_ID: 0
-    m_Type: 0
 --- !u!148 &14800002
 NetworkView:
   m_ObjectHideFlags: 1
