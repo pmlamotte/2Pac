@@ -7,12 +7,32 @@ public class PacmanAnimate : MonoBehaviour {
 
 	public float maxSpeed = .01f;
 	public Vector2 direction = new Vector2( -1, 0 );
+	public float score = 0;
+	public Vector3 spawnPosition = new Vector3(1.5f,1.5f,0);
+	public GUIText text;
+
+
+	public void hitByGhost( GameObject ghost )
+	{
+		this.transform.position = spawnPosition;
+
+		score -= 10;
+	}
 
 	void Start () {
 	}
 	
 	void Update () {
+
 		if (networkView.isMine) {
+			if ( text != null )
+			{
+				score += (.1f * Time.deltaTime );
+
+				string newText = this.text.text.Substring( 0, this.text.text.IndexOf(':') );
+				newText += ": " + ((int) score );
+				this.text.text = newText;
+			}
 			// make game frame rate independent
 			float maxSpeed = this.maxSpeed * (1000 * Time.deltaTime );
 

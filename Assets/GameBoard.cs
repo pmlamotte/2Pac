@@ -15,16 +15,44 @@ namespace AssemblyCSharp
 	public class GameBoard
 	{
 		public static IntVector2[] directions = new IntVector2[]{new IntVector2(1,0), new IntVector2(0,1), new IntVector2(-1,0), new IntVector2(0,-1)};
-		public bool[,] board;
+		private bool[,] board;
+		public IntVector2 ghostSpawn {get; private set;}
 
-		public GameBoard (bool[,] board)
+		public int Height {get; private set;}
+		public int Width {get; private set; }
+
+
+		public GameBoard (string[] sboard)
 		{
+			bool[,] board = new bool[sboard.Length, sboard[0].Length];
+			for ( int i = 0; i < board.GetLength(0); i++ )
+			{
+				for (int j = 0; j < board.GetLength(1); j++ )
+				{
+					if ( sboard[i][j] == '1' )
+					{
+						board[i,j] = true;
+					}
+					else 
+					{
+						if ( sboard[i][j] == 'G' )
+						{
+							ghostSpawn = new IntVector2( j, i );
+						}
+					}
+				}
+			}
+
 			this.board = board;
+			this.Height = board.GetLength(0);
+			this.Width = board.GetLength(1);
 		}
+
 		public bool isOpen( IntVector2 v )
 		{
 			return isOpen( v.x, v.y );
 		}
+
 		public bool isOpen( int x, int y )
 		{
 			if ( x < 0 ) return false;
@@ -33,6 +61,13 @@ namespace AssemblyCSharp
 			if ( y >= board.GetLength(0) ) return false;
 			return !board[y,x];
 		}
+
+		public void insertGhost( GameObject g )
+		{
+			g.transform.position = new Vector3( ghostSpawn.x + .5f, ghostSpawn.y + .5f, 0 );
+		}
+
+
 
 		public Vector2 getCellLocation( Vector3 pos )
 		{

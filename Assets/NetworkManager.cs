@@ -72,7 +72,7 @@ public class NetworkManager : MonoBehaviour {
 	
 	public GameObject playerPrefab;
 	public GameObject ghostPrefab;
-
+	public GameObject textPrefab;
 	
 	private void SpawnPlayer()
 	{
@@ -86,32 +86,37 @@ public class NetworkManager : MonoBehaviour {
 		
 		GameObject player = (GameObject) Network.Instantiate(playerPrefab, pos, Quaternion.identity, 0);
 		
-		
 		PacmanAnimate animate = (PacmanAnimate) player.GetComponent("PacmanAnimate");
+		animate.spawnPosition = pos;
 		animate.maxSpeed = 0.0049f;
 		animate.direction.x = 0;
 		player.transform.position = pos;
 		OnStart onStart =(OnStart)GameObject.Find( "StartUp" ).GetComponent( "OnStart" );
 		onStart.players.Add( player );
+
+		// players score
+		GameObject playerText = (GameObject) Network.Instantiate( textPrefab, new Vector3(0,0,0) , Quaternion.identity, 0 );
+
+		animate.text = (GUIText) playerText.GetComponent("GUIText");
+		animate.text.transform.position = new Vector3( 0, 1 - .1f * Network.connections.Length, 0 ); 
+		animate.text.text = "Player " + Network.connections.Length + ": ";
+
 		SpawnGhost();
+
+
+
+
 	}
 
 	private void SpawnGhost()
-	{
-		Vector3 pos = new Vector3(0,0,0);
-		switch (Network.connections.Length) {
-		case 0: pos.x = 1.5f; pos.y = 1.5f; break;
-		case 1: pos.x = 17.5f; pos.y = 1.5f; break;
-		case 2: pos.x = 1.5f; pos.y = 8.5f; break;
-		default: pos.x = 17.5f; pos.y = 8.5f; break;
-		} // todo spawn location
+	{	
+
+
+		GameObject ghost = (GameObject) Network.Instantiate(ghostPrefab, new Vector3(0,0,0), Quaternion.identity, 0);
 		
-		GameObject player = (GameObject) Network.Instantiate(ghostPrefab, pos, Quaternion.identity, 0);
-		
-		
-		GhostMovement animate = (GhostMovement) player.GetComponent("GhostMovement");
+		OnStart.board.insertGhost( ghost );
+		GhostMovement animate = (GhostMovement) ghost.GetComponent("GhostMovement");
 		animate.maxSpeed = 0.03f;
-		player.transform.position = pos;
 
 	}
 
