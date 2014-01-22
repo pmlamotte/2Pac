@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System.Collections;
+using AssemblyCSharp;
 
 public class NetworkManager : MonoBehaviour {
 
@@ -82,21 +84,27 @@ public class NetworkManager : MonoBehaviour {
 	[RPC] void SpawnPlayer(int num)
 	{
 		playerNum = num;
-		Vector3 pos = new Vector3(0,0,0);
-		switch (Network.connections.Length) {
-		case 0: pos.x = 1.5f; pos.y = 1.5f; break;
-		case 1: pos.x = 17.5f; pos.y = 1.5f; break;
-		case 2: pos.x = 1.5f; pos.y = 8.5f; break;
-		case 3: pos.x = 17.5f; pos.y = 8.5f; break;
+		BoardLocation pos = new BoardLocation( new IntVector2(0,0), new IntVector2( 0, 0 ) );
+		int x = 1;
+		int y = 1;
+		switch (Network.connections.Length) 
+		{
+			case 0: x = 1; y = 1; break;
+			case 1: x = 17; y = 1; break;
+			case 2: x = 1; y = 8; break;
+			case 3: x = 17; y = 8; break;
 		}
-		
-		GameObject player = (GameObject) Network.Instantiate(playerPrefab, pos, Quaternion.identity, 0);
+
+		pos = new BoardLocation( new IntVector2( x, y ), pos.offset );
+
+		PacmanAnimate player = (PacmanAnimate)((GameObject) Network.Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity, 0)).GetComponent( "PacmanAnimate" );
 		
 		PacmanAnimate animate = (PacmanAnimate) player.GetComponent("PacmanAnimate");
 		animate.spawnPosition = pos;
-		animate.maxSpeed = 0.0049f;
-		animate.direction.x = 0;
-		player.transform.position = pos;
+		animate.maxSpeed = 10;
+		animate.direction = new IntVector2(0,0);
+		animate.boardLocation = pos;
+
 		OnStart onStart =(OnStart)GameObject.Find( "StartUp" ).GetComponent( "OnStart" );
 		onStart.players.Add( player );
 
@@ -111,7 +119,7 @@ public class NetworkManager : MonoBehaviour {
 		
 		OnStart.board.insertGhost( ghost );
 		GhostMovement animate = (GhostMovement) ghost.GetComponent("GhostMovement");
-		animate.maxSpeed = 0.03f;
+		animate.maxSpeed = 6;
 
 	}
 

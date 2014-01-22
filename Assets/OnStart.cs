@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class OnStart : MonoBehaviour {
 
 	public GameObject filledCell;
-	public List<GameObject> players = new List<GameObject>();
+	public List<PacmanAnimate> players = new List<PacmanAnimate>();
 	public List<GameObject> ghosts = new List<GameObject>();
 	public static GameBoard board;
 

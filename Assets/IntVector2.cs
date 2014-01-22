@@ -32,12 +32,40 @@ namespace AssemblyCSharp
 			if ( o != null && o.x == x && o.y == y ) return true;
 			return base.Equals( obj );
 		}
-
+		
 		public static IntVector2 operator +( IntVector2 a, IntVector2 b )
 		{
 			return new IntVector2( a.x + b.x, a.y + b.y );
 		}
+		
+		public static IntVector2 operator -( IntVector2 a, IntVector2 b )
+		{
+			return new IntVector2( a.x - b.x, a.y - b.y );
+		}
+		
+		public static IntVector2 operator *( int a, IntVector2 b )
+		{
+			return new IntVector2( b.x * a, b.y * a );
+		}
 
+		public static IntVector2 operator *(  IntVector2 b, int a )
+		{
+			return a * b;
+		}
+
+		public void Normalize( )
+		{
+			if ( x != 0 )
+			{
+				x = Math.Sign( x );
+				y = 0;
+			}
+			else if ( y != 0 )
+			{
+				y = Math.Sign( y );
+				x = 0;
+			}
+		}
 	}
 }
 

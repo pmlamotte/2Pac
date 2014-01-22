@@ -62,37 +62,30 @@ namespace AssemblyCSharp
 			return !board[y,x];
 		}
 
+
+		public Vector3 convertToRenderPos( BoardLocation b )
+		{
+			float x = .5f + b.location.x + ((float)b.offset.x) / BoardLocation.cellRadius;
+			float y = .5f + b.location.y + ((float)b.offset.y) / BoardLocation.cellRadius;
+			return new Vector3( x, y, 0 );
+		}
+
+
 		public void insertGhost( GameObject g )
 		{
-			g.transform.position = new Vector3( ghostSpawn.x + .5f, ghostSpawn.y + .5f, 0 );
+			GhostMovement gMove = (GhostMovement) g.GetComponent( "GhostMovement" );
+			gMove.boardLocation = new BoardLocation( ghostSpawn, new IntVector2( 0,0 ) );
 		}
 
 
-
-		public Vector2 getCellLocation( Vector3 pos )
+		public IntVector2 moveTowards( BoardLocation pos, BoardLocation target, int maxSpeed )
 		{
-			// the tile coordinates
-			int x = (int)pos.x;
-			int y = (int)pos.y;
-			
-			// the position within the tile, center is (0,0), +y is up
-			float cellPosX = pos.x - x - .5f;
-			float cellPosY = pos.y - y - .5f;
-			
-			return new Vector2( cellPosX, cellPosY );
-		}
+			pos = pos.Clone();
+			target = target.Clone();
 
-
-		public Vector2 moveTowards( Vector3 pos, Vector3 target, float maxSpeed )
-		{
-			if ( pos.x > 10 )
-			{
-				int x = 0; 
-				x++;
-			}
 			// get grid positions
-			IntVector2 thisPos = new IntVector2( (int)pos.x, (int)pos.y );
-			IntVector2 targetPos = new IntVector2( (int)target.x, (int)target.y );
+			IntVector2 thisPos = pos.location;
+			IntVector2 targetPos = target.location;
 
 			HashSet<IntVector2> visited = new HashSet<IntVector2>();
 			Dictionary<IntVector2, IntVector2> previous = new Dictionary<IntVector2, IntVector2>();
@@ -128,35 +121,35 @@ namespace AssemblyCSharp
 			if ( path.Count > 0 )
 			{
 				// head in the direction of first
-				Vector2 direction = new Vector2( path.First.Value.x, path.First.Value.y) - new Vector2(thisPos.x, thisPos.y);
+				IntVector2 direction = new IntVector2( path.First.Value.x, path.First.Value.y ) - new IntVector2( thisPos.x, thisPos.y );
 				direction.Normalize();
 				direction *= maxSpeed;
 
 				// direction will be orthogonal
-				Vector3 afterMove = tryMove( pos, direction );
-				if ( Vector3.Distance( afterMove, pos ) > maxSpeed / 2 )
+				BoardLocation afterMove = tryMove( pos, direction );
+				if ( BoardLocation.SqrDistance( afterMove, pos ) > maxSpeed * maxSpeed / 4 )
 				{
 					// move there
 					return direction;
 				}
 			}
 			//otherwise move towards center of current square
-			Vector2 cellPos = getCellLocation( pos );
+			IntVector2 cellPos = pos.offset;
 			cellPos.Normalize();
 			cellPos *= -maxSpeed;
 			return cellPos;
 
 		}
 
-		public Vector3 tryMove( Vector3 pos, Vector2 vel )
+		public BoardLocation tryMove( BoardLocation pos, IntVector2 vel )
 		{
 			// the tile coordinates
-			int x = (int)pos.x;
-			int y = (int)pos.y;
+			int x = pos.location.x;
+			int y = pos.location.y;
 
 			// the position within the tile, center is (0,0), +y is up
-			float cellPosX = pos.x - x - .5f;
-			float cellPosY = pos.y - y - .5f;
+			int cellPosX = pos.offset.x;
+			int cellPosY = pos.offset.y;
 
 			cellPosX += vel.x;
 			cellPosY += vel.y;
@@ -178,7 +171,7 @@ namespace AssemblyCSharp
 			else cellPosX = 0;
 
 			// translate back to world coords and return
-			return new Vector3( cellPosX + x + .5f, cellPosY + y + .5f, 0 );
+			return new BoardLocation( new IntVector2( x, y ), new IntVector2( cellPosX, cellPosY ));
 
 		}
 

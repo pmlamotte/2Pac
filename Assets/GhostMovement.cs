@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using AssemblyCSharp;
 
 public class GhostMovement : MonoBehaviour {
-	private List<GameObject> players;
-	public float maxSpeed = 0f;
-
+	private List<PacmanAnimate> players;
+	public int maxSpeed = 10;
+	public BoardLocation boardLocation {get; set;}
 	// Use this for initialization
 	void Start () {
 		if (!networkView.isMine) return;
@@ -14,26 +15,29 @@ public class GhostMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (!networkView.isMine) return;
+		int maxSpeed = this.maxSpeed * (int)( Time.deltaTime * 1000 );
+		BoardLocation startLocation = boardLocation.Clone();
 
-		Vector2 toMove = new Vector2(0,0);
-		foreach ( GameObject player in players )
+		IntVector2 toMove = new IntVector2(0,0);
+		foreach ( PacmanAnimate player in players )
 		{
 			// todo, will move to the last player in list
-			Vector2 direction = OnStart.board.moveTowards( transform.position, player.transform.position,  maxSpeed );
+			IntVector2 direction = OnStart.board.moveTowards( boardLocation, player.boardLocation, maxSpeed );
 			toMove = direction;
 		}
-		transform.position = OnStart.board.tryMove( transform.position, toMove );
-
-		// todo could be faster (could store players in each square)
-		foreach ( GameObject player in players )
+		boardLocation = OnStart.board.tryMove( boardLocation, toMove );
+		
+		foreach ( PacmanAnimate player in players )
 		{
 			// see if contact
-			if ( Vector3.Distance( player.transform.position, this.transform.position ) < 1 )
+			if ( BoardLocation.SqrDistance( player.boardLocation, this.boardLocation ) < BoardLocation.cellRadius * BoardLocation.cellRadius )
 			{
-				((PacmanAnimate)player.GetComponent("PacmanAnimate")).hitByGhost( this.gameObject );
+				player.hitByGhost( this.gameObject );
 			}
-
+			
 		}
+
+		this.transform.position = OnStart.board.convertToRenderPos( this.boardLocation );
 
 	}
 }
