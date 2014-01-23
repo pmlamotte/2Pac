@@ -9,57 +9,8 @@ public class NetworkManager : MonoBehaviour {
 	private string gameName = "";
 	private int playerNum = 0;
 	private int playerCount = 1;
-	
-	private void StartServer()
-	{
-		gameName = Random.value + "";
-		Network.InitializeServer(4, 25000, !Network.HavePublicAddress());
-		//MasterServer.RegisterHost(typeName, gameName);
 
-	}
 
-	void OnServerInitialized()
-	{
-		SpawnPlayer(playerNum);
-	}
-
-	void OnGUI()
-	{
-		if (!Network.isClient && !Network.isServer)
-		{
-			if (GUI.Button(new Rect(100, 100, 250, 100), "Start Server")) {
-				StartServer();
-			}
-		}
-	}
-	
-	void OnMasterServerEvent(MasterServerEvent msEvent)
-	{
-		if (msEvent == MasterServerEvent.HostListReceived);
-			//hostList = MasterServer.PollHostList();
-	}
-
-	private void JoinServer(HostData hostData)
-	{
-		Network.Connect(hostData);
-	}
-
-	void OnPlayerConnected(NetworkPlayer player) {
-		networkView.RPC("SpawnPlayer", player, playerCount);
-		playerCount++;
-	}
-
-	void OnConnectedToServer()
-	{
-		Debug.Log("Server Joined");
-	}
-
-	void OnPlayerDisconnected(NetworkPlayer player)
-	{
-		Network.RemoveRPCs(player);
-		Network.DestroyPlayerObjects(player);
-	} 
-	
 	public GameObject playerPrefab;
 	public GameObject ghostPrefab;
 
@@ -94,6 +45,31 @@ public class NetworkManager : MonoBehaviour {
 
 		SpawnGhost();
 	}
+	
+	void OnMasterServerEvent(MasterServerEvent msEvent)
+	{
+		if (msEvent == MasterServerEvent.HostListReceived)
+		{
+			//hostList = MasterServer.PollHostList();
+		}
+	}
+	
+	
+	void OnPlayerConnected(NetworkPlayer player) {
+		networkView.RPC("SpawnPlayer", player, playerCount);
+		playerCount++;
+	}
+	
+	void OnConnectedToServer()
+	{
+		Debug.Log("Server Joined");
+	}
+	
+	void OnPlayerDisconnected(NetworkPlayer player)
+	{
+		Network.RemoveRPCs(player);
+		Network.DestroyPlayerObjects(player);
+	} 
 
 	private void SpawnGhost()
 	{	

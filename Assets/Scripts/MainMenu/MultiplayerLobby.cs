@@ -1,37 +1,69 @@
 ﻿using UnityEngine;
 using System.Collections;
+using AssemblyCSharp;
 
 public class MultiplayerLobby : MonoBehaviour {
 
-	private HostData[] hostList;
-	private const string GAME_NAME = "2Pac";
-	
-	private void RefreshHostList()
+
+	private ServerManager manager = null;
+	public ServerManager Manager
 	{
-		MasterServer.RequestHostList(GAME_NAME);
+		get
+		{
+			if ( manager == null )
+			{
+				Manager = GameObject.FindObjectOfType<ServerManager>();
+			}
+			return manager;
+		}
+		set 
+		{
+			manager = value;
+		}
 	}
+
 
 	// Use this for initialization
 	void Start () {
 	
 	}
 
+	void openServer()
+	{
+		ReadyUpToGame ready = GetComponent<ReadyUpToGame>();
+		ready.enabled = true;
+		enabled = false;
+	}
+
 	void OnGUI() {
-		if (GUI.Button(new Rect(100, 250, 250, 100), "Refresh Hosts")) {
-			RefreshHostList();
+		if (GUI.Button(new Rect(100, 100, 250, 100), "Refresh Hosts")) {
+			BroadcastMessage( "RefreshHostList" );
+		}
+		if (GUI.Button(new Rect(100, 250, 250, 100), "Start Server")) {
+			if ( Manager != null )
+			{
+				Manager.StartServer();
+				openServer();
+			}
 		}
 
-		if (hostList != null)
+		if ( Manager != null )
 		{
-			for (int i = 0; i < hostList.Length; i++)
+			HostData[] hostList = Manager.hostList;
+			if (hostList != null)
 			{
-				if (GUI.Button(new Rect(400, 100 + (110 * i), 300, 100), hostList[i].gameName)) {
-					//JoinServer(hostList[i]);
+				for (int i = 0; i < hostList.Length; i++)
+				{
+					if (GUI.Button(new Rect(400, 100 + (110 * i), 300, 100), hostList[i].gameName)) 
+					{
+						Manager.JoinServer( hostList[i] );
+						openServer();
+					}
 				}
 			}
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 	
