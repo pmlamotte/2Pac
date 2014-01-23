@@ -14,6 +14,9 @@ namespace AssemblyCSharp
 	{
 		public static string GAME_NAME = "2Pac";
 		public static Random random = new Random();
+		public static IntVector2[] directions = new IntVector2[]{new IntVector2(1,0), new IntVector2(0,1), new IntVector2(-1,0), new IntVector2(0,-1)};
+		public static readonly int BoardCellRadius = 1000;
+		
 		private Constants ()
 		{
 		}

@@ -33,7 +33,7 @@ public class PacmanScore : MonoBehaviour {
 	}
 
 	private void updateScoreText() {
-		int playerNum = ((PacmanAnimate)GetComponent("PacmanAnimate")).playerNum;
+		int playerNum = GetComponent<PacmanData>().playerNum;
 		text.transform.position = new Vector3( 0, 1 - .1f * playerNum, 0 ); 
 		text.text = "Player " + playerNum + ": " + (int)score;
 	}

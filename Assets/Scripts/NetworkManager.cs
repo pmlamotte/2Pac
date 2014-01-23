@@ -31,15 +31,12 @@ public class NetworkManager : MonoBehaviour {
 
 		pos = new BoardLocation( new IntVector2( x, y ), pos.offset );
 
-		PacmanAnimate player = (PacmanAnimate)((GameObject) Network.Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity, 0)).GetComponent( "PacmanAnimate" );
+		PacmanData player = (PacmanData)((GameObject) Network.Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity, 0)).GetComponent<PacmanData>();
 		
-		PacmanAnimate animate = (PacmanAnimate) player.GetComponent("PacmanAnimate");
+		PacmanData animate = player.GetComponent<PacmanData>();
 		animate.spawnPosition = pos;
-		animate.maxSpeed = 8;
-		animate.boardLocation = pos;
-
-		OnStart onStart =(OnStart)GameObject.Find( "StartUp" ).GetComponent( "OnStart" );
-		onStart.players.Add( player );
+		animate.Data.maxSpeed = 8;
+		animate.Data.boardLocation = pos;
 
 		animate.setPlayerNum(playerNum);
 
@@ -74,15 +71,20 @@ public class NetworkManager : MonoBehaviour {
 	private void SpawnGhost()
 	{	
 		GameObject ghost = (GameObject) Network.Instantiate(ghostPrefab, new Vector3(0,0,0), Quaternion.identity, 0);
-		
-		OnStart.board.insertGhost( ghost );
-		GhostMovement animate = (GhostMovement) ghost.GetComponent("GhostMovement");
-		animate.maxSpeed = 4;
+
+
+		GameObject.FindObjectOfType<BoardAccessor>().insertGhost( ghost );
+		GhostMover animate = ghost.GetComponent<GhostMover>();
+		animate.Data.maxSpeed = 4;
 
 	}
 
 	// Use this for initialization
 	void Start () {
+		Network.InitializeServer(4, 25000, !Network.HavePublicAddress());
+		
+		SpawnPlayer(0);
+		SpawnGhost();
 	}
 	
 	// Update is called once per frame
