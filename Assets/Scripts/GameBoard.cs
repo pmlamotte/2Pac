@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 namespace AssemblyCSharp
 {
-	public class GameBoard
+	public class GameBoardData
 	{
 		public static IntVector2[] directions = new IntVector2[]{new IntVector2(1,0), new IntVector2(0,1), new IntVector2(-1,0), new IntVector2(0,-1)};
 		private bool[,] board;
