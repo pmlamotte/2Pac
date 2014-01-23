@@ -84,7 +84,7 @@ GameObject:
   - 4: {fileID: 235957361}
   - 114: {fileID: 235957360}
   - 114: {fileID: 235957362}
-  - 114: {fileID: 235957363}
+  - 114: {fileID: 235957364}
   m_Layer: 0
   m_Name: Menu
   m_TagString: Untagged
@@ -125,15 +125,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cb0d21c62f3c824d8d445cc21e14ea0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &235957363
+--- !u!114 &235957364
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 235957359}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8de9f82b6b8e5284a889afcbd30e584e, type: 3}
+  m_Script: {fileID: 11500000, guid: ee5ca025bf5d1494f98bf45d99a137ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &325569103

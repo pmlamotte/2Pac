@@ -36,13 +36,7 @@ public class ServerManager : MonoBehaviour {
 		//SpawnPlayer(playerNum);
 	}
 	
-	
-	public void StartServer()
-	{
-		string serverName = "" + Constants.random.Next(int.MaxValue);
-		Network.InitializeServer(4, 25000, !Network.HavePublicAddress());
-		MasterServer.RegisterHost(Constants.GAME_NAME, serverName);
-	}
+
 
 	private void RefreshHostList()
 	{

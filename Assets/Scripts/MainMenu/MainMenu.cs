@@ -11,7 +11,8 @@ public class MainMenu : MonoBehaviour {
 	void OnGUI() {
 
 		if (GUI.Button(new Rect(100, 100, 250, 100), "Single Player")) {
-
+			GetComponent<SinglePlayer>().enabled = true;
+			this.enabled = false;
 		}
 
 		if (GUI.Button(new Rect(100, 300, 250, 100), "Online Multiplayer")) {

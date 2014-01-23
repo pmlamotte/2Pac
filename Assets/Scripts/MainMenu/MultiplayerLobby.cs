@@ -22,6 +22,23 @@ public class MultiplayerLobby : MonoBehaviour {
 		}
 	}
 
+	private GameHost host = null;
+	public GameHost Host
+	{
+		get
+		{
+			if ( host == null )
+			{
+				Host = GameObject.FindObjectOfType<GameHost>();
+			}
+			return host;
+		}
+		set 
+		{
+			host = value;
+		}
+	}
+
 
 	// Use this for initialization
 	void Start () {
@@ -42,7 +59,7 @@ public class MultiplayerLobby : MonoBehaviour {
 		if (GUI.Button(new Rect(100, 250, 250, 100), "Start Server")) {
 			if ( Manager != null )
 			{
-				Manager.StartServer();
+				Host.startServer(2, "test");
 				openServer();
 			}
 		}
@@ -56,7 +73,7 @@ public class MultiplayerLobby : MonoBehaviour {
 				{
 					if (GUI.Button(new Rect(400, 100 + (110 * i), 300, 100), hostList[i].gameName)) 
 					{
-						Manager.JoinServer( hostList[i] );
+						// Host.StartServer();
 						openServer();
 					}
 				}
