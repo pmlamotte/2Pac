@@ -6,7 +6,26 @@ public class PacmanAnimate : MonoBehaviour {
 
 
 	public int maxSpeed = 10;
-	public IntVector2 direction = new IntVector2( -1, 0 );
+	public IntVector2 _direction = new IntVector2(0,0);
+
+	public IntVector2 direction 
+	{
+		get 
+		{ 
+
+			return _direction; 
+		}
+		set { 
+			_direction = value; 
+			if ( _direction.x == 0 && _direction.y == 0 && boardLocation.location.x > 1 )
+			{
+				int x = 0;
+				x++;
+			}
+		
+		}
+	}
+
 	public float score = 0;
 	public int playerNum = 0;
 	public BoardLocation spawnPosition = new BoardLocation( new IntVector2( 1, 1), new IntVector2(0,0) );
@@ -29,7 +48,7 @@ public class PacmanAnimate : MonoBehaviour {
 
 		if (networkView.isMine) {
 			// make game frame rate independent
-			int maxSpeed = this.maxSpeed * ((int)(1000 * Time.deltaTime ));
+			int maxSpeed =  ((int)(1000 * Time.deltaTime * this.maxSpeed));
 
 			BoardLocation startPos = boardLocation.Clone();
 			IntVector2 newDirection = new IntVector2( 0, 0 );
@@ -52,9 +71,21 @@ public class PacmanAnimate : MonoBehaviour {
 				if ( BoardLocation.SqrDistance( posAfter, startPos ) > 0 )
 				{
 					// valid velocity change.
+					if ( newDirection.x + newDirection.y == 0 && boardLocation.location.x > 1 )
+					{
+						int x = 0;
+						x++;
+					}
 					direction = newDirection;
 				}
 			}
+
+			if ( direction.x + direction.y == 0 && boardLocation.location.x > 1 )
+			{
+				int x = 0;
+				x++;
+			}
+
 
 			direction.Normalize( );
 			direction *= maxSpeed;

@@ -102,8 +102,7 @@ public class NetworkManager : MonoBehaviour {
 		
 		PacmanAnimate animate = (PacmanAnimate) player.GetComponent("PacmanAnimate");
 		animate.spawnPosition = pos;
-		animate.maxSpeed = 10;
-		animate.direction = new IntVector2(0,0);
+		animate.maxSpeed = 8;
 		animate.boardLocation = pos;
 
 		OnStart onStart =(OnStart)GameObject.Find( "StartUp" ).GetComponent( "OnStart" );
@@ -120,7 +119,7 @@ public class NetworkManager : MonoBehaviour {
 		
 		OnStart.board.insertGhost( ghost );
 		GhostMovement animate = (GhostMovement) ghost.GetComponent("GhostMovement");
-		animate.maxSpeed = 6;
+		animate.maxSpeed = 4;
 
 	}
 
