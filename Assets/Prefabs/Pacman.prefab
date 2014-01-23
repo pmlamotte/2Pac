@@ -57,10 +57,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28de759287d52ab4ab45e55cbd564ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: .100000001
-  direction: {x: -1, y: 0}
+  maxSpeed: 10
   score: 0
-  spawnPosition: {x: 1.5, y: 1.5, z: 0}
   playerNum: 0
 --- !u!114 &11400002
 MonoBehaviour:
