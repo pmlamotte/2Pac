@@ -36,7 +36,7 @@ public class BoardObjectCollider : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if ( !( GameProperties.isSinglePlayer && Network.isServer ) ) return;
+		if ( !( GameProperties.isSinglePlayer || Network.isServer ) ) return;
 		PacmanData[] players = Players;
 		GhostMover[] ghosts = Ghosts;
 		foreach ( GhostMover ghost in ghosts )
@@ -45,7 +45,14 @@ public class BoardObjectCollider : MonoBehaviour {
 			{
 				if ( BoardLocation.SqrDistance( ghost.Data.boardLocation, player.Data.boardLocation ) < Constants.BoardCellRadius * Constants.BoardCellRadius )
 				{
-					player.hitByGhost( ghost.gameObject );
+					if ( GameProperties.isSinglePlayer || player.networkView.isMine )
+					{
+						player.hitByGhost();
+					}
+					else
+					{
+						player.networkView.RPC( "hitByGhost", player.networkView.owner );
+					}
 				}
 			}
 

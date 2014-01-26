@@ -33,10 +33,9 @@ public class PacmanScore : MonoBehaviour {
 	}
 
 	private void updateScoreText() {
-		// todo slow call to getcomponent
-		int playerNum = GetComponent<PacmanData>().playerNum;
-		text.transform.position = new Vector3( 0, 1 - .1f * playerNum, 0 ); 
-		text.text = "Player " + playerNum + ": " + (int)score;
+		PlayerInfo.Player player = PlayerInfo.Instance.getPlayerByNetworkPlayer(networkView.owner);
+		text.transform.position = new Vector3( 0, 1 - .1f * player.id, 0 ); 
+		text.text = "Player " + player.id + ": " + (int)score;
 	}
 
 	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)

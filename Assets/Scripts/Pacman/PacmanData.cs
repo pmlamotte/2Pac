@@ -28,7 +28,7 @@ public class PacmanData : MonoBehaviour {
 		Data.lastBoardLocation = Data.boardLocation.Clone();
 	}
 	
-	public void hitByGhost( GameObject ghost )
+	[RPC] public void hitByGhost( )
 	{
 		this.Data.boardLocation = spawnPosition.Clone();
 		SendMessage("PacmanHit");
