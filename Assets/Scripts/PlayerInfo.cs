@@ -60,6 +60,15 @@ public class PlayerInfo : Singleton<PlayerInfo> {
 		return true;
 	}
 
+	public Player getPlayerByNetworkPlayer(NetworkPlayer player) {
+		foreach (Player p in players) {
+			if (player.guid == p.networkPlayer.guid) {
+				return p;
+			}
+		}
+		return null;
+	}
+
 	// ================================
 	// ============ Events ============
 	// ================================
