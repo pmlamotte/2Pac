@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class SinglePlayer : MonoBehaviour {
@@ -11,7 +11,7 @@ public class SinglePlayer : MonoBehaviour {
 	void OnGUI() {
 		if (GUI.Button(new Rect(100, 100, 250, 100), "1 Player")) {
 			GameProperties.isSinglePlayer = true;
-			GameProperties.numStartingPlayers = 1;
+			GameProperties.maxPlayers = 1;
 			Application.LoadLevel("Networked");
 		}
 		

@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameProperties {
+public class GameProperties : MonoBehaviour {
 
 	public static bool isSinglePlayer = true;
-	public static int numStartingPlayers = 0;
-
+	public static int maxPlayers = 0;
+	public static PlayerInfo.Player myPlayer; // the current player
 }

@@ -2,9 +2,11 @@
 using System.Collections;
 using AssemblyCSharp;
 
-public class ServerManager : MonoBehaviour {
+public class ServerManager : Singleton<ServerManager> {
 
 	public HostData[] hostList;
+
+	protected ServerManager() {}
 	
 	void OnMasterServerEvent(MasterServerEvent msEvent)
 	{
@@ -38,7 +40,7 @@ public class ServerManager : MonoBehaviour {
 	
 
 
-	private void RefreshHostList()
+	public void RefreshHostList()
 	{
 		MasterServer.RequestHostList(Constants.GAME_NAME);
 	}

@@ -5,41 +5,6 @@ using AssemblyCSharp;
 public class MultiplayerLobby : MonoBehaviour {
 
 
-	private ServerManager manager = null;
-	public ServerManager Manager
-	{
-		get
-		{
-			if ( manager == null )
-			{
-				Manager = GameObject.FindObjectOfType<ServerManager>();
-			}
-			return manager;
-		}
-		set 
-		{
-			manager = value;
-		}
-	}
-
-	private GameHost host = null;
-	public GameHost Host
-	{
-		get
-		{
-			if ( host == null )
-			{
-				Host = GameObject.FindObjectOfType<GameHost>();
-			}
-			return host;
-		}
-		set 
-		{
-			host = value;
-		}
-	}
-
-
 	// Use this for initialization
 	void Start () {
 	
@@ -54,28 +19,23 @@ public class MultiplayerLobby : MonoBehaviour {
 
 	void OnGUI() {
 		if (GUI.Button(new Rect(100, 100, 250, 100), "Refresh Hosts")) {
-			BroadcastMessage( "RefreshHostList" );
+			ServerManager.Instance.RefreshHostList();
 		}
 		if (GUI.Button(new Rect(100, 250, 250, 100), "Start Server")) {
-			if ( Manager != null )
-			{
-				Host.startServer(2, "test");
+				GameHost.Instance.startServer(2, "test: " + Constants.random.Next());
 				openServer();
-			}
 		}
 
-		if ( Manager != null )
+		ServerManager manager = ServerManager.Instance;
+		HostData[] hostList = manager.hostList;
+		if (hostList != null)
 		{
-			HostData[] hostList = Manager.hostList;
-			if (hostList != null)
+			for (int i = 0; i < hostList.Length; i++)
 			{
-				for (int i = 0; i < hostList.Length; i++)
+				if (GUI.Button(new Rect(400, 100 + (110 * i), 300, 100), hostList[i].gameName)) 
 				{
-					if (GUI.Button(new Rect(400, 100 + (110 * i), 300, 100), hostList[i].gameName)) 
-					{
-						// Host.StartServer();
-						openServer();
-					}
+					manager.JoinServer(hostList[i]);
+					openServer();
 				}
 			}
 		}

@@ -6,10 +6,9 @@ using AssemblyCSharp;
 /**
  * Handles the connection/disconnection of users
  **/
-public class GameHost : MonoBehaviour {
+public class GameHost : Singleton<GameHost> {
 
-	public int maxPlayers = 0;
-	public List<PlayerInfo> players;
+	protected GameHost() {}
 
 	// Use this for initialization
 	void Start () {
@@ -26,45 +25,30 @@ public class GameHost : MonoBehaviour {
 		Network.RemoveRPCs(player);
 		Network.DestroyPlayerObjects(player);
 
-		for (int i = 0; i < players.Count; i++) {
-			if (players[i].networkPlayer.guid == player.guid) {
-				players.RemoveAt(i);
-			}
-		}
+		ServerComms.Instance.playerDisconnected(player);
 	}
 
 	void OnPlayerConnected(NetworkPlayer player) {
-		PlayerInfo info = new PlayerInfo(getNextPlayerID(), player);
-		players.Add(info);
+		int nextId = PlayerInfo.Instance.getNextPlayerID();
+		ServerComms.Instance.networkView.RPC("setPlayerID", player, nextId);
+		ServerComms.Instance.playerConnected(player, nextId);
+		ServerComms.Instance.networkView.RPC("setMaxPlayers", player, GameProperties.maxPlayers);
 	}
 
 	public void startServer(int maxPlayers, string serverName) {
 		DontDestroyOnLoad(this);
+		GameProperties.isSinglePlayer = false;
+		GameProperties.maxPlayers = maxPlayers;
+		
 		Network.InitializeServer(4, 25000, !Network.HavePublicAddress());
 		MasterServer.RegisterHost(Constants.GAME_NAME, serverName);
-		GameProperties.isSinglePlayer = false;
 	}
 
-	private int getNextPlayerID() {
-
-		SortedList<int, int> ids = new SortedList<int,int>();
-		for (int i = 0; i < maxPlayers; i++) {
-			ids.Add(i, i);
-		}
-
-		foreach (PlayerInfo info in players) {
-			ids.Remove(info.id);
-		}
-		return ids[0];
+	void OnServerInitialized() {
+		int myId = PlayerInfo.Instance.getNextPlayerID();
+		Messenger<int>.Broadcast(Events.PLAYER_ID_SET, myId);
+		Network.Instantiate(Resources.Load<GameObject>("prefabs/ServerComms"), Vector3.zero, Quaternion.identity, 0);
+		ServerComms.Instance.playerConnected(Network.player, myId);
 	}
 
-	public class PlayerInfo {
-		public int id = -1;
-		public NetworkPlayer networkPlayer;
-
-		public PlayerInfo(int id, NetworkPlayer networkPlayer) {
-			this.id = id;
-			this.networkPlayer = networkPlayer;
-		}
-	}
 }
