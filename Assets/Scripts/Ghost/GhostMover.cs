@@ -42,7 +42,7 @@ public class GhostMover : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!networkView.isMine) return;
+		if (!GameProperties.isSinglePlayer && !networkView.isMine) return;
 		int maxSpeed = this.Data.maxSpeed * (int)( Time.deltaTime * 1000 );
 
 		IntVector2 toMove = new IntVector2(0,0);

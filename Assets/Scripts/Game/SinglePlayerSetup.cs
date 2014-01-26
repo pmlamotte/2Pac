@@ -13,11 +13,11 @@ public class SinglePlayerSetup : MonoBehaviour {
 	}
 
 	void OnEnable() {
-
+		SpawnPlayer();
 		SpawnGhost();
 	}
 
-	void SpawnPlayer(int num)
+	void SpawnPlayer()
 	{
 		BoardLocation pos = new BoardLocation( new IntVector2(0,0), new IntVector2( 0, 0 ) );
 		int x = 1;

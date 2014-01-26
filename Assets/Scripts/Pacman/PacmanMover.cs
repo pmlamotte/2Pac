@@ -41,7 +41,8 @@ public class PacmanMover : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (networkView.isMine) {
+		if (GameProperties.isSinglePlayer || networkView.isMine) {
+			Debug.Log ("wat");
 
 			// make game frame rate independent
 			int maxSpeed = ((int)(1000 * Time.deltaTime * Data.Data.maxSpeed ));
