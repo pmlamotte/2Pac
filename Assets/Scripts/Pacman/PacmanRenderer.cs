@@ -12,7 +12,7 @@ public class PacmanRenderer : MonoBehaviour {
 		{
 			if ( _Data == null )
 			{
-				_Data = GameObject.FindObjectOfType<PacmanData>();
+				_Data = GetComponent<PacmanData>();
 			}
 			return _Data;
 		}
