@@ -7,10 +7,12 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using System;
+using UnityEngine;
+using System.Collections;
+using AssemblyCSharp;
 namespace AssemblyCSharp
 {
-	public class BoardLocation
+	public class BoardLocation 
 	{
 		
 		public IntVector2 location {get; private set;}
@@ -59,6 +61,21 @@ namespace AssemblyCSharp
 			int ydiff = ( a.location.y * Constants.BoardCellRadius + a.offset.y - b.location.y * Constants.BoardCellRadius - b.offset.y );
 
 			return xdiff * xdiff + ydiff * ydiff;
+		}
+
+		
+		// assumes a writing stream
+		public void Serialize( BitStream stream )
+		{
+			location.Serialize( stream );
+			offset.Serialize( stream );
+		}
+		
+		// assumes a reading stream
+		public void DeSerialize( BitStream stream )
+		{
+			location.DeSerialize( stream );
+			offset.DeSerialize( stream );
 		}
 
 

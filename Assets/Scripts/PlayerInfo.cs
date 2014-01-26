@@ -51,9 +51,6 @@ public class PlayerInfo : Singleton<PlayerInfo> {
 	}
 
 	public bool allPlayersReady() {
-		if (players.Count < GameProperties.maxPlayers) {
-			return false;
-		}
 
 		foreach (Player player in players) {
 			if (!player.ready) {

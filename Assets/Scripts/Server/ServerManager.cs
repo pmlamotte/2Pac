@@ -14,9 +14,6 @@ public class ServerManager : Singleton<ServerManager> {
 			hostList = MasterServer.PollHostList();
 	}
 	
-	
-	
-	
 	void OnConnectedToServer()
 	{
 		Debug.Log("Server Joined");

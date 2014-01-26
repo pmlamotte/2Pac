@@ -23,8 +23,8 @@ public class PacmanData : MonoBehaviour {
 		private set { throw new NotImplementedException(); }
 	}
 
-	void OnStart() {
-		Data.boardLocation = new BoardLocation( new IntVector2(0,0), new IntVector2(0,0) );
+	void Start() {
+		Data.boardLocation = new BoardLocation( new IntVector2(1,1), new IntVector2(0,0) );
 		Data.lastBoardLocation = Data.boardLocation.Clone();
 	}
 	

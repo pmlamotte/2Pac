@@ -15,6 +15,7 @@ public class MultiplayerLobby : MonoBehaviour {
 		ReadyUpToGame ready = GetComponent<ReadyUpToGame>();
 		ready.enabled = true;
 		enabled = false;
+		GameProperties.isSinglePlayer = false;
 	}
 
 	void OnGUI() {
@@ -22,7 +23,7 @@ public class MultiplayerLobby : MonoBehaviour {
 			ServerManager.Instance.RefreshHostList();
 		}
 		if (GUI.Button(new Rect(100, 250, 250, 100), "Start Server")) {
-				GameHost.Instance.startServer(2, "test: " + Constants.random.Next());
+				GameHost.Instance.startServer(4, "test: " + Constants.random.Next());
 				openServer();
 		}
 
