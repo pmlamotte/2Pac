@@ -23,8 +23,8 @@ public class MultiplayerLobby : MonoBehaviour {
 			ServerManager.Instance.RefreshHostList();
 		}
 		if (GUI.Button(new Rect(100, 250, 250, 100), "Start Server")) {
-				GameHost.Instance.startServer(4, "test: " + Constants.random.Next());
-				openServer();
+			GetComponent<ServerCreate>().enabled = true;
+			enabled = false;
 		}
 
 		ServerManager manager = ServerManager.Instance;
