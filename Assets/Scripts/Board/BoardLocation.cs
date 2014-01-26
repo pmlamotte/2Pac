@@ -18,8 +18,33 @@ namespace AssemblyCSharp
 
 		public BoardLocation( IntVector2 location, IntVector2 offset )
 		{
-			this.location = new IntVector2( location.x + offset.x / Constants.BoardCellRadius, location.y + offset.y / Constants.BoardCellRadius);
-			this.offset = new IntVector2( offset.x % Constants.BoardCellRadius, offset.y % Constants.BoardCellRadius );
+			this.location = location.Clone();
+			int offx = offset.x;
+			int offy = offset.y;
+			int locx = location.x;
+			int locy = location.y;
+			while ( offx > 1000 )
+			{
+				locx++;
+				offx -= Constants.BoardCellDiameter;
+			}
+			while ( offx <= -1000 )
+			{
+				locx--;
+				offx += Constants.BoardCellDiameter;
+			}
+			while ( offy > 1000 )
+			{
+				locy++;
+				offy -= Constants.BoardCellDiameter;
+			}
+			while ( offy <= -1000 )
+			{
+				locy--;
+				offy += Constants.BoardCellDiameter;
+			}
+			this.location = new IntVector2( locx, locy );
+			this.offset = new IntVector2( offx, offy );
 		}
 
 		public BoardLocation Clone()

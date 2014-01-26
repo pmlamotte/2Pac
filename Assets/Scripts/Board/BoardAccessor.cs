@@ -58,8 +58,8 @@ public class BoardAccessor : MonoBehaviour {
 	
 	public Vector3 convertToRenderPos( BoardLocation b )
 	{
-		float x = .5f + b.location.x + ((float)b.offset.x) / Constants.BoardCellRadius;
-		float y = .5f + b.location.y + ((float)b.offset.y) / Constants.BoardCellRadius;
+		float x = .5f + b.location.x + ((float)b.offset.x) / Constants.BoardCellDiameter;
+		float y = .5f + b.location.y + ((float)b.offset.y) / Constants.BoardCellDiameter;
 		return new Vector3( x, y, 0 );
 	}
 	

@@ -66,6 +66,11 @@ namespace AssemblyCSharp
 				x = 0;
 			}
 		}
+
+		public IntVector2 Clone()
+		{
+			return new IntVector2( x, y );
+		}
 	}
 }
 

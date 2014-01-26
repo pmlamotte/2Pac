@@ -16,7 +16,6 @@ public class NetworkManager : MonoBehaviour {
 
 	[RPC] void SpawnPlayer(int num)
 	{
-		Debug.Log("player num: " + num);
 		playerNum = num;
 		BoardLocation pos = new BoardLocation( new IntVector2(0,0), new IntVector2( 0, 0 ) );
 		int x = 1;
