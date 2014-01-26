@@ -23,12 +23,10 @@ public class PacmanData : MonoBehaviour {
 		private set { throw new NotImplementedException(); }
 	}
 
-	public PacmanData( )
-	{
+	void OnStart() {
 		Data.boardLocation = new BoardLocation( new IntVector2(0,0), new IntVector2(0,0) );
 		Data.lastBoardLocation = Data.boardLocation.Clone();
 	}
-
 	
 	public void hitByGhost( GameObject ghost )
 	{

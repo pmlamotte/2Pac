@@ -69,7 +69,7 @@ public class BoardAccessor : MonoBehaviour {
 		GhostMover gMove = (GhostMover)g.GetComponent<GhostMover>();
 		gMove.Data.boardLocation = new BoardLocation( Data.ghostSpawn, new IntVector2( 0,0 ) );
 	}
-	
+
 	
 	public IntVector2 moveTowards( BoardLocation pos, BoardLocation target, int maxSpeed )
 	{

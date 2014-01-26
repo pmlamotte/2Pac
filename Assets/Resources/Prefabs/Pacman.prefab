@@ -14,6 +14,7 @@ GameObject:
   - 148: {fileID: 14800000}
   - 114: {fileID: 11400002}
   - 148: {fileID: 14800002}
+  - 114: {fileID: 11400004}
   m_Layer: 0
   m_Name: Pacman
   m_TagString: Untagged
@@ -57,9 +58,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28de759287d52ab4ab45e55cbd564ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 10
   score: 0
   playerNum: 0
+  _Data: {fileID: 0}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -73,6 +74,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   score: 0
   textPrefab: {fileID: 100000, guid: 18a205e468813d74695c32026abc899b, type: 2}
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 762f82218facc864eb89c09c4c987633, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSpeed: 10
 --- !u!148 &14800000
 NetworkView:
   m_ObjectHideFlags: 1
