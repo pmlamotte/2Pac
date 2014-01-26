@@ -36,6 +36,7 @@ public class BoardObjectCollider : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if ( !( GameProperties.isSinglePlayer && Network.isServer ) ) return;
 		PacmanData[] players = Players;
 		GhostMover[] ghosts = Ghosts;
 		foreach ( GhostMover ghost in ghosts )

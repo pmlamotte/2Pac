@@ -9,8 +9,14 @@ public class MultiplayerSetup : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		PacmanData player = (PacmanData)((GameObject) Network.Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity, 0)).GetComponent<PacmanData>();
-	
+		GameObject player = (GameObject)Network.Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity, 0);
+		player.GetComponent<PacmanData>().playerNum = GameProperties.myPlayer.id;
+		if ( Network.isServer )
+		{
+			// spawn ghosts
+			Network.Instantiate(ghostPrefab, new Vector3(0,0,0), Quaternion.identity, 0);
+		}
+
 	}
 	
 	// Update is called once per frame

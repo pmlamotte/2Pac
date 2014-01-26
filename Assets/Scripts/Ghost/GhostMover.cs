@@ -38,6 +38,8 @@ public class GhostMover : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		players = GameObject.FindObjectsOfType<PacmanData>();
+		// position ghost
+		Data.boardLocation = new BoardLocation( new IntVector2( 9,3 ), new IntVector2(0,0));
 	}
 	
 	// Update is called once per frame

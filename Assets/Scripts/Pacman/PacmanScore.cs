@@ -33,6 +33,7 @@ public class PacmanScore : MonoBehaviour {
 	}
 
 	private void updateScoreText() {
+		// todo slow call to getcomponent
 		int playerNum = GetComponent<PacmanData>().playerNum;
 		text.transform.position = new Vector3( 0, 1 - .1f * playerNum, 0 ); 
 		text.text = "Player " + playerNum + ": " + (int)score;
