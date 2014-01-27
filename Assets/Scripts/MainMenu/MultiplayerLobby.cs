@@ -4,7 +4,10 @@ using AssemblyCSharp;
 
 public class MultiplayerLobby : MonoBehaviour {
 
+	private GUIStyle serverListStyle = new GUIStyle();
+	public GUIStyle titleStyle;
 
+	private Vector2 scrollPosition = Vector2.zero;
 	// Use this for initialization
 	void Start () {
 	
@@ -18,14 +21,37 @@ public class MultiplayerLobby : MonoBehaviour {
 		GameProperties.isSinglePlayer = false;
 	}
 
+	void OnEnable() {
+
+		scrollPosition = Vector2.zero;
+		ServerManager.Instance.RefreshHostList();
+		serverListStyle.normal.background = MakeTex(100, 1, new Color(0.0f, 0.0f, 0.0f, 0.1f));
+		
+	}
+
+	private Texture2D MakeTex(int width, int height, Color col) {
+		Color[] pix = new Color[width * height];
+
+		for (int i = 0; i < pix.Length; i++) {
+			pix[i] = col;
+		}
+		
+		Texture2D result = new Texture2D(width, height);
+		result.SetPixels(pix);
+		result.Apply();
+		return result;
+	}
+
 	void OnGUI() {
-		if (GUI.Button(new Rect(100, 100, 250, 100), "Refresh Hosts")) {
-			ServerManager.Instance.RefreshHostList();
-		}
-		if (GUI.Button(new Rect(100, 250, 250, 100), "Start Server")) {
-			GetComponent<ServerCreate>().enabled = true;
-			enabled = false;
-		}
+
+		GUI.Label(new Rect(Screen.width / 2 - MainMenu.WIDTH / 2, 25, MainMenu.WIDTH, 20), "Mulitplayer Servers", titleStyle);
+
+		GUI.Box(new Rect(Screen.width / 2 - MainMenu.WIDTH / 2, 100, MainMenu.WIDTH, Screen.height - 250), "", serverListStyle);
+		
+		GUILayout.BeginArea(new Rect(Screen.width / 2 - MainMenu.WIDTH / 2, 100, MainMenu.WIDTH, Screen.height - 175));
+
+		scrollPosition = GUILayout.BeginScrollView(scrollPosition, false, true, new GUILayoutOption[]{GUILayout.Width(400), GUILayout.Height(Screen.height - 250)});
+
 
 		ServerManager manager = ServerManager.Instance;
 		HostData[] hostList = manager.hostList;
@@ -33,10 +59,13 @@ public class MultiplayerLobby : MonoBehaviour {
 		{
 			for (int i = 0; i < hostList.Length; i++)
 			{
-				if (hostList[i].comment.ToLower() == "closed") {
+				HostData game = hostList[i];
+				if (hostList[i].comment.ToLower() == "closed" || game.playerLimit == game.connectedPlayers) {
 					continue;
 				}
-				if (GUI.Button(new Rect(400, 100 + (110 * i), 300, 100), hostList[i].gameName)) 
+
+				string text = "[" + game.connectedPlayers + "/" + game.playerLimit + "]   " + game.gameName;
+				if (GUILayout.Button(text, new GUILayoutOption[]{GUILayout.MaxWidth(MainMenu.WIDTH), GUILayout.Height(30)})) 
 				{
 					NetworkConnectionError error = manager.JoinServer(hostList[i]);
 					Debug.Log(error.ToString());
@@ -46,6 +75,23 @@ public class MultiplayerLobby : MonoBehaviour {
 				}
 			}
 		}
+		
+		GUILayout.EndScrollView();
+		GUILayout.BeginVertical();
+		GUILayout.FlexibleSpace();
+		GUILayout.BeginHorizontal(new GUILayoutOption[]{GUILayout.MaxWidth(MainMenu.WIDTH)});
+		if (GUILayout.Button("Refresh", new GUILayoutOption[]{GUILayout.Width(MainMenu.WIDTH / 2 - 50), GUILayout.Height(50)})) {
+			scrollPosition = Vector2.zero;
+			ServerManager.Instance.RefreshHostList();
+		}
+		GUILayout.FlexibleSpace();
+		if (GUILayout.Button("Create Server", new GUILayoutOption[]{GUILayout.Width(MainMenu.WIDTH / 2 - 50), GUILayout.Height(50)})) {
+			GetComponent<ServerCreate>().enabled = true;
+			enabled = false;
+		}
+		GUILayout.EndHorizontal();
+		GUILayout.EndVertical();
+		GUILayout.EndArea();
 	}
 
 	void OnConnectedToServer() {
