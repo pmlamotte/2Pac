@@ -25,9 +25,9 @@ public class ServerManager : Singleton<ServerManager> {
 		Network.DestroyPlayerObjects(player);
 	} 
 	
-	public void JoinServer(HostData hostData)
+	public NetworkConnectionError JoinServer(HostData hostData)
 	{
-		Network.Connect(hostData);
+		return Network.Connect(hostData);
 	}
 	void OnServerInitialized()
 	{

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using AssemblyCSharp;
 
 public class ReadyUpToGame : MonoBehaviour {
 
@@ -30,6 +31,8 @@ public class ReadyUpToGame : MonoBehaviour {
 
 		if (Network.isServer && playerInfo.allPlayersReady()) {
 			if (GUI.Button(new Rect(100, 100, 250, 100), "Start Game")) {
+				Network.maxConnections = -1;
+				MasterServer.RegisterHost(Constants.GAME_NAME, GameProperties.serverName, "Closed");
 				ServerComms.Instance.networkView.RPC("LoadLevel", RPCMode.AllBuffered, "Networked", 1);
 			}
 		}

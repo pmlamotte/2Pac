@@ -45,7 +45,7 @@ public class ServerCreate : MonoBehaviour {
 		GUI.Label(new Rect(Screen.width / 2 - WIDTH / 2, 200, WIDTH, HEIGHT), "Max Players");
 
 		if (GUI.Button(new Rect(Screen.width / 2 - 250 / 2, 325, 250, 50), "Start Server")) {
-			GameHost.Instance.startServer(comboBox.GetSelectedItemIndex() + 2, (serverName == null) ? "test: " + Constants.random.Next() : serverName);
+			GameHost.Instance.startServer(comboBox.GetSelectedItemIndex() + 2, (serverName.Length == 0) ? "test: " + Constants.random.Next() : serverName);
 			openServer();
 		}
 

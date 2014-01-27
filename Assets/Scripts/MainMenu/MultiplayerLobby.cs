@@ -33,13 +33,27 @@ public class MultiplayerLobby : MonoBehaviour {
 		{
 			for (int i = 0; i < hostList.Length; i++)
 			{
+				if (hostList[i].comment.ToLower() == "closed") {
+					continue;
+				}
 				if (GUI.Button(new Rect(400, 100 + (110 * i), 300, 100), hostList[i].gameName)) 
 				{
-					manager.JoinServer(hostList[i]);
-					openServer();
+					NetworkConnectionError error = manager.JoinServer(hostList[i]);
+					Debug.Log(error.ToString());
+					if (error != NetworkConnectionError.NoError) {
+						ServerManager.Instance.RefreshHostList();
+					}
 				}
 			}
 		}
+	}
+
+	void OnConnectedToServer() {
+		openServer();
+	}
+	
+	void OnFailedToConnect(NetworkConnectionError error) {
+		ServerManager.Instance.RefreshHostList();
 	}
 
 	// Update is called once per frame
