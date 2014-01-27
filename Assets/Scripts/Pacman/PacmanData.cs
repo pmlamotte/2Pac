@@ -36,7 +36,7 @@ public class PacmanData : MonoBehaviour {
 
 	[RPC] public void setPlayerNum(int num) {
 		playerNum = num;
-		if (networkView.isMine) {
+		if (Network.isServer) {
 			networkView.RPC("setPlayerNum", RPCMode.OthersBuffered, num);
 		}
 	}

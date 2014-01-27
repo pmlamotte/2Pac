@@ -33,12 +33,18 @@ public class PacmanMover : MonoBehaviour {
 		private set { throw new NotImplementedException(); }
 	}
 
+	public IntVector2 direction = new IntVector2(0, 0);
+
 
 	// Use this for initialization
 	void Start () {
 	
 	}
-	
+
+	[RPC] public void updateDirection(int x, int y) {
+		direction = new IntVector2(x, y);
+	}
+
 	// Update is called once per frame
 	void Update () {
 		if (GameProperties.isSinglePlayer || networkView.isMine) {
@@ -47,14 +53,15 @@ public class PacmanMover : MonoBehaviour {
 			int maxSpeed = ((int)(1000 * Time.deltaTime * Data.Data.maxSpeed ));
 			
 			BoardLocation startPos = Data.Data.boardLocation.Clone();
-			IntVector2 newDirection = new IntVector2( 0, 0 );
+			/**IntVector2 newDirection = new IntVector2( 0, 0 );
 			
 			// compute the attempted direction
 			if ( Input.GetKey( KeyCode.LeftArrow ) ) newDirection = new IntVector2( newDirection.x -1, newDirection.y );
 			else if ( Input.GetKey( KeyCode.RightArrow ) ) newDirection = new IntVector2( newDirection.x + 1, newDirection.y );
 			else if ( Input.GetKey( KeyCode.DownArrow ) ) newDirection = new IntVector2( newDirection.x, newDirection.y - 1);
-			else if ( Input.GetKey( KeyCode.UpArrow ) ) newDirection = new IntVector2( newDirection.x, newDirection.y + 1 );
-			
+			else if ( Input.GetKey( KeyCode.UpArrow ) ) newDirection = new IntVector2( newDirection.x, newDirection.y + 1 );*/
+
+			IntVector2 newDirection = new IntVector2(direction.x, direction.y);
 			if ( newDirection.x + newDirection.y != 0 )
 			{
 				// decide if attempted direction is a valid one based on whether or not it would effect mr
@@ -78,4 +85,6 @@ public class PacmanMover : MonoBehaviour {
 			
 		}
 	}
+
+
 }
