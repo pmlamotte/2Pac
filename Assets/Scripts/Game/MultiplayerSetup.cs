@@ -15,8 +15,16 @@ public class MultiplayerSetup : MonoBehaviour {
 				GameObject pacPlayer = (GameObject)Network.Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity, 0);
 				pacPlayer.GetComponent<PacmanData>().setPlayerNum(player.id);
 			}
-			// spawn ghosts
-			Network.Instantiate(ghostPrefab, new Vector3(0,0,0), Quaternion.identity, 0);
+
+			// todo this should be stored elsewhere, TBD
+			// todo determine spawn location of ghosts
+			int numGhosts = 1;
+
+			for ( int i = 0; i < numGhosts; i++ )
+			{
+				// spawn ghosts
+				Network.Instantiate(ghostPrefab, new Vector3(0,0,0), Quaternion.identity, 0);
+			}
 		}
 	}
 	

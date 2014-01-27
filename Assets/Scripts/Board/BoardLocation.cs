@@ -57,13 +57,23 @@ namespace AssemblyCSharp
 
 		public static int SqrDistance( BoardLocation a, BoardLocation b )
 		{
-			int xdiff = ( a.location.x * Constants.BoardCellRadius + a.offset.x - b.location.x * Constants.BoardCellRadius - b.offset.x );
-			int ydiff = ( a.location.y * Constants.BoardCellRadius + a.offset.y - b.location.y * Constants.BoardCellRadius - b.offset.y );
+			int xdiff = ( a.location.x * Constants.BoardCellDiameter + a.offset.x - b.location.x * Constants.BoardCellDiameter - b.offset.x );
+			int ydiff = ( a.location.y * Constants.BoardCellDiameter + a.offset.y - b.location.y * Constants.BoardCellDiameter - b.offset.y );
 
 			return xdiff * xdiff + ydiff * ydiff;
 		}
 
-		
+		public static IntVector2 operator -( BoardLocation a, BoardLocation b )
+		{
+			int xdiff = ( a.location.x - b.location.x ) * Constants.BoardCellDiameter;
+			int ydiff = ( a.location.y - b.location.y ) * Constants.BoardCellDiameter;
+			
+			xdiff += ( a.offset.x - b.offset.x );
+			ydiff += ( a.offset.y - b.offset.y );
+
+			return new IntVector2( xdiff, ydiff );
+		}
+
 		// assumes a writing stream
 		public void Serialize( BitStream stream )
 		{
@@ -78,7 +88,10 @@ namespace AssemblyCSharp
 			offset.DeSerialize( stream );
 		}
 
-
+		public string ToString() 
+		{
+			return "" + location.ToString() + " " + offset.ToString();
+		}
 	}
 }
 

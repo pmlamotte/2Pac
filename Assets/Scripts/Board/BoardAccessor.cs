@@ -71,9 +71,9 @@ public class BoardAccessor : MonoBehaviour {
 	}
 
 	
-	public IntVector2 moveTowards( BoardLocation pos, BoardLocation target, int maxSpeed )
+	public IntVector2 moveTowards( BoardObject boardObjectData, BoardLocation target, int maxSpeed, out int distance, bool canReverse = false )
 	{
-		pos = pos.Clone();
+		BoardLocation pos = boardObjectData.boardLocation.Clone();
 		target = target.Clone();
 		
 		// get grid positions
@@ -85,6 +85,9 @@ public class BoardAccessor : MonoBehaviour {
 		
 		LinkedList<IntVector2> queue = new LinkedList<IntVector2>();
 		queue.AddLast( thisPos );
+
+		IntVector2 reverseDir = boardObjectData.direction.Normalized();
+		reverseDir = reverseDir * -1;
 		
 		while ( queue.Count > 0 )
 		{
@@ -93,6 +96,11 @@ public class BoardAccessor : MonoBehaviour {
 			if ( p.Equals( targetPos ) ) break;
 			foreach ( IntVector2 dir in Constants.directions )
 			{
+				if ( !canReverse && p.Equals( pos.location ) && dir.Equals( reverseDir ) )
+				{
+					// not allowed
+					continue;
+				}
 				IntVector2 posToVisit = dir + p;
 				if ( !isOpen( posToVisit ) ) continue;
 				if ( visited.Contains( posToVisit ) ) continue;
@@ -109,6 +117,8 @@ public class BoardAccessor : MonoBehaviour {
 			path.AddFirst( curr );
 			curr = previous[curr];
 		}
+
+		distance = path.Count;
 		
 		// there is a path and its length is not 0
 		if ( path.Count > 0 )
@@ -130,6 +140,8 @@ public class BoardAccessor : MonoBehaviour {
 		IntVector2 cellPos = pos.offset;
 		cellPos.Normalize();
 		cellPos *= -maxSpeed;
+
+		
 		return cellPos;
 		
 	}

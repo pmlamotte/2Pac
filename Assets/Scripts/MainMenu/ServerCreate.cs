@@ -10,7 +10,6 @@ public class ServerCreate : MonoBehaviour {
 	public ComboBox comboBox = new ComboBox();
 	private GUIContent[] maxPlayerOpts;
 	private GUIStyle listStyle = new GUIStyle();
-	public GUIStyle titleStyle;
 
 	// Use this for initialization
 	void Awake () {
@@ -37,20 +36,18 @@ public class ServerCreate : MonoBehaviour {
 	}
 
 	void OnGUI() {
-		GUI.Label(new Rect(Screen.width / 2 - WIDTH / 2, 25, WIDTH, HEIGHT), "Create Server", titleStyle);
+		GUI.Label(new Rect(Screen.width / 2 - WIDTH / 2, 75, WIDTH, HEIGHT), "Server Name");
+		serverName = GUI.TextField(new Rect(Screen.width / 2 - WIDTH / 2, 100, WIDTH, HEIGHT), serverName);
 
-		GUI.Label(new Rect(Screen.width / 2 - WIDTH / 2, 125, WIDTH, HEIGHT), "Server Name");
-		serverName = GUI.TextField(new Rect(Screen.width / 2 - WIDTH / 2, 150, WIDTH, HEIGHT), serverName);
+		GUI.Label(new Rect(Screen.width / 2 - WIDTH / 2, 150, WIDTH, HEIGHT), "Max Players");
 
-		GUI.Label(new Rect(Screen.width / 2 - WIDTH / 2, 200, WIDTH, HEIGHT), "Max Players");
-
-		if (GUI.Button(new Rect(Screen.width / 2 - 250 / 2, 325, 250, 50), "Start Server")) {
-			GameHost.Instance.startServer(comboBox.GetSelectedItemIndex() + 2, (serverName.Length == 0) ? "test: " + Constants.random.Next() : serverName);
+		if (GUI.Button(new Rect(Screen.width / 2 - 250 / 2, 300, 250, 50), "Start Server")) {
+			GameHost.Instance.startServer(comboBox.GetSelectedItemIndex() + 2, (serverName == null) ? "test: " + Constants.random.Next() : serverName);
 			openServer();
 		}
 
 		int selectedItemIndex = comboBox.GetSelectedItemIndex();
-		comboBox.List(new Rect(Screen.width / 2 - WIDTH / 2, 225, 75, HEIGHT), maxPlayerOpts[selectedItemIndex], maxPlayerOpts, listStyle);
+		comboBox.List(new Rect(Screen.width / 2 - WIDTH / 2, 175, 75, HEIGHT), maxPlayerOpts[selectedItemIndex], maxPlayerOpts, listStyle);
 	}
 
 	// Update is called once per frame

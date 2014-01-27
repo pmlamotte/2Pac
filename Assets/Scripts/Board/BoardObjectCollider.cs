@@ -43,7 +43,8 @@ public class BoardObjectCollider : MonoBehaviour {
 		{
 			foreach ( PacmanData player in players )
 			{
-				if ( BoardLocation.SqrDistance( ghost.Data.boardLocation, player.Data.boardLocation ) < Constants.BoardCellRadius * Constants.BoardCellRadius )
+				int collDistance = 3 * Constants.BoardCellDiameter / 4;
+				if ( BoardLocation.SqrDistance( ghost.Data.boardLocation, player.Data.boardLocation ) < collDistance * collDistance )
 				{
 					if ( GameProperties.isSinglePlayer || player.networkView.isMine )
 					{

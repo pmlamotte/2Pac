@@ -15,11 +15,6 @@ public class BoardObject : MonoBehaviour {
 		}
 		set { 
 			_direction = value; 
-			if ( _direction.x == 0 && _direction.y == 0 && boardLocation.location.x > 1 )
-			{
-				int x = 0;
-				x++;
-			}
 			
 		}
 	}
@@ -92,4 +87,5 @@ public class BoardObject : MonoBehaviour {
 			this.lastBoardLocation = lastBoardLocation;
 		}
 	}
+
 }

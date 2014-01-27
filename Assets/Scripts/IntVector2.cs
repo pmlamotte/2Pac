@@ -56,7 +56,7 @@ namespace AssemblyCSharp
 		{
 			return a * b;
 		}
-
+		
 		public void Normalize( )
 		{
 			if ( x != 0 )
@@ -69,6 +69,14 @@ namespace AssemblyCSharp
 				y = Math.Sign( y );
 				x = 0;
 			}
+		}
+		
+		
+		public IntVector2 Normalized( )
+		{
+			IntVector2 result = this.Clone();
+			result.Normalize();
+			return result;
 		}
 
 		public IntVector2 Clone()
@@ -94,6 +102,12 @@ namespace AssemblyCSharp
 			stream.Serialize( ref y );
 			this.x = x;
 			this.y = y;
+		}
+
+		
+		public string ToString() 
+		{
+			return "( " + x + ", " + y + " )" ;
 		}
 	}
 }
