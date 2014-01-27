@@ -46,8 +46,8 @@ public class GameHost : Singleton<GameHost> {
 		GameProperties.maxPlayers = maxPlayers;
 		GameProperties.serverName = serverName;
 
-		Network.maxConnections = maxPlayers;
-		Network.InitializeServer(4, 25000, !Network.HavePublicAddress());
+		Network.maxConnections = maxPlayers - 1;
+		Network.InitializeServer(maxPlayers - 1, 25000, !Network.HavePublicAddress());
 		MasterServer.RegisterHost(Constants.GAME_NAME, serverName);
 	}
 
