@@ -54,6 +54,7 @@ public class MultiplayerLobby : MonoBehaviour {
 				string text = "[" + game.connectedPlayers + "/" + game.playerLimit + "]   " + game.gameName;
 				if (GUILayout.Button(text, new GUILayoutOption[]{GUILayout.MaxWidth(MainMenu.WIDTH), GUILayout.Height(30)})) 
 				{
+					GameProperties.serverName = hostList[i].gameName;
 					NetworkConnectionError error = manager.JoinServer(hostList[i]);
 					Debug.Log(error.ToString());
 					if (error != NetworkConnectionError.NoError) {
