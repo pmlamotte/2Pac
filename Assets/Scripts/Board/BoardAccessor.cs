@@ -13,7 +13,7 @@ public class BoardAccessor : MonoBehaviour {
 		{
 			if ( _Data == null )
 			{
-				_Data = GameObject.FindObjectOfType<BoardData>();
+				_Data = GetComponent<BoardData>();
 			}
 			return _Data;
 		}
@@ -41,6 +41,31 @@ public class BoardAccessor : MonoBehaviour {
 	
 	}
 
+	public List<BoardObject> EatPelletsInRadius(BoardLocation pos, int radius )
+	{
+		List<BoardObject> result = new List<BoardObject>();
+		List<BoardObject> inSqare;
+		if ( Data.Pellets.TryGetValue( pos.location, out inSqare ) )
+		{
+			foreach ( BoardObject g in inSqare )
+			{
+				int distance = BoardLocation.SqrDistance(g.boardLocation, pos );
+				if ( distance <= radius * radius )
+				{
+					result.Add( g );
+				}
+			}
+		}
+
+		foreach (BoardObject g in result )
+		{
+			inSqare.Remove( g );
+		}
+
+		return result;
+	}
+
+
 	public bool isOpen( IntVector2 v )
 	{
 		return isOpen( v.x, v.y );
@@ -63,15 +88,37 @@ public class BoardAccessor : MonoBehaviour {
 		return new Vector3( x, y, 0 );
 	}
 	
-	
-	public void insertGhost( GameObject g )
+	public IntVector2 GetGhostSpawn( int num )
 	{
-		GhostMover gMove = (GhostMover)g.GetComponent<GhostMover>();
-		gMove.Data.boardLocation = new BoardLocation( Data.ghostSpawn, new IntVector2( 0,0 ) );
+		if ( Data.GhostSpawns.ContainsKey( num ) )
+		{
+			return Data.GhostSpawns[num];
+		}
+		else
+		{
+			return new IntVector2( 0, 0 );
+		}
 	}
 
+	public IntVector2 GetPlayerSpawn( int num )
+	{
+		if ( Data.PlayerSpawns.ContainsKey( num ) )
+		{
+			return Data.PlayerSpawns[num];
+		}
+		else
+		{
+			return new IntVector2( 0, 0 );
+		}
+	}
 	
-	public IntVector2 moveTowards( BoardObject boardObjectData, BoardLocation target, int maxSpeed, out int distance, bool canReverse = false )
+	
+	public IntVector2 moveTowards( BoardObject boardObjectData, BoardLocation target, int maxSpeed, out int distance )
+	{
+		return moveTowards( boardObjectData, target, maxSpeed, out distance, false );
+	}
+
+	public IntVector2 moveTowards( BoardObject boardObjectData, BoardLocation target, int maxSpeed, out int distance, bool canReverse )
 	{
 		BoardLocation pos = boardObjectData.boardLocation.Clone();
 		target = target.Clone();

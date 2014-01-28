@@ -33,7 +33,6 @@ public class NetworkManager : MonoBehaviour {
 		PacmanData player = (PacmanData)((GameObject) Network.Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity, 0)).GetComponent<PacmanData>();
 		
 		PacmanData animate = player.GetComponent<PacmanData>();
-		animate.spawnPosition = pos;
 		animate.Data.maxSpeed = 8;
 		animate.Data.boardLocation = pos;
 
@@ -69,10 +68,9 @@ public class NetworkManager : MonoBehaviour {
 
 	private void SpawnGhost()
 	{	
-		GameObject ghost = (GameObject) Network.Instantiate(ghostPrefab, new Vector3(0,0,0), Quaternion.identity, 0);
+		GhostMover ghost = ((GameObject)Network.Instantiate(ghostPrefab, new Vector3(0,0,0), Quaternion.identity, 0)).GetComponent<GhostMover>();
+		ghost.setGhostNumber( 0 );
 
-
-		GameObject.FindObjectOfType<BoardAccessor>().insertGhost( ghost );
 		GhostMover animate = ghost.GetComponent<GhostMover>();
 		animate.Data.maxSpeed = 4;
 

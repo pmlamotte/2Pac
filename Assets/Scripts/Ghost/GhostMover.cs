@@ -39,9 +39,13 @@ public class GhostMover : MonoBehaviour {
 	void Start () {
 		players = GameObject.FindObjectsOfType<PacmanData>();
 		// position ghost
-		Data.boardLocation = new BoardLocation( new IntVector2( 9,3 ), new IntVector2(0,0));
-		Data.lastBoardLocation = Data.boardLocation.Clone();
-		Data.direction = new IntVector2( 0, 0 );
+	}
+
+	public void setGhostNumber( int num )
+	{
+		IntVector2 spawn = Board.GetGhostSpawn( num );
+		this.Data.boardLocation = new BoardLocation( spawn, new IntVector2(0, 0 ) );
+		this.Data.lastBoardLocation = this.Data.boardLocation.Clone();
 	}
 
 	private Boolean canTurn( int maxSpeed )
@@ -83,10 +87,16 @@ public class GhostMover : MonoBehaviour {
 				
 		if ( canTurn( maxSpeed ) )
 		{
+			if ( Data.boardLocation.location.x == 8 && Data.boardLocation.location.y == 1 )
+			{
+				Debug.Log( Data.boardLocation.ToString() + Data.direction.ToString() );
+			}
+
 			IntVector2 toMove = new IntVector2(0,0);
 			int minDistance = int.MaxValue;
 			foreach ( PacmanData player in players )
 			{
+				// todo bug where ghost reverses direction in corners
 				// "targets" closest player
 				int distance;
 				IntVector2 direction = Board.moveTowards( Data, player.Data.boardLocation, maxSpeed, out distance );

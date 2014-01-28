@@ -15,6 +15,8 @@ public class SinglePlayerSetup : MonoBehaviour {
 	void OnEnable() {
 		SpawnPlayer();
 		SpawnGhost();
+
+		GameObject.FindObjectOfType<Level>().InitializeLevel();
 	}
 
 	void SpawnPlayer()
@@ -28,20 +30,17 @@ public class SinglePlayerSetup : MonoBehaviour {
 		PacmanData player = (PacmanData)((GameObject) Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity)).GetComponent<PacmanData>();
 		
 		PacmanData animate = player.GetComponent<PacmanData>();
-		animate.spawnPosition = pos;
-		animate.Data.maxSpeed = 8;
+		animate.Data.maxSpeed = 12;
 		animate.Data.boardLocation = pos;
 		
 	}
 
 	private void SpawnGhost()
 	{	
-		GameObject ghost = (GameObject) Instantiate(ghostPrefab, new Vector3(0,0,0), Quaternion.identity);
-		
-		
-		GameObject.FindObjectOfType<BoardAccessor>().insertGhost( ghost );
+		GhostMover ghost = ((GameObject) Instantiate(ghostPrefab, new Vector3(0,0,0), Quaternion.identity)).GetComponent<GhostMover>();
+
 		GhostMover animate = ghost.GetComponent<GhostMover>();
-		animate.Data.maxSpeed = 4;
+		animate.Data.maxSpeed = 10;
 		
 	}
 

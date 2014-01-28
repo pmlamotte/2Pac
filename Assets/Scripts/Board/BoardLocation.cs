@@ -88,9 +88,22 @@ namespace AssemblyCSharp
 			offset.DeSerialize( stream );
 		}
 
-		public string ToString() 
+		public override string ToString() 
 		{
 			return "" + location.ToString() + " " + offset.ToString();
+		}
+
+		public override int GetHashCode ()
+		{
+			return location.GetHashCode() * offset.GetHashCode();
+		}
+
+		public override bool Equals (object obj)
+		{
+			BoardLocation o = obj as BoardLocation;
+			if (o == null) return base.Equals( o );
+
+			return location.Equals(o.location) && offset.Equals(o.offset);
 		}
 	}
 }

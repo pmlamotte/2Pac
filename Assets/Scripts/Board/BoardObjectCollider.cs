@@ -4,6 +4,21 @@ using System;
 using AssemblyCSharp;
 
 public class BoardObjectCollider : MonoBehaviour {
+	
+	public BoardAccessor _Board;
+	public BoardAccessor Accessor
+	{
+		get
+		{
+			if ( _Board == null )
+			{
+				_Board = GetComponent<BoardAccessor>();
+			}
+			return _Board;
+		}
+		private set {}
+	}
+
 
 	PacmanData[] Players
 	{
@@ -48,7 +63,7 @@ public class BoardObjectCollider : MonoBehaviour {
 				{
 					if ( GameProperties.isSinglePlayer || player.networkView.isMine )
 					{
-						player.hitByGhost();
+						player.gameObject.GetComponent<PacmanMover>().hitByGhost();
 					}
 					else
 					{
@@ -56,7 +71,21 @@ public class BoardObjectCollider : MonoBehaviour {
 					}
 				}
 			}
+		}
 
+		foreach ( PacmanData player in players )
+		{
+			foreach ( BoardObject pellet in Accessor.EatPelletsInRadius( player.Data.boardLocation, 150 /*todo*/ ) )
+			{
+				if ( GameProperties.isSinglePlayer )
+				{
+					Destroy(pellet.gameObject);
+				}
+				else 
+				{
+					Network.Destroy( pellet.gameObject );
+				}
+			}
 		}
 	}
 }

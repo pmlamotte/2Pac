@@ -7,7 +7,6 @@ public class PacmanData : MonoBehaviour {
 	
 	public float score = 0;
 	public int playerNum = 0;
-	public BoardLocation spawnPosition = new BoardLocation( new IntVector2( 1, 1), new IntVector2(0,0) );
 
 	public BoardObject _Data;
 	public BoardObject Data
@@ -27,12 +26,7 @@ public class PacmanData : MonoBehaviour {
 		Data.boardLocation = new BoardLocation( new IntVector2(1,1), new IntVector2(0,0) );
 		Data.lastBoardLocation = Data.boardLocation.Clone();
 	}
-	
-	[RPC] public void hitByGhost( )
-	{
-		this.Data.boardLocation = spawnPosition.Clone();
-		SendMessage("PacmanHit");
-	}
+
 
 	[RPC] public void setPlayerNum(int num) {
 		playerNum = num;

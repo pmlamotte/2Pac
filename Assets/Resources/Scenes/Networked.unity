@@ -152,6 +152,7 @@ GameObject:
   - 114: {fileID: 1452738685}
   - 114: {fileID: 1452738684}
   - 114: {fileID: 1452738683}
+  - 114: {fileID: 1452738687}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -194,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e945688066e7414092e65f92f484a15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _Board: {fileID: 0}
 --- !u!114 &1452738685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +216,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2126c8f2df63fc24b95a18da5df9f91e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pelletPrefab: {fileID: 100000, guid: 80b327d7072a8904596ec91296ab4ae0, type: 2}
+  _Board: {fileID: 0}
+--- !u!114 &1452738687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1452738681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44205a34d32c86b4e916722c5af5a160, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1686416533
@@ -276,7 +291,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 11.6706562
+  orthographic size: 10.7009125
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -292,7 +307,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1686416533}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 6, z: -10}
+  m_LocalPosition: {x: 9.36559486, y: 10.1108694, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

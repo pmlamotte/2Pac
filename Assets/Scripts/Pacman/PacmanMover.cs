@@ -44,6 +44,12 @@ public class PacmanMover : MonoBehaviour {
 	[RPC] public void updateDirection(int x, int y) {
 		direction = new IntVector2(x, y);
 	}
+	
+	[RPC] public void hitByGhost( )
+	{
+		this.Data.Data.boardLocation = new BoardLocation( Board.GetPlayerSpawn( Data.playerNum ), new IntVector2( 0, 0 ) );
+		SendMessage("PacmanHit");
+	}
 
 	// Update is called once per frame
 	void Update () {
