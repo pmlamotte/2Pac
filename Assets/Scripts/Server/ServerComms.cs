@@ -39,6 +39,11 @@ public class ServerComms : Singleton<ServerComms> {
 
 	[RPC] public void LoadLevel (string level, int levelPrefix) {
 
+		PlayerInfo.Instance.setPlayerStatusToLoading();
+		if (Network.isServer) {
+			ServerComms.Instance.networkView.RPC("LoadLevel", RPCMode.Others, "Networked", levelPrefix);
+		}
+
 		// There is no reason to send any more data over the network on the default channel,
 		// because we are about to load the level, thus all those objects will get deleted anyway
 		Network.SetSendingEnabled(0, false);	
@@ -51,11 +56,20 @@ public class ServerComms : Singleton<ServerComms> {
 		// This will prevent old updates from clients leaking into a newly created scene.
 		Network.SetLevelPrefix(levelPrefix);
 		Application.LoadLevel(level);
-		
+
 		// Allow receiving data again
 		Network.isMessageQueueRunning = true;
 		// Now the level has been loaded and we can start sending out data to clients
 		Network.SetSendingEnabled(0, true);
+	}
+
+	/**
+	 * Sent to the server with the player id 
+	 **/
+	[RPC] void finishedLoadingLevel(int id) {
+
+		Debug.Log("received loaded message from id: " + id);
+		PlayerInfo.Instance.setPlayerLoaded(id);
 	}
 
 	// Use this for initialization
