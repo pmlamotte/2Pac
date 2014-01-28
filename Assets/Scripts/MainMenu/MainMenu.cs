@@ -5,6 +5,7 @@ public class MainMenu : MonoBehaviour {
 
 	public const int WIDTH = 400;
 	public const int BUTTON_HEIGHT = 50;
+	public const int BACK_WIDTH = 100;
 	public GUIStyle style;
 
 	// Use this for initialization
@@ -20,7 +21,7 @@ public class MainMenu : MonoBehaviour {
 
 		GUI.Label(new Rect(centeredXPos(), 100, WIDTH, 75), new GUIContent("2PAC"), style);
 
-		if (GUI.Button(new Rect(centeredXPos(), 225, WIDTH, BUTTON_HEIGHT), "Single Player")) {
+		if (GUI.Button(new Rect(centeredXPos(), 225, WIDTH, BUTTON_HEIGHT), "Play Game")) {
 			GetComponent<SinglePlayer>().enabled = true;
 			this.enabled = false;
 		}

@@ -36,6 +36,12 @@ public class ReadyUpToGame : MonoBehaviour {
 				ServerComms.Instance.networkView.RPC("LoadLevel", RPCMode.AllBuffered, "Networked", 1);
 			}
 		}
+
+		if (GUI.Button(new Rect(Screen.width / 2 - MainMenu.BACK_WIDTH / 2, 375, MainMenu.BACK_WIDTH, MainMenu.BUTTON_HEIGHT), "Back")) {
+			Network.Disconnect();
+			GetComponent<MainMenu>().enabled = true;
+			this.enabled = false;
+		}
 	}
 
 	// Use this for initialization

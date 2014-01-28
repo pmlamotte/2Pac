@@ -25,21 +25,8 @@ public class MultiplayerLobby : MonoBehaviour {
 
 		scrollPosition = Vector2.zero;
 		ServerManager.Instance.RefreshHostList();
-		serverListStyle.normal.background = MakeTex(100, 1, new Color(0.0f, 0.0f, 0.0f, 0.1f));
+		serverListStyle.normal.background = GraphicsUtil.MakeTexture(100, 1, new Color(0.0f, 0.0f, 0.0f, 0.1f));
 		
-	}
-
-	private Texture2D MakeTex(int width, int height, Color col) {
-		Color[] pix = new Color[width * height];
-
-		for (int i = 0; i < pix.Length; i++) {
-			pix[i] = col;
-		}
-		
-		Texture2D result = new Texture2D(width, height);
-		result.SetPixels(pix);
-		result.Apply();
-		return result;
 	}
 
 	void OnGUI() {
@@ -48,7 +35,7 @@ public class MultiplayerLobby : MonoBehaviour {
 
 		GUI.Box(new Rect(Screen.width / 2 - MainMenu.WIDTH / 2, 100, MainMenu.WIDTH, Screen.height - 250), "", serverListStyle);
 		
-		GUILayout.BeginArea(new Rect(Screen.width / 2 - MainMenu.WIDTH / 2, 100, MainMenu.WIDTH, Screen.height - 175));
+		GUILayout.BeginArea(new Rect(Screen.width / 2 - MainMenu.WIDTH / 2, 100, MainMenu.WIDTH, Screen.height - 125));
 
 		scrollPosition = GUILayout.BeginScrollView(scrollPosition, false, true, new GUILayoutOption[]{GUILayout.Width(400), GUILayout.Height(Screen.height - 250)});
 
@@ -91,6 +78,14 @@ public class MultiplayerLobby : MonoBehaviour {
 		}
 		GUILayout.EndHorizontal();
 		GUILayout.EndVertical();
+		GUILayout.BeginHorizontal();
+		GUILayout.FlexibleSpace();
+		if (GUILayout.Button("Back", new GUILayoutOption[]{GUILayout.Width(MainMenu.BACK_WIDTH), GUILayout.Height(MainMenu.BUTTON_HEIGHT)})) {
+			GetComponent<MainMenu>().enabled = true;
+			this.enabled = false;
+		}
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 		GUILayout.EndArea();
 	}
 
