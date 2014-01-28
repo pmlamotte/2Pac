@@ -5,6 +5,7 @@ using AssemblyCSharp;
 public class ServerManager : Singleton<ServerManager> {
 
 	public HostData[] hostList;
+	public bool disconnectedFromServer = false;
 
 	protected ServerManager() {}
 	
@@ -18,17 +19,17 @@ public class ServerManager : Singleton<ServerManager> {
 	{
 		Debug.Log("Server Joined");
 	}
-	
-	void OnPlayerDisconnected(NetworkPlayer player)
-	{
-		Network.RemoveRPCs(player);
-		Network.DestroyPlayerObjects(player);
-	} 
+
+	void OnDisconnectedFromServer() {
+		disconnectedFromServer = true;
+		Application.LoadLevel("MainMenu");
+	}
 	
 	public NetworkConnectionError JoinServer(HostData hostData)
 	{
 		return Network.Connect(hostData);
 	}
+
 	void OnServerInitialized()
 	{
 		// todo
