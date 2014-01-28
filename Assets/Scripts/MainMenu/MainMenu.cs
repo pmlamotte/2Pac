@@ -13,6 +13,11 @@ public class MainMenu : MonoBehaviour {
 	void Start () {
 		PlayerInfo playerInfo = PlayerInfo.Instance;
 	}
+
+	void OnEnable() {
+		GameProperties.myPlayer = null;
+		PlayerInfo.Instance.clear();
+	}
 	
 	private int centeredXPos() {
 		return Screen.width / 2 - WIDTH / 2;

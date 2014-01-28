@@ -22,6 +22,7 @@ public class ServerManager : Singleton<ServerManager> {
 
 	void OnDisconnectedFromServer() {
 		disconnectedFromServer = true;
+		Destroy(ServerComms.Instance);
 		Application.LoadLevel("MainMenu");
 	}
 	

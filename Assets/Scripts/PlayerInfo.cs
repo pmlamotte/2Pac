@@ -69,6 +69,39 @@ public class PlayerInfo : Singleton<PlayerInfo> {
 		return null;
 	}
 
+	public void setPlayerStatusToLoading() {
+		foreach (Player player in players) {
+			player.loading = true;
+		}
+	}
+
+	public void setPlayerLoaded(int id) {
+		getPlayerByID(id).loading = false;
+	}
+
+	public bool allPlayersLoaded() {
+		foreach (Player player in players) {
+			if (player.loading) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public int numPlayersLoading() {
+		int count = 0;
+		foreach (Player player in players) {
+			if (player.loading) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public void clear() {
+		players.Clear();
+	}
+
 	// ================================
 	// ============ Events ============
 	// ================================
@@ -111,6 +144,7 @@ public class PlayerInfo : Singleton<PlayerInfo> {
 		public int id = -1;
 		public NetworkPlayer networkPlayer;
 		public bool ready = false;
+		public bool loading = false;
 		
 		public Player(int id, NetworkPlayer networkPlayer) {
 			this.id = id;

@@ -33,7 +33,7 @@ public class ReadyUpToGame : MonoBehaviour {
 			if (GUI.Button(new Rect(100, 100, 250, 100), "Start Game")) {
 				Network.maxConnections = -1;
 				MasterServer.RegisterHost(Constants.GAME_NAME, GameProperties.serverName, "Closed");
-				ServerComms.Instance.networkView.RPC("LoadLevel", RPCMode.AllBuffered, "Networked", 1);
+				ServerComms.Instance.LoadLevel("Networked", 1);
 			}
 		}
 
