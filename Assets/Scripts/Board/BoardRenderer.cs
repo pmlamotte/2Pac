@@ -29,7 +29,7 @@ public class BoardRenderer : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
+	public void CreateBoard () {
 		for ( int y = 0; y < Board.Height; y++ )
 		{
 			for ( int x = 0; x < Board.Width; x++ )

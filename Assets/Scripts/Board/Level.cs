@@ -36,6 +36,8 @@ public class Level : MonoBehaviour {
 			i++;
 		}
 
+		GetComponent<BoardRenderer>().CreateBoard();
+
 	}
 
 	// Use this for initialization

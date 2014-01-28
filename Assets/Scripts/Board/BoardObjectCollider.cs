@@ -75,7 +75,7 @@ public class BoardObjectCollider : MonoBehaviour {
 
 		foreach ( PacmanData player in players )
 		{
-			foreach ( BoardObject pellet in Accessor.EatPelletsInRadius( player.Data.boardLocation, 150 /*todo*/ ) )
+			foreach ( BoardObject pellet in Accessor.EatPelletsInRadius( player.Data.boardLocation, Constants.BoardCellRadius / 2 * 4 / 5 /*todo*/ ) )
 			{
 				if ( GameProperties.isSinglePlayer )
 				{
