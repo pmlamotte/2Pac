@@ -13,10 +13,12 @@ public class SinglePlayerSetup : MonoBehaviour {
 	}
 
 	void OnEnable() {
+		Time.timeScale = 0;
 		SpawnPlayer();
 		SpawnGhost();
 
 		GameObject.FindObjectOfType<Level>().InitializeLevel();
+		GetComponent<LevelWon>().enabled = true;
 	}
 
 	void SpawnPlayer()

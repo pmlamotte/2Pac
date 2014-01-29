@@ -11,6 +11,7 @@ public class MultiplayerSetup : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		ServerComms.Instance.networkView.RPC("finishedLoadingLevel", RPCMode.All, GameProperties.myPlayer.id);
+		Time.timeScale = 0;
 	}
 
 	void setupGame() {
@@ -33,6 +34,7 @@ public class MultiplayerSetup : MonoBehaviour {
 			
 		}
 		GameObject.FindObjectOfType<Level>().InitializeLevel();
+		GetComponent<LevelWon>().enabled = true;
 		
 	}
 
