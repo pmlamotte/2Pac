@@ -77,6 +77,7 @@ public class BoardObjectCollider : MonoBehaviour {
 		{
 			foreach ( BoardObject pellet in Accessor.EatPelletsInRadius( player.Data.boardLocation, Constants.BoardCellRadius / 2 * 4 / 5 /*todo*/ ) )
 			{
+				player.gameObject.SendMessage( "AtePellet" );
 				if ( GameProperties.isSinglePlayer )
 				{
 					Destroy(pellet.gameObject);

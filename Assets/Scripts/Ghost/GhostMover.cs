@@ -87,11 +87,6 @@ public class GhostMover : MonoBehaviour {
 				
 		if ( canTurn( maxSpeed ) )
 		{
-			if ( Data.boardLocation.location.x == 8 && Data.boardLocation.location.y == 1 )
-			{
-				Debug.Log( Data.boardLocation.ToString() + Data.direction.ToString() );
-			}
-
 			IntVector2 toMove = new IntVector2(0,0);
 			int minDistance = int.MaxValue;
 			foreach ( PacmanData player in players )

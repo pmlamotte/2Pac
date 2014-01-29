@@ -42,7 +42,6 @@ public class PlayerIcon : MonoBehaviour {
 		string text = "P" + pacmanData.playerNum;
 		Vector2 size = textStyle.CalcSize(new GUIContent(text));
 		GUI.Label(new Rect(pos.x - size.x / 2 + 2, Screen.height - pos.y - GetComponent<SpriteRenderer>().sprite.rect.height / 2 + 14, size.x - 4, 17), new GUIContent(text), textStyle);
-		Debug.Log(pos);
 	}
 
 	// Update is called once per frame

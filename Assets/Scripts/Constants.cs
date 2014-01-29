@@ -17,6 +17,7 @@ namespace AssemblyCSharp
 		public static IntVector2[] directions = new IntVector2[]{new IntVector2(1,0), new IntVector2(0,1), new IntVector2(-1,0), new IntVector2(0,-1)};
 		public static readonly int BoardCellRadius = 1000;
 		public static readonly int BoardCellDiameter = 2000;
+		public static readonly float PelletWorth = .1f;
 		
 		private Constants ()
 		{

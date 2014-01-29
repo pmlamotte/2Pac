@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using AssemblyCSharp;
 
 public class PacmanScore : MonoBehaviour {
 
@@ -28,12 +29,17 @@ public class PacmanScore : MonoBehaviour {
 		GameData.Instance.setScore(pacmanData.playerNum, score);
 	}
 
-	public void decrementScore(int num) {
+	public void decrementScore(float num) {
 		setScore(getScore() - num);
 	}
 
-	public void incrementScore(int num) {
+	public void incrementScore(float num) {
 		setScore(getScore() + num);
+	}
+
+	public void AtePellet()
+	{
+		incrementScore( Constants.PelletWorth );
 	}
 
 	void PacmanHit() {

@@ -20,6 +20,8 @@ public class MultiplayerSetup : MonoBehaviour {
 			foreach (PlayerInfo.Player player in PlayerInfo.Instance.players) {
 				GameObject pacPlayer = (GameObject)Network.Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity, 0);
 				pacPlayer.GetComponent<PacmanData>().setPlayerNum( player.id );
+				pacPlayer.GetComponent<PacmanData>().Data.maxSpeed = 10;
+
 			}
 			
 			// todo this should be stored elsewhere, TBD
@@ -29,6 +31,7 @@ public class MultiplayerSetup : MonoBehaviour {
 			{
 				// spawn ghosts
 				GhostMover mover = ((GameObject)Network.Instantiate(ghostPrefab, new Vector3(0,0,0), Quaternion.identity, 0)).GetComponent<GhostMover>();
+				mover.Data.maxSpeed = 9;
 			}
 
 			
