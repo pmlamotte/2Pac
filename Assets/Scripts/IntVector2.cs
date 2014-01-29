@@ -103,7 +103,6 @@ namespace AssemblyCSharp
 			this.x = x;
 			this.y = y;
 		}
-
 		
 		public string ToString() 
 		{
