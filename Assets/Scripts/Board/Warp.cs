@@ -6,10 +6,11 @@ public class Warp {
 
 	public IntVector2 input;
 	public IntVector2 output;
-	public IntVector2 outDirection;
+	private IntVector2 _outDirection;
+	public IntVector2 outDirection { get {return _outDirection;} set { _outDirection = value; computeOffset(); }}
 	public IntVector2 outOffset;
 
-	public void computeOffset() {
+	private void computeOffset() {
 		if (outDirection == Direction.UP) {
 			outOffset = new IntVector2(0, -Constants.BoardCellRadius + 1);
 		} else if (outDirection == Direction.RIGHT) {

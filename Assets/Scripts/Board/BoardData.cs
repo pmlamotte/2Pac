@@ -140,7 +140,6 @@ public class BoardData : MonoBehaviour {
 					warp.output = new IntVector2(j, i);
 					token = token.Substring(1);
 					warp.outDirection = Direction.getDirection(token);
-					warp.computeOffset();
 				}
 				else if ( !board[i,j] )
 				{
