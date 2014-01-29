@@ -31,4 +31,11 @@ public class GameData : Singleton<GameData> {
 	
 	}
 
+	public void Clear()
+	{
+		scores = new Dictionary<int, float>();
+		level = 0;
+	}
+
+
 }

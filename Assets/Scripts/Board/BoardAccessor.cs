@@ -135,11 +135,20 @@ public class BoardAccessor : MonoBehaviour {
 
 		IntVector2 reverseDir = boardObjectData.direction.Normalized();
 		reverseDir = reverseDir * -1;
+
+		IntVector2 closestReachable = null;
+		int closestDistance = int.MaxValue;
 		
 		while ( queue.Count > 0 )
 		{
 			IntVector2 p = queue.First.Value;
 			queue.RemoveFirst();
+
+			if ( Math.Abs( ( p - target.location ).SqrMagnitude( ) ) < closestDistance ) 
+			{
+				closestReachable = p.Clone();
+			}
+
 			if ( p.Equals( targetPos ) ) break;
 			foreach ( IntVector2 dir in Constants.directions )
 			{
@@ -158,11 +167,19 @@ public class BoardAccessor : MonoBehaviour {
 		}
 		
 		LinkedList<IntVector2> path = new LinkedList<IntVector2>();
-		IntVector2 curr = targetPos;
-		while ( !curr.Equals( thisPos ) )
+		IntVector2 curr = closestReachable;
+		try
+		{
+		while ( !curr.Equals( thisPos ) && previous.ContainsKey( curr ) )
 		{
 			path.AddFirst( curr );
 			curr = previous[curr];
+		}
+		}
+		catch ( KeyNotFoundException e )
+		{
+			int x = 0;  
+			x++;
 		}
 
 		distance = path.Count;

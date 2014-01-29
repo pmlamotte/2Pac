@@ -17,6 +17,7 @@ public class MainMenu : MonoBehaviour {
 	void OnEnable() {
 		GameProperties.myPlayer = null;
 		PlayerInfo.Instance.clear();
+		GameData.Instance.Clear();
 	}
 	
 	private int centeredXPos() {

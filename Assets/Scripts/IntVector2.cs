@@ -71,7 +71,11 @@ namespace AssemblyCSharp
 			}
 		}
 		
-		
+		public int SqrMagnitude()
+		{
+			return x * x + y * y;
+		}
+
 		public IntVector2 Normalized( )
 		{
 			IntVector2 result = this.Clone();
