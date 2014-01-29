@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using UnityEngine;
+using System;
 using System.Collections;
 using AssemblyCSharp;
 namespace AssemblyCSharp
@@ -61,6 +62,13 @@ namespace AssemblyCSharp
 			int ydiff = ( a.location.y * Constants.BoardCellDiameter + a.offset.y - b.location.y * Constants.BoardCellDiameter - b.offset.y );
 
 			return xdiff * xdiff + ydiff * ydiff;
+		}
+		public static int OrthogonalDistance( BoardLocation a, BoardLocation b )
+		{
+			int xdiff = Math.Abs( a.location.x * Constants.BoardCellDiameter + a.offset.x - b.location.x * Constants.BoardCellDiameter - b.offset.x );
+			int ydiff = Math.Abs( a.location.y * Constants.BoardCellDiameter + a.offset.y - b.location.y * Constants.BoardCellDiameter - b.offset.y );
+
+			return xdiff + ydiff;
 		}
 
 		public static IntVector2 operator -( BoardLocation a, BoardLocation b )

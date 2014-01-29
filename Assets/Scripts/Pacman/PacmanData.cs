@@ -23,8 +23,6 @@ public class PacmanData : MonoBehaviour {
 	}
 
 	void Start() {
-		Data.boardLocation = new BoardLocation( new IntVector2(1,1), new IntVector2(0,0) );
-		Data.lastBoardLocation = Data.boardLocation.Clone();
 	}
 
 
