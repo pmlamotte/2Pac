@@ -67,7 +67,8 @@ public class BoardData : MonoBehaviour {
 		Pellets = new Dictionary<IntVector2, List<BoardObject>>();
 		WarpPoints = new Dictionary<int, Warp>();
 
-		TextAsset boardAsset = (TextAsset) Resources.Load( "Levels/Level1", typeof( TextAsset ) );
+		Debug.Log("Loading level: " + GameData.Instance.level);
+		TextAsset boardAsset = (TextAsset) Resources.Load( "Levels/Level" + ((GameData.Instance.level % 2) + 1), typeof( TextAsset ) );
 		
 		string[] sboard = Regex.Split( boardAsset.text, "\r\n|\n" );
 		string[][] sboardTokens = new string[sboard.Length][];
