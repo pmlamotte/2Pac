@@ -142,14 +142,14 @@ public class BoardData : MonoBehaviour {
 					token = token.Substring(1);
 					warp.outDirection = Direction.getDirection(token);
 				}
-				else if ( !board[i,j] )
+				else if ( Accessor.isOpen( j, i ) )
 				{
 					// place pellets
 					foreach ( IntVector2 dir in Constants.directions )
 					{
 						createPellet( new BoardLocation( new IntVector2( j, i ), new IntVector2( 0, 0 ) ) );
 						IntVector2 check = new IntVector2( j, i ) + dir;
-						if ( !board[check.y, check.x] )
+						if ( Accessor.isOpen( check.x, check.y ) )
 						{
 							// pelet goes there
 							createPellet( new BoardLocation( new IntVector2( j, i ), dir * ( 2 * Constants.BoardCellRadius / 3 ) ) );
