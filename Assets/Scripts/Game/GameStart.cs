@@ -38,7 +38,6 @@ public class GameStart : MonoBehaviour {
 			}
 			GUI.Label(new Rect(x, Screen.height / 2 - watStyle.CalcSize(text).y / 2, 100, 100),text, watStyle);
 
-			Debug.Log(currTime);
 			currTime += Time.realtimeSinceStartup - lastTime;
 			lastTime = Time.realtimeSinceStartup;
 			if (currTime >= 1f) {
