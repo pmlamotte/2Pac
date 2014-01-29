@@ -33,6 +33,7 @@ public class MultiplayerSetup : MonoBehaviour {
 
 			
 		}
+
 		GameObject.FindObjectOfType<Level>().InitializeLevel();
 		GetComponent<LevelWon>().enabled = true;
 		

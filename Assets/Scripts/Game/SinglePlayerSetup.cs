@@ -30,6 +30,7 @@ public class SinglePlayerSetup : MonoBehaviour {
 		pos = new BoardLocation( new IntVector2( x, y ), pos.offset );
 		
 		PacmanData player = (PacmanData)((GameObject) Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity)).GetComponent<PacmanData>();
+		player.gameObject.GetComponent<PlayerIcon>().enabled = false;
 		
 		PacmanData animate = player.GetComponent<PacmanData>();
 		animate.Data.maxSpeed = 12;
