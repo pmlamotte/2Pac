@@ -22,11 +22,16 @@ public class PacmanScore : MonoBehaviour {
 	}
 
 	public float getScore() {
-		return GameData.Instance.getScore(pacmanData.playerNum);
+		if (pacmanData != null) {
+			return GameData.Instance.getScore (pacmanData.playerNum);
+		}
+		return 0;
 	}
 
 	public void setScore(float score) {
-		GameData.Instance.setScore(pacmanData.playerNum, score);
+		if (pacmanData != null) {
+			GameData.Instance.setScore (pacmanData.playerNum, score);
+		}
 	}
 
 	public void decrementScore(float num) {
