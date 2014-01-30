@@ -56,6 +56,11 @@ namespace AssemblyCSharp
 		{
 			return a * b;
 		}
+
+		public static int OrthogonalDistance( IntVector2 a, IntVector2 b )
+		{
+			return Math.Abs( a.x - b.x ) + Math.Abs( a.y - b.y );
+		}
 		
 		public void Normalize( )
 		{

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 797377fc385d7ac4aab393cea079c867
+guid: d2753fade7744744bafec00f2cb26140
 TextureImporter:
   serializedVersion: 2
   mipmaps:
@@ -45,7 +45,7 @@ TextureImporter:
     compressionQuality: 50
   spriteSheet:
     sprites:
-    - name: spritesheet_0
+    - name: spritesheet_blinky_0
       rect:
         serializedVersion: 2
         x: 0
@@ -54,7 +54,7 @@ TextureImporter:
         height: 184
       alignment: 0
       pivot: {x: 0, y: 0}
-    - name: spritesheet_1
+    - name: spritesheet_blinky_1
       rect:
         serializedVersion: 2
         x: 186
@@ -63,7 +63,7 @@ TextureImporter:
         height: 184
       alignment: 0
       pivot: {x: 0, y: 0}
-    - name: spritesheet_2
+    - name: spritesheet_blinky_2
       rect:
         serializedVersion: 2
         x: 372
@@ -72,7 +72,7 @@ TextureImporter:
         height: 184
       alignment: 0
       pivot: {x: 0, y: 0}
-    - name: spritesheet_3
+    - name: spritesheet_blinky_3
       rect:
         serializedVersion: 2
         x: 558

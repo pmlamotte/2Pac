@@ -71,6 +71,7 @@ namespace AssemblyCSharp
 			return xdiff + ydiff;
 		}
 
+		// returns the vector that points from b to a
 		public static IntVector2 operator -( BoardLocation a, BoardLocation b )
 		{
 			int xdiff = ( a.location.x - b.location.x ) * Constants.BoardCellDiameter;
@@ -78,8 +79,20 @@ namespace AssemblyCSharp
 			
 			xdiff += ( a.offset.x - b.offset.x );
 			ydiff += ( a.offset.y - b.offset.y );
-
+			
 			return new IntVector2( xdiff, ydiff );
+		}
+
+		// adds locations and offsets together 
+		public static BoardLocation operator +( BoardLocation a, BoardLocation b )
+		{
+			int x = a.location.x + b.location.x;
+			int y = a.location.y + b.location.y;
+			
+			int xoff = ( a.offset.x + b.offset.x );
+			int yoff = ( a.offset.y + b.offset.y );
+			
+			return new BoardLocation( new IntVector2( x, y ), new IntVector2( xoff, yoff ) );
 		}
 
 		// assumes a writing stream

@@ -144,9 +144,10 @@ public class BoardAccessor : MonoBehaviour {
 			IntVector2 p = queue.First.Value;
 			queue.RemoveFirst();
 
-			if ( Math.Abs( ( p - target.location ).SqrMagnitude( ) ) < closestDistance ) 
+			if ( IntVector2.OrthogonalDistance( p, target.location ) < closestDistance ) 
 			{
 				closestReachable = p.Clone();
+				closestDistance = IntVector2.OrthogonalDistance( p, target.location );
 			}
 
 			if ( p.Equals( targetPos ) ) break;
@@ -200,13 +201,10 @@ public class BoardAccessor : MonoBehaviour {
 				return direction;
 			}
 		}
-		//otherwise move towards center of current square
-		IntVector2 cellPos = pos.offset;
-		cellPos.Normalize();
-		cellPos *= -maxSpeed;
-
+		//otherwise, we are at our target. Any move will suffice
+		distance = int.MaxValue;
 		
-		return cellPos;
+		return new IntVector2(0, 0);
 		
 	}
 	

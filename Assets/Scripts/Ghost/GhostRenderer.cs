@@ -31,6 +31,13 @@ public class GhostRenderer : MonoBehaviour {
 		}
 		private set {}
 	}
+
+	[RPC] public void SetGhostNumber( int num )
+	{
+		GetComponent<SpriteRenderer>().sprite = (Sprite) Resources.Load( "Media/spritesheet_" + num, typeof(Sprite) );
+		GetComponent<Animator>().runtimeAnimatorController = (RuntimeAnimatorController) Resources.Load( "Animations/Ghost" + num, typeof( RuntimeAnimatorController ) );
+	}
+
 	// Use this for initialization
 	void Start () {
 	

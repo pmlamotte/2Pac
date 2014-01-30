@@ -5,7 +5,7 @@ AnimatorController:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: spritesheet_0
+  m_Name: Ghost3
   serializedVersion: 2
   m_AnimatorParameters: []
   m_AnimatorLayers:
@@ -25,13 +25,13 @@ State:
   m_ObjectHideFlags: 3
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: ghostAnimation
-  m_Speed: 1
+  m_Name: Ghost3
+  m_Speed: .180000007
   m_CycleOffset: 0
   m_Motions:
-  - {fileID: 7400000, guid: 6a880c2b36ce5214ab7973cead8584a8, type: 2}
+  - {fileID: 7400000, guid: f85032766997c25468ed001fda9dfb2d, type: 2}
   m_ParentStateMachine: {fileID: 110700000}
-  m_Position: {x: 50, y: 50, z: 0}
+  m_Position: {x: 48, y: 48, z: 0}
   m_IKOnFeet: 0
   m_Mirror: 0
   m_Tag: 

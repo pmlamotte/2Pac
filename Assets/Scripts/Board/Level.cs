@@ -69,7 +69,7 @@ public class Level : MonoBehaviour {
 				playerObject.Data.lastBoardLocation = playerObject.Data.boardLocation.Clone();
 			}
 		}
-		else
+		else if ( GameProperties.isSinglePlayer )
 		{
 			// spawn player
 			PacmanData playerObject = SpawnPlayer();
@@ -83,6 +83,15 @@ public class Level : MonoBehaviour {
 			foreach ( int ghostNum in Data.GhostSpawns.Keys )
 			{
 				GhostMover ghost = SpawnGhost();
+				if ( GameProperties.isSinglePlayer )
+				{
+					ghost.BroadcastMessage( "SetGhostNumber", ghostNum );
+				}
+				else
+				{
+					ghost.networkView.RPC( "SetGhostNumber", RPCMode.All, ghostNum );
+				}
+
 				ghost.setGhostNumber( ghostNum );
 				ghost.Data.boardLocation = new BoardLocation( Data.GhostSpawns[ghostNum], new IntVector2( 0, 0 ) );
 				ghost.Data.lastBoardLocation = ghost.Data.boardLocation.Clone();
