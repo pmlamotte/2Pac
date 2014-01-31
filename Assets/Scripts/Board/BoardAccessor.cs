@@ -6,19 +6,7 @@ using System;
 
 public class BoardAccessor : MonoBehaviour {
 
-	private BoardData _Data;
-	public BoardData Data
-	{
-		get 
-		{
-			if ( _Data == null )
-			{
-				_Data = GetComponent<BoardData>();
-			}
-			return _Data;
-		}
-		private set { _Data = null; }
-	}
+	public BoardData Data;
 	
 	public int Height 
 	{
@@ -32,8 +20,9 @@ public class BoardAccessor : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
-	
+	void Awake () {
+		Data = GetComponent<BoardData>();
+		Debug.Log( Data );
 	}
 	
 	// Update is called once per frame
