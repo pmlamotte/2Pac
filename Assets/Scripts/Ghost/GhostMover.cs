@@ -35,6 +35,8 @@ public class GhostMover : MonoBehaviour {
 	private GhostAI AI {get; set;}
 	public int ghostNumber {get; set;}
 
+	private Boolean HasTurned = false;
+
 
 	// Use this for initialization
 	void Start () {
@@ -62,11 +64,7 @@ public class GhostMover : MonoBehaviour {
 		
 		IntVector2 newOffset = Data.boardLocation.offset + normalizedDirection;
 		// ensure that turns are only allowed as "preturns" and not "postturns"
-		if ( Math.Abs( newOffset.x ) + Math.Abs( newOffset.y ) > Math.Abs( Data.boardLocation.offset.x ) + Math.Abs( Data.boardLocation.offset.y ) )
-		{
-			return result;
-		}
-		
+
 		IntVector2 reverseDirection = normalizedDirection * -1;
 		foreach ( IntVector2 dir in Constants.directions )
 		{
@@ -98,8 +96,14 @@ public class GhostMover : MonoBehaviour {
 		if ( AI == null ) return;
 		int maxSpeed = (int)( Time.deltaTime * 1000 * this.Data.maxSpeed );
 				
-		if ( canTurn( maxSpeed ) )
+		if ( !Data.boardLocation.location.Equals( Data.lastBoardLocation.location ) )
 		{
+			HasTurned = false;
+		}
+
+		if ( canTurn( maxSpeed ) && !HasTurned )
+		{
+			HasTurned = true; // must turn
 			if ( Data.boardLocation.location.Equals( new IntVector2( 6, 11 ) ) )
 			{
 				int x = 0;
@@ -108,12 +112,19 @@ public class GhostMover : MonoBehaviour {
 			IntVector2 toMove = AI.ComputeDirection( GetLegalTurns( maxSpeed ), maxSpeed );
 			Data.boardLocation = Board.tryMove( Data.boardLocation, toMove );
 			Data.direction = toMove;
+
+			if ( Data.direction.x == 0 && Data.direction.y == 0 )
+			{
+				int x = 0;
+				x++;
+			}
 		}
 		else
 		{
 			Data.direction.Normalize();
-			Data.direction = Data.direction * maxSpeed;
-			Data.boardLocation = Board.tryMove( Data.boardLocation, Data.direction );
+
+			IntVector2 directionToMove = Data.direction * maxSpeed;
+			Data.boardLocation = Board.tryMove( Data.boardLocation, directionToMove );
 		}
 	}
 }

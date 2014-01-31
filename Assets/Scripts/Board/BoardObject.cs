@@ -14,6 +14,7 @@ public class BoardObject : MonoBehaviour {
 			return _direction; 
 		}
 		set { 
+
 			_direction = value; 
 			
 		}
