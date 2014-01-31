@@ -26,25 +26,27 @@ namespace AssemblyCSharp
 
 		public abstract IntVector2 ComputeDirection( List<IntVector2> legalTurns, int maxSpeed );
 
-		public IntVector2 ComputeDirectionToTargets( List<BoardLocation> targets, List<IntVector2> legalTurns, int maxSpeed )
+		public IntVector2 ComputeDirectionToTargets( HashSet<IntVector2> targets, List<IntVector2> legalTurns, int maxSpeed )
 		{
-			IntVector2 toMove = legalTurns[0];
-			int minDistance = int.MaxValue;
-			
-			foreach ( BoardLocation target in targets )
+			IntVector2 bestTurn = legalTurns[0];
+			int bestTurnDistance = int.MaxValue;
+
+			foreach ( IntVector2 turn in legalTurns )
 			{
-				// todo bug where ghost reverses direction in corners
-				// "targets" closest player
-				int distance;
-				IntVector2 direction = Accessor.moveTowards( Data, target, maxSpeed, out distance );
-				if ( distance < minDistance )
+				IntVector2 orthTurn = turn.Normalized();
+				orthTurn = orthTurn + Data.boardLocation.location;
+				foreach ( IntVector2 target in targets )
 				{
-					toMove = direction;
-					minDistance = distance;
+					int distance = IntVector2.OrthogonalDistance( orthTurn, target );
+					if ( distance < bestTurnDistance )
+					{
+						bestTurnDistance = distance;
+						bestTurn = turn;
+					}
 				}
 			}
 
-			return toMove;
+			return bestTurn;
 		}
 	}
 }

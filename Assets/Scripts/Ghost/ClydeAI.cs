@@ -20,18 +20,18 @@ namespace AssemblyCSharp
 		
 		public override IntVector2 ComputeDirection( List<IntVector2> legalTurns, int maxSpeed )
 		{
-			List<BoardLocation> targets = new List<BoardLocation>();
+			HashSet<IntVector2> targets = new HashSet<IntVector2>();
 			foreach ( PacmanData player in Players )
 			{
 				if ( IntVector2.OrthogonalDistance( player.Data.boardLocation.location, Data.boardLocation.location ) > 8 )
 				{
-					targets.Add( new BoardLocation( player.Data.boardLocation.location, new IntVector2( 0, 0 ) ) );
+					targets.Add(player.Data.boardLocation.location);
 				}
 			}
 
 			if ( targets.Count <= 0 )
 			{
-				targets.Add( new BoardLocation( new IntVector2( 0, 0 ), new IntVector2( 0, 0 ) ) );
+				targets.Add( new IntVector2(0, 0) );
 			}
 			
 			return base.ComputeDirectionToTargets( targets, legalTurns, maxSpeed );

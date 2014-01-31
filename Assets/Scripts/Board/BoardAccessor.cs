@@ -22,7 +22,6 @@ public class BoardAccessor : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		Data = GetComponent<BoardData>();
-		Debug.Log( Data );
 	}
 	
 	// Update is called once per frame
@@ -100,31 +99,28 @@ public class BoardAccessor : MonoBehaviour {
 			return new IntVector2( 0, 0 );
 		}
 	}
-	
-	
-	public IntVector2 moveTowards( BoardObject boardObjectData, BoardLocation target, int maxSpeed, out int distance )
-	{
-		return moveTowards( boardObjectData, target, maxSpeed, out distance, false );
-	}
 
-	public IntVector2 moveTowards( BoardObject boardObjectData, BoardLocation target, int maxSpeed, out int distance, bool canReverse )
+	public IntVector2 moveTowardsBFS( BoardObject boardObjectData, HashSet<IntVector2> target, int maxSpeed, out int distance )
+	{
+		return moveTowardsBFS( boardObjectData, target, maxSpeed, out distance, false );
+	}
+	
+	public IntVector2 moveTowardsBFS( BoardObject boardObjectData, HashSet<IntVector2> targets, int maxSpeed, out int distance, bool canReverse )
 	{
 		BoardLocation pos = boardObjectData.boardLocation.Clone();
-		target = target.Clone();
 		
 		// get grid positions
 		IntVector2 thisPos = pos.location;
-		IntVector2 targetPos = target.location;
 		
 		HashSet<IntVector2> visited = new HashSet<IntVector2>();
 		Dictionary<IntVector2, IntVector2> previous = new Dictionary<IntVector2, IntVector2>();
 		
 		LinkedList<IntVector2> queue = new LinkedList<IntVector2>();
 		queue.AddLast( thisPos );
-
+		
 		IntVector2 reverseDir = boardObjectData.direction.Normalized();
 		reverseDir = reverseDir * -1;
-
+		
 		IntVector2 closestReachable = null;
 		int closestDistance = int.MaxValue;
 		
@@ -132,14 +128,18 @@ public class BoardAccessor : MonoBehaviour {
 		{
 			IntVector2 p = queue.First.Value;
 			queue.RemoveFirst();
-
-			if ( IntVector2.OrthogonalDistance( p, target.location ) < closestDistance ) 
+			
+			foreach ( IntVector2 target in targets )
 			{
-				closestReachable = p.Clone();
-				closestDistance = IntVector2.OrthogonalDistance( p, target.location );
+				if ( IntVector2.OrthogonalDistance( p, target ) < closestDistance ) 
+				{
+					closestReachable = p.Clone();
+					closestDistance = IntVector2.OrthogonalDistance( p, target );
+				}
 			}
-
-			if ( p.Equals( targetPos ) ) break;
+			
+			// found a destination
+			if ( targets.Contains( p ) ) break;
 			foreach ( IntVector2 dir in Constants.directions )
 			{
 				if ( !canReverse && p.Equals( pos.location ) && dir.Equals( reverseDir ) )

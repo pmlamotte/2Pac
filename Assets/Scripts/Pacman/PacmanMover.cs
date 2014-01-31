@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using AssemblyCSharp;
+using System.Diagnostics;
 
 public class PacmanMover : MonoBehaviour {
 	

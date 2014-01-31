@@ -50,7 +50,7 @@ namespace AssemblyCSharp
 				Debug.LogError( "Inky needs Blinky to work" );
 				return new IntVector2( 0, 0 );
 			}
-			List<BoardLocation> targets = new List<BoardLocation>();
+			HashSet<IntVector2> targets = new HashSet<IntVector2>();
 			foreach ( PacmanData player in Players )
 			{
 				IntVector2 pacFront = player.Data.direction.Normalized() * 2 + player.Data.boardLocation.location;
@@ -59,7 +59,7 @@ namespace AssemblyCSharp
 				IntVector2 fromBlinky = pacFront - blinkyLocation;
 				fromBlinky *= 2;
 
-				targets.Add( new BoardLocation( blinkyLocation + fromBlinky, new IntVector2( 0, 0 ) ) );
+				targets.Add( blinkyLocation + fromBlinky );
 			}
 			
 			return base.ComputeDirectionToTargets( targets, legalTurns, maxSpeed );

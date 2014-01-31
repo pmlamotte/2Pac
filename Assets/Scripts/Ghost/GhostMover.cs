@@ -68,11 +68,13 @@ public class GhostMover : MonoBehaviour {
 		IntVector2 reverseDirection = normalizedDirection * -1;
 		foreach ( IntVector2 dir in Constants.directions )
 		{
-			// same direction doesn't count as a turn
 			// reverse direction is not allowed
-			if ( dir.Equals( normalizedDirection ) || dir.Equals( reverseDirection ) ) continue;
+			if ( dir.Equals( reverseDirection ) ) continue;
 			
 			IntVector2 dirToTry = dir * maxSpeed;
+
+			// make sure there is an opening in that direction
+			if ( !Board.isOpen( dir + this.Data.boardLocation.location ) ) continue;
 			
 			// try moving that way
 			if ( BoardLocation.SqrDistance( Board.tryMove( this.Data.boardLocation, dirToTry ), Data.boardLocation ) > 0 )
@@ -80,12 +82,19 @@ public class GhostMover : MonoBehaviour {
 				result.Add( dir.Clone() );
 			}
 		}
+		// if there is only one option, make sure it isn't the same direction already being traveled.
+		// in that case, there's no point in determining to choose that direction.
+		if ( result.Count == 1 && result[0].Equals( this.Data.direction.Normalized() ) )
+		{
+			result.Clear();
+		}
 		
 		return result;
 	}
 
 	private Boolean canTurn( int maxSpeed )
 	{
+		// check greater than 1 ( going straight is always an option
 		return GetLegalTurns( maxSpeed ).Count > 0;
 	}
 
@@ -110,6 +119,7 @@ public class GhostMover : MonoBehaviour {
 				x++;
 			}
 			IntVector2 toMove = AI.ComputeDirection( GetLegalTurns( maxSpeed ), maxSpeed );
+			toMove = toMove * maxSpeed;
 			Data.boardLocation = Board.tryMove( Data.boardLocation, toMove );
 			Data.direction = toMove;
 
@@ -126,5 +136,6 @@ public class GhostMover : MonoBehaviour {
 			IntVector2 directionToMove = Data.direction * maxSpeed;
 			Data.boardLocation = Board.tryMove( Data.boardLocation, directionToMove );
 		}
+		
 	}
 }

@@ -20,10 +20,10 @@ namespace AssemblyCSharp
 
 		public override IntVector2 ComputeDirection( List<IntVector2> legalTurns, int maxSpeed )
 		{
-			List<BoardLocation> targets = new List<BoardLocation>();
+			HashSet<IntVector2> targets = new HashSet<IntVector2>();
 			foreach ( PacmanData player in Players )
 			{
-				targets.Add( player.Data.boardLocation );
+				targets.Add( player.Data.boardLocation.location );
 			}
 
 			return base.ComputeDirectionToTargets( targets, legalTurns, maxSpeed );
