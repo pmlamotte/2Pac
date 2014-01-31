@@ -20,11 +20,11 @@ public class BoardObjectCollider : MonoBehaviour {
 	}
 
 
-	PacmanData[] Players
+	GameObject[] Players
 	{
 		get 
 		{
-			return GameObject.FindObjectsOfType<PacmanData>();
+			return GameObject.FindGameObjectsWithTag("Pacman");
 		}
 		set 
 		{
@@ -32,11 +32,11 @@ public class BoardObjectCollider : MonoBehaviour {
 		}
 	}
 
-	GhostMover[] Ghosts
+	GameObject[] Ghosts
 	{
 		get 
 		{
-			return GameObject.FindObjectsOfType<GhostMover>();
+			return GameObject.FindGameObjectsWithTag( "Ghost" );
 		}
 		set 
 		{
@@ -52,12 +52,14 @@ public class BoardObjectCollider : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if ( !( GameProperties.isSinglePlayer || Network.isServer ) ) return;
-		PacmanData[] players = Players;
-		GhostMover[] ghosts = Ghosts;
-		foreach ( GhostMover ghost in ghosts )
+		GameObject[] players = Players;
+		GameObject[] ghosts = Ghosts;
+		foreach ( GameObject ghostObject in ghosts )
 		{
-			foreach ( PacmanData player in players )
+			GhostMover ghost = ghostObject.GetComponent<GhostMover>();
+			foreach ( GameObject playerObject in players )
 			{
+				PacmanData player = playerObject.GetComponent<PacmanData>();
 				int collDistance = 3 * Constants.BoardCellDiameter / 4;
 				int distance = BoardLocation.OrthogonalDistance( ghost.Data.boardLocation, player.Data.boardLocation );
 				if ( distance < collDistance )
@@ -74,8 +76,9 @@ public class BoardObjectCollider : MonoBehaviour {
 			}
 		}
 
-		foreach ( PacmanData player in players )
+		foreach ( GameObject playerObject in players )
 		{
+			PacmanData player = playerObject.GetComponent<PacmanData>();
 			foreach ( BoardObject pellet in Accessor.EatPelletsInRadius( player.Data.boardLocation, Constants.BoardCellRadius / 2 * 4 / 5 /*todo*/ ) )
 			{
 				player.gameObject.SendMessage( "AtePellet" );
