@@ -48,6 +48,11 @@ public class BoardObjectCollider : MonoBehaviour {
 	void Start () {
 	
 	}
+
+	[RPC] public void NotifyGameOver()
+	{
+		GameObject.Find("StartUp").GetComponent<LevelLost>().enabled = true;
+	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -64,13 +69,13 @@ public class BoardObjectCollider : MonoBehaviour {
 				int distance = BoardLocation.OrthogonalDistance( ghost.Data.boardLocation, player.Data.boardLocation );
 				if ( distance < collDistance )
 				{
-					if ( GameProperties.isSinglePlayer || player.networkView.isMine )
+					if ( GameProperties.isSinglePlayer )
 					{
 						player.gameObject.GetComponent<PacmanMover>().hitByGhost();
 					}
 					else
 					{
-						player.networkView.RPC( "hitByGhost", player.networkView.owner );
+						player.networkView.RPC( "hitByGhost", RPCMode.All );
 					}
 				}
 			}
@@ -90,6 +95,20 @@ public class BoardObjectCollider : MonoBehaviour {
 				{
 					Network.Destroy( pellet.gameObject );
 				}
+			}
+		}
+
+		
+		if ( GameData.Instance.PlayerLives <= 0 )
+		{
+			// game over
+			if ( GameProperties.isSinglePlayer )
+			{
+				NotifyGameOver();
+			}
+			else
+			{
+				this.networkView.RPC( "NotifyGameOver", RPCMode.All );
 			}
 		}
 	}

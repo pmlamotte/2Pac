@@ -6,6 +6,8 @@ public class GameData : Singleton<GameData> {
 
 	private Dictionary<int, float> scores = new Dictionary<int, float>();
 	public int level = 0;
+	public int PlayerLives = 5;
+
 
 	public float getScore(int id) {
 		if (!scores.ContainsKey(id)) {
@@ -35,6 +37,7 @@ public class GameData : Singleton<GameData> {
 	{
 		scores = new Dictionary<int, float>();
 		level = 0;
+		PlayerLives = 5;
 	}
 
 

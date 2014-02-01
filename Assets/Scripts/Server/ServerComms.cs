@@ -3,6 +3,16 @@ using System.Collections;
 
 public class ServerComms : Singleton<ServerComms> {
 
+
+
+	// load the mainmenu
+	[RPC] public void ExitGame()
+	{
+		Application.LoadLevel( "MainMenu" );
+	}
+
+
+
 	[RPC] public void setPlayerID(int id) {
 		Messenger<int>.Broadcast(Events.PLAYER_ID_SET, id);
 	}
@@ -36,7 +46,7 @@ public class ServerComms : Singleton<ServerComms> {
 		GameProperties.maxPlayers = maxPlayers;
 	}
 
-
+	// todo just loads networked
 	[RPC] public void LoadLevel (string level, int levelPrefix) {
 
 		PlayerInfo.Instance.setPlayerStatusToLoading();

@@ -48,8 +48,13 @@ public class PacmanMover : MonoBehaviour {
 	
 	[RPC] public void hitByGhost( )
 	{
-		this.Data.Data.boardLocation = new BoardLocation( Board.GetPlayerSpawn( Data.playerNum ), new IntVector2( 0, 0 ) );
-		SendMessage("PacmanHit");
+		GameData.Instance.PlayerLives--;
+
+		if ( GameProperties.isSinglePlayer || Network.isServer )
+		{
+			this.Data.Data.boardLocation = new BoardLocation( Board.GetPlayerSpawn( Data.playerNum ), new IntVector2( 0, 0 ) );
+			SendMessage("PacmanHit");
+		}
 	}
 
 	// Update is called once per frame
