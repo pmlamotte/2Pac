@@ -46,7 +46,6 @@ public class BoardObjectCollider : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
 	}
 
 	[RPC] public void NotifyGameOver()
@@ -89,13 +88,16 @@ public class BoardObjectCollider : MonoBehaviour {
 			PacmanData player = playerObject.GetComponent<PacmanData>();
 			foreach ( BoardObject pellet in Accessor.EatPelletsInRadius( player.Data.boardLocation, Constants.BoardCellRadius / 2 * 4 / 5 /*todo*/ ) )
 			{
-				player.gameObject.SendMessage( "AtePellet" );
+
+
 				if ( GameProperties.isSinglePlayer )
 				{
+					player.gameObject.SendMessage( "AtePellet" );
 					Destroy(pellet.gameObject);
 				}
 				else 
 				{
+					player.gameObject.networkView.RPC( "AtePellet", RPCMode.All );
 					Network.Destroy( pellet.gameObject );
 				}
 			}
