@@ -148,12 +148,15 @@ public class BoardData : MonoBehaviour {
 					foreach ( IntVector2 dir in Constants.directions )
 					{
 						createPellet( new BoardLocation( new IntVector2( j, i ), new IntVector2( 0, 0 ) ) );
-						IntVector2 check = new IntVector2( j, i ) + dir;
-						if ( Accessor.isOpen( check.x, check.y ) )
-						{
+
+						// removed, only one pellet per tile
+						//IntVector2 check = new IntVector2( j, i ) + dir;
+
+						//if ( Accessor.isOpen( check.x, check.y ) )
+						//{
 							// pelet goes there
-							createPellet( new BoardLocation( new IntVector2( j, i ), dir * ( 2 * Constants.BoardCellRadius / 3 ) ) );
-						}
+//							createPellet( new BoardLocation( new IntVector2( j, i ), dir * ( 2 * Constants.BoardCellRadius / 3 ) ) );
+						//}
 					}
 				}
 			}
