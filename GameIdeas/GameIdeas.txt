@@ -1,0 +1,31 @@
+
+
+Minimal Single Player and multiplayer up to 4(?) players : 
+
+Players co-op
+Pellets appear on board
+NO power pellets 
+Set number of ghosts appear on board (Vary based on number of players?)
+
+Players:
+Players eat pellets to get points. 
+Players do not collide with each other
+Players insta-respawn on death to their corresponding spawn point
+Players share a pool of lives
+Speed set by combination of gameboard config and level number
+
+Ghosts:
+Ghosts target closest player
+Ghosts Only turn at inetersections
+Ghosts can not die
+Speed set by combination of gameboard config and level number
+
+Gameplay:
+Players start in positions dictated by gameboard config
+Ghosts start in positions dictated by gameboard config
+When all pellets gone, advance level
+When all lives gone, game over
+
+
+Ghosts move faster as levels progress (add ghosts in higher levels?)
+
