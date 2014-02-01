@@ -38,6 +38,7 @@ public class LevelLost : MonoBehaviour {
 				if (GUILayout.Button("Main Menu")) {
 					if (!GameProperties.isSinglePlayer && Network.isServer) {
 						ServerComms.Instance.networkView.RPC("ExitGame", RPCMode.Others );
+						Network.Disconnect();						
 						Application.LoadLevel("MainMenu");
 					} else if (GameProperties.isSinglePlayer) {
 						Application.LoadLevel("MainMenu");
