@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using AssemblyCSharp;
 
 public class MainMenu : MonoBehaviour {
 
@@ -8,6 +9,8 @@ public class MainMenu : MonoBehaviour {
 	public const int BACK_WIDTH = 100;
 	public const int POPUP_HEIGHT = 150;
 	public GUIStyle style;
+
+	private bool stylesInitialized = false;
 
 	// Use this for initialization
 	void Start () {
@@ -19,7 +22,7 @@ public class MainMenu : MonoBehaviour {
 		PlayerInfo.Instance.clear();
 		GameData.Instance.Clear();
 	}
-	
+
 	private int centeredXPos() {
 		return Screen.width / 2 - WIDTH / 2;
 	}
@@ -33,6 +36,8 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	void OnGUI() {
+
+
 
 		bool window = false;
 		if (ServerManager.Instance.disconnectedFromServer) {

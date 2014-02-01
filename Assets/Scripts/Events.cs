@@ -26,4 +26,6 @@ public class Events {
 	 * When a player toggles their ready state
 	 **/
 	public const string PLAYER_READY_CHANGED = "PLAYER_READY_CHANGED";
+
+	public const string PLAYER_HIT = "PacmanHit";
 }

@@ -9,6 +9,9 @@ public class GameStart : MonoBehaviour {
 	float currTime = 0;
 	float lastTime = 0;
 
+
+	private bool startedUp = false;
+
 	// Use this for initialization
 	void Start () {
 		if (GameProperties.isSinglePlayer) {
@@ -52,11 +55,19 @@ public class GameStart : MonoBehaviour {
 		}
 	}
 
+	public void showStartingMessage() {
+		num = 3;
+		currTime = 0;
+		lastTime = Time.realtimeSinceStartup;
+		showStartingScreen = true;
+	}
+
 	// Update is called once per frame
 	void Update () {
-		if (!showStartingScreen && PlayerInfo.Instance.allPlayersLoaded()) {
-			lastTime = Time.realtimeSinceStartup;
-			showStartingScreen = true;
+
+		if (!startedUp && PlayerInfo.Instance.allPlayersReady()) {
+			startedUp = true;
+			showStartingMessage();
 		}
 	}
 }

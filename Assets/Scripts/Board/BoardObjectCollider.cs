@@ -24,7 +24,7 @@ public class BoardObjectCollider : MonoBehaviour {
 	{
 		get 
 		{
-			return GameObject.FindGameObjectsWithTag("Pacman");
+			return Accessor.Data.getPlayers();
 		}
 		set 
 		{
@@ -36,7 +36,7 @@ public class BoardObjectCollider : MonoBehaviour {
 	{
 		get 
 		{
-			return GameObject.FindGameObjectsWithTag( "Ghost" );
+			return Accessor.Data.getGhosts();
 		}
 		set 
 		{
@@ -57,6 +57,9 @@ public class BoardObjectCollider : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if ( !( GameProperties.isSinglePlayer || Network.isServer ) ) return;
+		if (Time.timeScale == 0) {
+			return;
+		}
 		GameObject[] players = Players;
 		GameObject[] ghosts = Ghosts;
 		foreach ( GameObject ghostObject in ghosts )

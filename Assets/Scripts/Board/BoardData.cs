@@ -168,4 +168,11 @@ public class BoardData : MonoBehaviour {
 		return GameObject.FindObjectOfType<BoardData>();
 	}
 
+	public GameObject[] getPlayers() {
+		return GameObject.FindGameObjectsWithTag("Pacman");
+	}
+
+	public GameObject[] getGhosts() {
+		return GameObject.FindGameObjectsWithTag("Ghost");
+	}
 }

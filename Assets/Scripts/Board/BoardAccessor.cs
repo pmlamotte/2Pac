@@ -230,4 +230,23 @@ public class BoardAccessor : MonoBehaviour {
 		return new BoardLocation( new IntVector2( x, y ), new IntVector2( cellPosX, cellPosY ));
 		
 	}
+
+	public void resetBoard() {
+		if (GameProperties.isSinglePlayer || Network.isServer) {
+			GameObject[] ghosts = Data.getGhosts();
+			GameObject[] players = Data.getPlayers();
+
+			foreach (GameObject ghost in ghosts) {
+				GhostMover mover = ghost.GetComponent<GhostMover>();
+				BoardObject obj = ghost.GetComponent<BoardObject>();
+				obj.boardLocation = new BoardLocation(Data.GhostSpawns[mover.ghostNumber].Clone(), new IntVector2(0,0));
+			}
+
+			foreach (GameObject player in players) {
+				PacmanData data = player.GetComponent<PacmanData>();
+				BoardObject obj = player.GetComponent<BoardObject>();
+				obj.boardLocation = new BoardLocation(Data.PlayerSpawns[data.playerNum].Clone(), new IntVector2(0,0));
+			}
+		}
+	}
 }

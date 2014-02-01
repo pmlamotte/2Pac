@@ -50,11 +50,8 @@ public class PacmanMover : MonoBehaviour {
 	{
 		GameData.Instance.PlayerLives--;
 
-		if ( GameProperties.isSinglePlayer || Network.isServer )
-		{
-			this.Data.Data.boardLocation = new BoardLocation( Board.GetPlayerSpawn( Data.playerNum ), new IntVector2( 0, 0 ) );
-			SendMessage("PacmanHit");
-		}
+		SendMessage(Events.PLAYER_HIT);
+		Messenger<int>.Broadcast(Events.PLAYER_HIT, Data.playerNum);
 	}
 
 	// Update is called once per frame
