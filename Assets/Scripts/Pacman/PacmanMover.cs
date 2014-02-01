@@ -48,7 +48,7 @@ public class PacmanMover : MonoBehaviour {
 	
 	[RPC] public void hitByGhost( )
 	{
-		SoundManager.SpookyGhost();
+		SoundManager.Instance.SpookyGhost();
 		GameData.Instance.PlayerLives--;
 
 		SendMessage(Events.PLAYER_HIT);

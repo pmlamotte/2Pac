@@ -44,7 +44,7 @@ public class PacmanScore : MonoBehaviour {
 
 	[RPC] public void AtePellet()
 	{
-		SoundManager.PelletEat();
+		SoundManager.Instance.PelletEat();
 		incrementScore( Constants.PelletWorth );
 	}
 

@@ -1,33 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SoundManager : MonoBehaviour {
+public class SoundManager : Singleton<SoundManager> {
 	
 	private static AudioClip PelletEatSound;
 	private static AudioClip SpookyGhostSound;
 	public static AudioSource SoundPlayer;
 	
-	public static void PelletEat()
+	public void PelletEat()
 	{
 		SoundPlayer.PlayOneShot( PelletEatSound );
 	}
 	
-	public static void SpookyGhost()
+	public void SpookyGhost()
 	{
 		SoundPlayer.PlayOneShot( SpookyGhostSound );
 	}
 
 	// Use this for initialization
-	void Start () {
-
+	void Awake () {
+		SoundPlayer = this.gameObject.AddComponent<AudioSource>();
 		PelletEatSound = Resources.Load<AudioClip>( "Media/Sounds/PelletEat" );
 		SpookyGhostSound = Resources.Load<AudioClip>( "Media/Sounds/Spookhouse" );
-	}
-
-	void Awake()
-	{
-		DontDestroyOnLoad(gameObject);
-		SoundPlayer = GetComponent<AudioSource>();
 	}
 
 	// Update is called once per frame
