@@ -40,7 +40,7 @@ public class PlayerInfo : Singleton<PlayerInfo> {
 	public int getNextPlayerID() {
 		
 		SortedList<int, int> ids = new SortedList<int,int>();
-		for (int i = 1; i <= GameProperties.maxPlayers; i++) {
+		for (int i = 0; i < GameProperties.maxPlayers; i++) {
 			ids.Add(i, i);
 		}
 		
