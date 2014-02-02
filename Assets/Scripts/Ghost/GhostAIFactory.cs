@@ -21,7 +21,7 @@ namespace AssemblyCSharp
 			this.Accessor = Accessor;
 		}
 
-		public GhostAI getGhostByNumber( int num, BoardObject Data )
+		public GhostAI getGhostByNumber( int num, GhostData Data )
 		{
 			if ( num == 0 )
 			{

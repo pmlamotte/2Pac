@@ -4,14 +4,14 @@ using System;
 
 public class GhostRenderer : MonoBehaviour {
 
-	public BoardObject _Data;
-	public BoardObject Data
+	public GhostData _Data;
+	public GhostData Data
 	{
 		get
 		{
 			if ( _Data == null )
 			{
-				_Data = GetComponent<BoardObject>();
+				_Data = GetComponent<GhostData>();
 			}
 			return _Data;
 		}
@@ -32,10 +32,25 @@ public class GhostRenderer : MonoBehaviour {
 		private set {}
 	}
 
+	[RPC] public void AtePowerPellet( int playerNum )
+	{
+		if(  playerNum == GameProperties.myPlayer.id )
+		{
+			GetComponent<SpriteRenderer>().sprite = (Sprite) Resources.Load( "Media/Images/ghost_frightened", typeof(Sprite) );
+			GetComponent<Animator>().runtimeAnimatorController = (RuntimeAnimatorController) Resources.Load( "Animations/GhostFrightened" );
+		}
+	}
+
+
 	[RPC] public void SetGhostNumber( int num )
 	{
-		GetComponent<SpriteRenderer>().sprite = (Sprite) Resources.Load( "Media/spritesheet_" + num, typeof(Sprite) );
+		GetComponent<SpriteRenderer>().sprite = (Sprite) Resources.Load( "Media/Images/spritesheet_" + num, typeof(Sprite) );
 		GetComponent<Animator>().runtimeAnimatorController = (RuntimeAnimatorController) Resources.Load( "Animations/Ghost" + num, typeof( RuntimeAnimatorController ) );
+	}
+	
+	[RPC] public void powerPelletEat( int playerNum )
+	{
+		Data.PlayersCanEat.Add( playerNum );
 	}
 
 	// Use this for initialization

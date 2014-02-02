@@ -60,9 +60,9 @@ public class PacmanMover : MonoBehaviour {
 		if (GameProperties.isSinglePlayer || networkView.isMine) {
 
 			// make game frame rate independent
-			int maxSpeed = ((int)(1000 * Time.deltaTime * Data.Data.maxSpeed ));
+			int maxSpeed = ((int)(1000 * Time.deltaTime * Data.maxSpeed ));
 			
-			BoardLocation startPos = Data.Data.boardLocation.Clone();
+			BoardLocation startPos = Data.boardLocation.Clone();
 			/**IntVector2 newDirection = new IntVector2( 0, 0 );
 			
 			// compute the attempted direction
@@ -83,14 +83,14 @@ public class PacmanMover : MonoBehaviour {
 				if ( BoardLocation.SqrDistance( posAfter, startPos ) > 0 )
 				{
 					// valid velocity change.
-					Data.Data.direction = newDirection;
+					Data.direction = newDirection;
 				}
 			}
 			
-			Data.Data.direction.Normalize( );
-			Data.Data.direction *= maxSpeed;
+			Data.direction.Normalize( );
+			Data.direction *= maxSpeed;
 			
-			Data.Data.boardLocation = Board.tryMove( Data.Data.boardLocation, Data.Data.direction );
+			Data.boardLocation = Board.tryMove( Data.boardLocation, Data.direction );
 			
 			
 		}

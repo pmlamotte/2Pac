@@ -40,8 +40,8 @@ public class PacmanRenderer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		this.transform.position = Board.convertToRenderPos( Data.Data.boardLocation );
-		IntVector2 direction = Data.Data.direction;
+		this.transform.position = Board.convertToRenderPos( Data.boardLocation );
+		IntVector2 direction = Data.direction;
 		// rotate to face direction traveling 
 		bool[] point = new bool[]{direction.x > 0, direction.y > 0, direction.x < 0, direction.y < 0 };
 		for ( int i = 0; i < 4; i++ )
@@ -55,6 +55,6 @@ public class PacmanRenderer : MonoBehaviour {
 		Animator a = (Animator) GetComponent( "Animator" );
 		
 		// if not moving turn off the animation
-		a.enabled = BoardLocation.SqrDistance( Data.Data.boardLocation, Data.Data.lastBoardLocation ) > 0;
+		a.enabled = BoardLocation.SqrDistance( Data.boardLocation, Data.lastBoardLocation ) > 0;
 	}
 }

@@ -13,7 +13,7 @@ namespace AssemblyCSharp
 {
 	public class ClydeAI : GhostAI
 	{
-		public ClydeAI ( PacmanData[] players, BoardAccessor Accessor, BoardObject Data ) 
+		public ClydeAI ( PacmanData[] players, BoardAccessor Accessor, GhostData Data ) 
 			: base( players, Accessor, Data )
 		{
 		}
@@ -23,9 +23,9 @@ namespace AssemblyCSharp
 			HashSet<IntVector2> targets = new HashSet<IntVector2>();
 			foreach ( PacmanData player in Players )
 			{
-				if ( IntVector2.OrthogonalDistance( player.Data.boardLocation.location, Data.boardLocation.location ) > 8 )
+				if ( IntVector2.OrthogonalDistance( player.boardLocation.location, Data.boardLocation.location ) > 8 )
 				{
-					targets.Add(player.Data.boardLocation.location);
+					targets.Add(player.boardLocation.location);
 				}
 			}
 
@@ -36,6 +36,8 @@ namespace AssemblyCSharp
 			
 			return base.ComputeDirectionToTargets( targets, legalTurns, maxSpeed );
 		}
+
+
 	}
 }
 

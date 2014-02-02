@@ -68,16 +68,31 @@ public class BoardObjectCollider : MonoBehaviour {
 			{
 				PacmanData player = playerObject.GetComponent<PacmanData>();
 				int collDistance = 3 * Constants.BoardCellDiameter / 4;
-				int distance = BoardLocation.OrthogonalDistance( ghost.Data.boardLocation, player.Data.boardLocation );
+				int distance = BoardLocation.OrthogonalDistance( ghost.Data.boardLocation, player.boardLocation );
 				if ( distance < collDistance )
 				{
-					if ( GameProperties.isSinglePlayer )
+					if ( ghost.Data.PlayersCanEat.Contains( player.playerNum ) )
 					{
-						player.gameObject.GetComponent<PacmanMover>().hitByGhost();
+						if ( GameProperties.isSinglePlayer )
+						{
+							ghost.SendMessage( "hitByPacman" );
+							player.SendMessage( "killedGhost" );
+						}
+						else
+						{
+							ghost.networkView.RPC( "hitByPacman", RPCMode.All );
+							player.networkView.RPC( "killedGhost", RPCMode.All );
+						}
 					}
-					else
-					{
-						player.networkView.RPC( "hitByGhost", RPCMode.All );
+					else {
+						if ( GameProperties.isSinglePlayer )
+						{
+							player.gameObject.GetComponent<PacmanMover>().hitByGhost();
+						}
+						else
+						{
+							player.networkView.RPC( "hitByGhost", RPCMode.All );
+						}
 					}
 				}
 			}
@@ -86,10 +101,8 @@ public class BoardObjectCollider : MonoBehaviour {
 		foreach ( GameObject playerObject in players )
 		{
 			PacmanData player = playerObject.GetComponent<PacmanData>();
-			foreach ( BoardObject pellet in Accessor.EatPelletsInRadius( player.Data.boardLocation, Constants.BoardCellRadius / 2 * 4 / 5 /*todo*/ ) )
+			foreach ( BoardObject pellet in Accessor.EatPelletsInRadius( player.boardLocation, Constants.BoardCellRadius / 2 * 4 / 5 /*todo*/ ) )
 			{
-
-
 				if ( GameProperties.isSinglePlayer )
 				{
 					player.gameObject.SendMessage( "AtePellet" );
@@ -99,6 +112,32 @@ public class BoardObjectCollider : MonoBehaviour {
 				{
 					player.gameObject.networkView.RPC( "AtePellet", RPCMode.All );
 					Network.Destroy( pellet.gameObject );
+				}
+			}
+			
+			foreach ( BoardObject pellet in Accessor.EatPowerPelletsInRadius( player.boardLocation, Constants.BoardCellRadius / 2 * 4 / 5 /*todo*/ ) )
+			{
+				if ( GameProperties.isSinglePlayer )
+				{
+					player.gameObject.SendMessage( "AtePowerPellet" );
+					Destroy(pellet.gameObject);
+				}
+				else 
+				{
+					player.gameObject.networkView.RPC( "AtePowerPellet", RPCMode.All );
+					Network.Destroy( pellet.gameObject );
+				}
+				foreach ( GameObject _ghost in Ghosts )
+				{
+					GhostMover ghost = _ghost.GetComponent<GhostMover>();
+					if ( GameProperties.isSinglePlayer )
+					{
+						ghost.gameObject.SendMessage( "AtePowerPellet", player.playerNum );
+					}
+					else 
+					{
+						ghost.gameObject.networkView.RPC( "AtePowerPellet", RPCMode.All, player.playerNum );
+					}
 				}
 			}
 		}

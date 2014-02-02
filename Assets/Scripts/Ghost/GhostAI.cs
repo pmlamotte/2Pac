@@ -15,9 +15,9 @@ namespace AssemblyCSharp
 	{
 		protected PacmanData[] Players;
 		protected BoardAccessor Accessor;
-		protected BoardObject Data;
+		protected GhostData Data;
 		
-		public GhostAI( PacmanData[] players, BoardAccessor Accessor, BoardObject Data )
+		public GhostAI( PacmanData[] players, BoardAccessor Accessor, GhostData Data )
 		{
 			this.Players = players;
 			this.Accessor = Accessor;

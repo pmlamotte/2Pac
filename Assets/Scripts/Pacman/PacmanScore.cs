@@ -41,11 +41,23 @@ public class PacmanScore : MonoBehaviour {
 	public void incrementScore(float num) {
 		setScore(getScore() + num);
 	}
-
+	
 	[RPC] public void AtePellet()
 	{
 		SoundManager.Instance.PelletEat();
 		incrementScore( Constants.PelletWorth );
+	}
+
+	[RPC] public void AtePowerPellet()
+	{
+		SoundManager.Instance.PowerPelletEat();
+		incrementScore( Constants.PelletWorth );
+	}
+
+	[RPC] public void killedGhost()
+	{
+		SoundManager.Instance.GhostEat();
+		incrementScore(10);
 	}
 
 	void PacmanHit() {

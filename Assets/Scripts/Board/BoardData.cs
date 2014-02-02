@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 public class BoardData : MonoBehaviour {
 
 	public GameObject pelletPrefab;
+	public GameObject powerPelletPrefab;
 
 
 
@@ -14,6 +15,7 @@ public class BoardData : MonoBehaviour {
 	public Dictionary<int, IntVector2> GhostSpawns {get; private set;}
 	public Dictionary<int, IntVector2> PlayerSpawns {get; private set;}
 	public Dictionary<IntVector2, List<BoardObject>> Pellets {get; private set;}
+	public Dictionary<IntVector2, BoardObject> PowerPellets {get; private set;}
 	public Dictionary<int, Warp> WarpPoints { get; private set; }
 	
 	public int Height {get; private set;}
@@ -35,16 +37,16 @@ public class BoardData : MonoBehaviour {
 		private set {}
 	}
 	
-
+	
 	private void createPellet( BoardLocation pos )
 	{
 		if ( !( GameProperties.isSinglePlayer || Network.isServer ) ) return;
-
+		
 		if ( !Pellets.ContainsKey( pos.location ) )
 		{
 			Pellets.Add( pos.location, new List<BoardObject>());
 		}
-
+		
 		Vector3 renderPos = Accessor.convertToRenderPos( pos );
 		Quaternion rot = Quaternion.identity;
 		BoardObject g = null;
@@ -60,11 +62,31 @@ public class BoardData : MonoBehaviour {
 		Pellets[pos.location].Add( g );
 	}
 
+	private void createPowerPellet( BoardLocation pos )
+	{
+		if ( !( GameProperties.isSinglePlayer || Network.isServer ) ) return;
+		
+		Vector3 renderPos = Accessor.convertToRenderPos( pos );
+		Quaternion rot = Quaternion.identity;
+		BoardObject g = null;
+		if ( GameProperties.isSinglePlayer )
+		{
+			g = ((GameObject)Instantiate( powerPelletPrefab, renderPos, rot )).GetComponent<BoardObject>();
+		}
+		else
+		{
+			g = ((GameObject)Network.Instantiate( powerPelletPrefab, renderPos, rot, 0 )).GetComponent<BoardObject>();
+		}
+		g.boardLocation = pos;
+		PowerPellets[pos.location] = g;
+	}
+
 	public void CreateBoard()
 	{
 		GhostSpawns = new Dictionary<int, IntVector2>();
 		PlayerSpawns = new Dictionary<int, IntVector2>();
 		Pellets = new Dictionary<IntVector2, List<BoardObject>>();
+		PowerPellets = new Dictionary<IntVector2, BoardObject>();
 		WarpPoints = new Dictionary<int, Warp>();
 
 		Debug.Log("Loading level: " + GameData.Instance.level);
@@ -106,6 +128,11 @@ public class BoardData : MonoBehaviour {
 					int ghostNum = int.Parse( token );
 					GhostSpawns.Add( ghostNum, new IntVector2( j, i ) );
 				}
+				// Power pellet 
+				else if ( token.StartsWith( "PP"  ) )
+				{
+					createPowerPellet( new BoardLocation( new IntVector2( j, i ), new IntVector2( 0, 0 ) ) );
+				}
 				// PLAYER SPAWN
 				else if ( token.StartsWith( "P" ) )
 				{
@@ -145,19 +172,20 @@ public class BoardData : MonoBehaviour {
 				else if ( Accessor.isOpen( j, i ) )
 				{
 					// place pellets
-					foreach ( IntVector2 dir in Constants.directions )
-					{
-						createPellet( new BoardLocation( new IntVector2( j, i ), new IntVector2( 0, 0 ) ) );
-
+					createPellet( new BoardLocation( new IntVector2( j, i ), new IntVector2( 0, 0 ) ) );
 						// removed, only one pellet per tile
 						//IntVector2 check = new IntVector2( j, i ) + dir;
+					
+					//foreach ( IntVector2 dir in Constants.directions )
+					//{
+
 
 						//if ( Accessor.isOpen( check.x, check.y ) )
 						//{
 							// pelet goes there
 //							createPellet( new BoardLocation( new IntVector2( j, i ), dir * ( 2 * Constants.BoardCellRadius / 3 ) ) );
 						//}
-					}
+					//}
 				}
 			}
 		}
