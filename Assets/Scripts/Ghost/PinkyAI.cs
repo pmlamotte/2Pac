@@ -14,7 +14,7 @@ namespace AssemblyCSharp
 {
 	public class PinkyAI : GhostAI
 	{
-		public PinkyAI ( PacmanData[] players, BoardAccessor Accessor, BoardObject Data ) 
+		public PinkyAI ( PacmanData[] players, BoardAccessor Accessor, GhostData Data ) 
 			: base( players, Accessor, Data )
 		{
 		}
@@ -24,7 +24,7 @@ namespace AssemblyCSharp
 			HashSet<IntVector2> targets = new HashSet<IntVector2>();
 			foreach ( PacmanData player in Players )
 			{
-				targets.Add( player.Data.boardLocation.location + player.Data.direction.Normalized() * 5 );
+				targets.Add( player.boardLocation.location + player.direction.Normalized() * 5 );
 			}
 			
 			return base.ComputeDirectionToTargets( targets, legalTurns, maxSpeed );

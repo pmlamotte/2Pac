@@ -32,7 +32,7 @@ public class Level : MonoBehaviour {
 		{
 			player = ((GameObject)Network.Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity, 0)).GetComponent<PacmanData>();
 		}
-		player.Data.maxSpeed = 10;
+		player.maxSpeed = 10;
 		return player;
 		
 	}
@@ -65,8 +65,8 @@ public class Level : MonoBehaviour {
 			foreach (PlayerInfo.Player player in PlayerInfo.Instance.players) {
 				PacmanData playerObject = SpawnPlayer();
 				playerObject.setPlayerNum( player.id );
-				playerObject.Data.boardLocation = new BoardLocation( Data.PlayerSpawns[player.id], new IntVector2(0,0) );
-				playerObject.Data.lastBoardLocation = playerObject.Data.boardLocation.Clone();
+				playerObject.boardLocation = new BoardLocation( Data.PlayerSpawns[player.id], new IntVector2(0,0) );
+				playerObject.lastBoardLocation = playerObject.boardLocation.Clone();
 			}
 		}
 		else if ( GameProperties.isSinglePlayer )
@@ -74,8 +74,8 @@ public class Level : MonoBehaviour {
 			// spawn player
 			PacmanData playerObject = SpawnPlayer();
 			playerObject.setPlayerNum( 0 );
-			playerObject.Data.boardLocation = new BoardLocation( Data.PlayerSpawns[0], new IntVector2( 0, 0 ) );
-			playerObject.Data.lastBoardLocation = playerObject.Data.boardLocation.Clone();
+			playerObject.boardLocation = new BoardLocation( Data.PlayerSpawns[0], new IntVector2( 0, 0 ) );
+			playerObject.lastBoardLocation = playerObject.boardLocation.Clone();
 		}
 
 		if ( GameProperties.isSinglePlayer || Network.isServer )

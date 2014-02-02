@@ -4,14 +4,14 @@ using System;
 
 public class GhostRenderer : MonoBehaviour {
 
-	public BoardObject _Data;
-	public BoardObject Data
+	public GhostData _Data;
+	public GhostData Data
 	{
 		get
 		{
 			if ( _Data == null )
 			{
-				_Data = GetComponent<BoardObject>();
+				_Data = GetComponent<GhostData>();
 			}
 			return _Data;
 		}
@@ -31,13 +31,55 @@ public class GhostRenderer : MonoBehaviour {
 		}
 		private set {}
 	}
+	
+	Sprite normalSprite;
+	RuntimeAnimatorController normalAnimatorController;
+
+	Sprite frightenedSprite;
+	RuntimeAnimatorController frightenedAnimatorController;
+
+
+	void OnEnable()
+	{
+		Messenger<int>.AddListener( Events.PACMAN_ATE_POWER_PELLET, OnAtePowerPellet );
+		Messenger<int>.AddListener( Events.POWER_PELLET_FINISHED, OnPowerPelletFinished );
+	}
+	void OnDisable()
+	{
+		Messenger<int>.AddListener( Events.PACMAN_ATE_POWER_PELLET, OnAtePowerPellet );
+		Messenger<int>.AddListener( Events.POWER_PELLET_FINISHED, OnPowerPelletFinished );
+	}
+
+	public void OnPowerPelletFinished(int playerNum )
+	{
+		if ( Data.PlayersCanEat.Count == 0 )
+		{
+			// return to normal animation
+			GetComponent<SpriteRenderer>().sprite = normalSprite;
+			GetComponent<Animator>().runtimeAnimatorController = normalAnimatorController;
+		}
+	}
+
+    public void OnAtePowerPellet( int playerNum )
+	{
+		if( GameProperties.isSinglePlayer || playerNum == GameProperties.myPlayer.id )
+		{
+			frightenedSprite= (Sprite) Resources.Load( "Media/Images/ghost_frightened", typeof(Sprite) );
+			GetComponent<SpriteRenderer>().sprite = frightenedSprite;
+			frightenedAnimatorController = (RuntimeAnimatorController) Resources.Load( "Animations/GhostFrightened" );
+			GetComponent<Animator>().runtimeAnimatorController = frightenedAnimatorController;
+		}
+	}
+
 
 	[RPC] public void SetGhostNumber( int num )
 	{
-		GetComponent<SpriteRenderer>().sprite = (Sprite) Resources.Load( "Media/spritesheet_" + num, typeof(Sprite) );
-		GetComponent<Animator>().runtimeAnimatorController = (RuntimeAnimatorController) Resources.Load( "Animations/Ghost" + num, typeof( RuntimeAnimatorController ) );
+		normalSprite = (Sprite) Resources.Load( "Media/Images/spritesheet_" + num, typeof(Sprite) );
+		GetComponent<SpriteRenderer>().sprite = normalSprite;
+		normalAnimatorController = (RuntimeAnimatorController) Resources.Load( "Animations/Ghost" + num, typeof( RuntimeAnimatorController ) );
+		GetComponent<Animator>().runtimeAnimatorController = normalAnimatorController;
 	}
-
+	
 	// Use this for initialization
 	void Start () {
 	

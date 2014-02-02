@@ -13,7 +13,7 @@ namespace AssemblyCSharp
 {
 	public class BlinkyAI : GhostAI
 	{
-		public BlinkyAI( PacmanData[] players, BoardAccessor Accessor, BoardObject Data ) 
+		public BlinkyAI( PacmanData[] players, BoardAccessor Accessor, GhostData Data ) 
 			: base( players, Accessor, Data )
 		{
 		}
@@ -23,7 +23,7 @@ namespace AssemblyCSharp
 			HashSet<IntVector2> targets = new HashSet<IntVector2>();
 			foreach ( PacmanData player in Players )
 			{
-				targets.Add( player.Data.boardLocation.location );
+				targets.Add( player.boardLocation.location );
 			}
 
 			return base.ComputeDirectionToTargets( targets, legalTurns, maxSpeed );

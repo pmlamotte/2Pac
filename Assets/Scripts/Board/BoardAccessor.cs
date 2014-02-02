@@ -28,7 +28,7 @@ public class BoardAccessor : MonoBehaviour {
 	void Update () {
 	
 	}
-
+	
 	public List<BoardObject> EatPelletsInRadius(BoardLocation pos, int radius )
 	{
 		List<BoardObject> result = new List<BoardObject>();
@@ -44,12 +44,25 @@ public class BoardAccessor : MonoBehaviour {
 				}
 			}
 		}
-
+		
 		foreach (BoardObject g in result )
 		{
 			inSqare.Remove( g );
 		}
-
+		
+		return result;
+	}
+	
+	public List<BoardObject> EatPowerPelletsInRadius(BoardLocation pos, int radius )
+	{
+		List<BoardObject> result = new List<BoardObject>();
+		BoardObject inSqare;
+		if ( Data.PowerPellets.TryGetValue( pos.location, out inSqare ) )
+		{
+			result.Add( inSqare );
+			Data.PowerPellets.Remove( pos.location );
+		}
+		
 		return result;
 	}
 
@@ -231,6 +244,13 @@ public class BoardAccessor : MonoBehaviour {
 		
 	}
 
+	public void resetGhost( GhostMover ghost )
+	{
+		GhostMover mover = ghost.GetComponent<GhostMover>();
+		BoardObject obj = ghost.GetComponent<BoardObject>();
+		obj.boardLocation = new BoardLocation(Data.GhostSpawns[mover.Data.ghostNumber].Clone(), new IntVector2(0,0));
+	}
+
 	public void resetBoard() {
 		if (GameProperties.isSinglePlayer || Network.isServer) {
 			GameObject[] ghosts = Data.getGhosts();
@@ -239,7 +259,7 @@ public class BoardAccessor : MonoBehaviour {
 			foreach (GameObject ghost in ghosts) {
 				GhostMover mover = ghost.GetComponent<GhostMover>();
 				BoardObject obj = ghost.GetComponent<BoardObject>();
-				obj.boardLocation = new BoardLocation(Data.GhostSpawns[mover.ghostNumber].Clone(), new IntVector2(0,0));
+				obj.boardLocation = new BoardLocation(Data.GhostSpawns[mover.Data.ghostNumber].Clone(), new IntVector2(0,0));
 			}
 
 			foreach (GameObject player in players) {

@@ -23,7 +23,7 @@ namespace AssemblyCSharp
 				{
 					foreach ( GhostMover ghost in GameObject.FindObjectsOfType<GhostMover>() )
 					{
-						if ( ghost.ghostNumber == 0 )
+						if ( ghost.Data.ghostNumber == 0 )
 						{
 							// that's blinky
 							_Blinky = ghost;
@@ -36,7 +36,7 @@ namespace AssemblyCSharp
 
 		}
 
-		public InkyAI ( PacmanData[] players, BoardAccessor Accessor, BoardObject Data ) 
+		public InkyAI ( PacmanData[] players, BoardAccessor Accessor, GhostData Data ) 
 			: base( players, Accessor, Data )
 		{
 
@@ -53,7 +53,7 @@ namespace AssemblyCSharp
 			HashSet<IntVector2> targets = new HashSet<IntVector2>();
 			foreach ( PacmanData player in Players )
 			{
-				IntVector2 pacFront = player.Data.direction.Normalized() * 2 + player.Data.boardLocation.location;
+				IntVector2 pacFront = player.direction.Normalized() * 2 + player.boardLocation.location;
 				IntVector2 blinkyLocation = Blinky.Data.boardLocation.location;
 
 				IntVector2 fromBlinky = pacFront - blinkyLocation;

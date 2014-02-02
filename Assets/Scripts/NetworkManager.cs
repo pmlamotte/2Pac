@@ -33,8 +33,8 @@ public class NetworkManager : MonoBehaviour {
 		PacmanData player = (PacmanData)((GameObject) Network.Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity, 0)).GetComponent<PacmanData>();
 		
 		PacmanData animate = player.GetComponent<PacmanData>();
-		animate.Data.maxSpeed = 8;
-		animate.Data.boardLocation = pos;
+		animate.maxSpeed = 8;
+		animate.boardLocation = pos;
 
 		animate.setPlayerNum(playerNum);
 
