@@ -51,13 +51,37 @@ public class PacmanScore : MonoBehaviour {
 	[RPC] public void AtePowerPellet()
 	{
 		SoundManager.Instance.PowerPelletEat();
+		lock( pacmanData )
+		{
+			pacmanData.PowerPelletLevel++;
+		}
 		incrementScore( Constants.PelletWorth );
+
+		StartCoroutine( PowerPelletTimeout() );
+	}
+
+	private IEnumerator PowerPelletTimeout()
+	{
+		yield return new WaitForSeconds( Constants.PowerPelletTime );
+		lock( pacmanData )
+		{
+			pacmanData.PowerPelletLevel--;
+		}
+		if ( pacmanData.PowerPelletLevel <= 0 )
+		{
+			pacmanData.GhostsEaten = 0;
+		}
+		
 	}
 
 	[RPC] public void killedGhost()
 	{
 		SoundManager.Instance.GhostEat();
-		incrementScore(10);
+		lock( pacmanData )
+		{
+			pacmanData.GhostsEaten++;
+		}
+		incrementScore( Constants.GhostWorth * pacmanData.GhostsEaten );
 	}
 
 	void PacmanHit() {
@@ -66,7 +90,6 @@ public class PacmanScore : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		setScore(getScore() + (.1f * Time.deltaTime ));
 		updateScoreText();
 	}
 

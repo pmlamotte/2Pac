@@ -26,6 +26,21 @@ namespace AssemblyCSharp
 
 		public abstract IntVector2 ComputeDirection( List<IntVector2> legalTurns, int maxSpeed );
 
+		public IntVector2 ProcessTurn(  List<IntVector2> legalTurns, int maxSpeed )
+		{
+			if ( Data.PlayersCanEat.Count > 0 )
+			{
+				// wander aimlessly
+				return legalTurns[Constants.random.Next( legalTurns.Count - 1 )];
+			}
+			else
+			{
+				return ComputeDirection(legalTurns, maxSpeed );
+			}
+
+
+		}
+
 		public IntVector2 ComputeDirectionToTargets( HashSet<IntVector2> targets, List<IntVector2> legalTurns, int maxSpeed )
 		{
 			IntVector2 bestTurn = legalTurns[0];

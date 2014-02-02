@@ -22,6 +22,12 @@ public class PacmanData : BoardObject {
 		set { throw new NotImplementedException(); }
 	}
 
+	// represents number of ghosts eaten on current power pellet
+	public int GhostsEaten {get; set;}
+
+	// represents the number of non-timed out power pellets eaten
+	public int PowerPelletLevel {get; set;}
+
 	void Start() {
 	}
 

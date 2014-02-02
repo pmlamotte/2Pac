@@ -23,12 +23,12 @@ public class GhostData : BoardObject {
 	
 	public bool HasTurned = false;
 
-	public HashSet<int> PlayersCanEat {get; set;}
+	public LinkedList<int> PlayersCanEat {get; set;}
 
 
 	public GhostData( )
 	{
-		PlayersCanEat = new HashSet<int>();
+		PlayersCanEat = new LinkedList<int>();
 	}
 
 

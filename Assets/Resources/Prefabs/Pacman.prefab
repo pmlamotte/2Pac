@@ -11,7 +11,6 @@ GameObject:
   - 212: {fileID: 21200000}
   - 114: {fileID: 11400000}
   - 95: {fileID: 9500000}
-  - 148: {fileID: 14800000}
   - 114: {fileID: 11400002}
   - 148: {fileID: 14800002}
   - 114: {fileID: 11400006}
@@ -20,6 +19,7 @@ GameObject:
   - 114: {fileID: 11400010}
   - 114: {fileID: 11400012}
   - 114: {fileID: 11400014}
+  - 148: {fileID: 14800000}
   m_Layer: 0
   m_Name: Pacman
   m_TagString: Pacman
@@ -147,7 +147,7 @@ NetworkView:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_StateSynchronization: 1
-  m_Observed: {fileID: 0}
+  m_Observed: {fileID: 11400000}
   m_ViewID:
     m_ID: 0
     m_Type: 0

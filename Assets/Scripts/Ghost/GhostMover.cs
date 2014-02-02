@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 using AssemblyCSharp;
 using System;
 
@@ -40,22 +41,62 @@ public class GhostMover : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		// position ghost
 	}
 
 	[RPC] public void AtePowerPellet( int playerNum )
 	{
-		Data.PlayersCanEat.Add( playerNum );
+		Messenger<int>.Broadcast( Events.PACMAN_ATE_POWER_PELLET, playerNum );
+
+		// todo, potentially bug location, should test
+		Data.direction = Data.direction * -1;
+		Data.HasTurned = false;
+
+		lock ( Data.PlayersCanEat )
+		{
+			Data.PlayersCanEat.AddLast( playerNum );
+		}
+
+		StartCoroutine( PowerPelletTimeOut( playerNum ) );
+
+	}
+
+	private IEnumerator PowerPelletTimeOut( int playerNum )
+	{
+		yield return new WaitForSeconds( Constants.PowerPelletTime );
+		lock( Data.PlayersCanEat )
+		{
+			if ( Data.PlayersCanEat.Count > 0 )
+			{
+				Data.PlayersCanEat.RemoveFirst();
+			}
+		}
+
+		Messenger<int>.Broadcast( Events.POWER_PELLET_FINISHED, playerNum );
 	}
 
 
 
 	[RPC] public void hitByPacman()
 	{
+		Time.timeScale = 0;
+		StartCoroutine( EatGhostPause() );
+
+		lock ( Data.PlayersCanEat )
+		{
+			Data.PlayersCanEat.Clear();
+		}
+		Messenger<int>.Broadcast( Events.POWER_PELLET_FINISHED, -1 );
+
 		if ( GameProperties.isSinglePlayer || Network.isServer )
 		{
 			this.Board.resetGhost( this );
 		}
+	}
+
+	private IEnumerator EatGhostPause()
+	{
+		yield return StartCoroutine( CoroutineUtil.WaitForRealSeconds( 1.0f ) );
+		Time.timeScale = 1.0f;
 	}
 
 	public void setGhostNumber( int num )
@@ -120,6 +161,12 @@ public class GhostMover : MonoBehaviour {
 		if ( AI == null ) return;
 		int maxSpeed = (int)( Time.deltaTime * 1000 * Data.maxSpeed );
 				
+		if ( Data.PlayersCanEat.Count > 0 )
+		{
+			maxSpeed /= 2;
+		}
+
+
 		if ( !Data.boardLocation.location.Equals( Data.lastBoardLocation.location ) )
 		{
 			Data.HasTurned = false;
@@ -133,7 +180,7 @@ public class GhostMover : MonoBehaviour {
 				int x = 0;
 				x++;
 			}
-			IntVector2 toMove = AI.ComputeDirection( GetLegalTurns( maxSpeed ), maxSpeed );
+			IntVector2 toMove = AI.ProcessTurn( GetLegalTurns( maxSpeed ), maxSpeed );
 			toMove = toMove * maxSpeed;
 			Data.boardLocation = Board.tryMove( Data.boardLocation, toMove );
 			Data.direction = toMove;

@@ -43,6 +43,9 @@ public class PacmanMover : MonoBehaviour {
 	}
 
 	[RPC] public void updateDirection(int x, int y) {
+		// don't stop pacman
+		if ( x == 0 && y == 0 ) return;
+
 		direction = new IntVector2(x, y);
 	}
 	
@@ -61,6 +64,11 @@ public class PacmanMover : MonoBehaviour {
 
 			// make game frame rate independent
 			int maxSpeed = ((int)(1000 * Time.deltaTime * Data.maxSpeed ));
+			// if move is 0,  skip
+			if ( maxSpeed == 0 )
+			{
+				return;
+			}
 			
 			BoardLocation startPos = Data.boardLocation.Clone();
 			/**IntVector2 newDirection = new IntVector2( 0, 0 );
@@ -80,7 +88,7 @@ public class PacmanMover : MonoBehaviour {
 				newDirection *= maxSpeed;
 				BoardLocation posAfter = Board.tryMove( startPos, newDirection );
 				
-				if ( BoardLocation.SqrDistance( posAfter, startPos ) > 0 )
+				if ( newDirection.SqrMagnitude() > 0 && BoardLocation.SqrDistance( posAfter, startPos ) > 0 )
 				{
 					// valid velocity change.
 					Data.direction = newDirection;
