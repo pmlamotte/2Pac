@@ -9,15 +9,20 @@ GameObject:
   m_Component:
   - 4: {fileID: 400000}
   - 212: {fileID: 21200000}
-  - 95: {fileID: 9500000}
   - 114: {fileID: 11400000}
-  - 148: {fileID: 14800000}
-  - 114: {fileID: 11400004}
+  - 95: {fileID: 9500000}
+  - 114: {fileID: 11400002}
+  - 148: {fileID: 14800002}
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400008}
+  - 148: {fileID: 14800004}
+  - 114: {fileID: 11400010}
+  - 114: {fileID: 11400012}
+  - 114: {fileID: 11400014}
+  - 148: {fileID: 14800000}
   m_Layer: 0
-  m_Name: Ghost
-  m_TagString: Ghost
+  m_Name: Pacman_sprite
+  m_TagString: Pacman
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,8 +34,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.58946753, y: .139753833, z: 0}
-  m_LocalScale: {x: .800000012, y: .800000012, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
 --- !u!95 &9500000
@@ -42,7 +47,7 @@ Animator:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9b8fe3c21cc5b2d448d64656a1e235f8, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2a58c7d9e56083c489f4fab8a9afe95e, type: 2}
   m_CullingMode: 0
   m_ApplyRootMotion: 1
   m_AnimatePhysics: 0
@@ -55,12 +60,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71f392991616cfc43b0709eae10e6557, type: 3}
+  m_Script: {fileID: 11500000, guid: 28de759287d52ab4ab45e55cbd564ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Board: {fileID: 0}
-  _Data: {fileID: 0}
---- !u!114 &11400004
+  maxSpeed: 0
+  score: 0
+  playerNum: 0
+--- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -68,12 +74,48 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8847839a3dd65454498993ff3f522502, type: 3}
+  m_Script: {fileID: 11500000, guid: 35ac102d74b02dc4da5bd05d57263035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Data: {fileID: 0}
-  _Board: {fileID: 0}
+  textPrefab: {fileID: 100000, guid: 18a205e468813d74695c32026abc899b, type: 2}
+  pacmanData: {fileID: 0}
 --- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5448cab64921fcb4581dd955c4c32030, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Board: {fileID: 0}
+--- !u!114 &11400008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7478506a021a9048a625e0493d36e6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Board: {fileID: 0}
+  _Data: {fileID: 0}
+--- !u!114 &11400010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9fca55371774234b8be266cc9674453, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11400012
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -84,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f49ca87d3c6a9a43adde70635e682b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11400008
+--- !u!114 &11400014
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -92,12 +134,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 447eb850b2215014482366cd04657685, type: 3}
+  m_Script: {fileID: 11500000, guid: e42556653b096d945932aa9762ed1aa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 0
-  HasTurned: 0
+  pacmanData: {fileID: 0}
+  cam: {fileID: 0}
 --- !u!148 &14800000
+NetworkView:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_StateSynchronization: 1
+  m_Observed: {fileID: 11400000}
+  m_ViewID:
+    m_ID: 0
+    m_Type: 0
+--- !u!148 &14800002
+NetworkView:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_StateSynchronization: 1
+  m_Observed: {fileID: 11400002}
+  m_ViewID:
+    m_ID: 0
+    m_Type: 0
+--- !u!148 &14800004
 NetworkView:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -130,7 +196,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortingLayerID: 0
-  m_Sprite: {fileID: 21300000, guid: d2753fade7744744bafec00f2cb26140, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8f864c89bf20359419f46336a396f83e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:

@@ -32,7 +32,7 @@ public class Level : MonoBehaviour {
 		{
 			player = ((GameObject)Network.Instantiate(playerPrefab, new Vector3(0,0,0), Quaternion.identity, 0)).GetComponent<PacmanData>();
 		}
-		player.maxSpeed = 10;
+		player.maxSpeed = 15;
 		return player;
 		
 	}
@@ -48,7 +48,7 @@ public class Level : MonoBehaviour {
 		{
 			ghost = ((GameObject)Network.Instantiate(ghostPrefab, new Vector3(0,0,0), Quaternion.identity, 0)).GetComponent<GhostMover>();
 		}
-		ghost.Data.maxSpeed = 8;
+		ghost.Data.maxSpeed = 14;
 		return ghost;
 	}
 
