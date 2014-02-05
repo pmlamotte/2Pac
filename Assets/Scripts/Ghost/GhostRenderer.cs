@@ -46,9 +46,10 @@ public class GhostRenderer : MonoBehaviour {
 	}
 	void OnDisable()
 	{
-		Messenger<int>.AddListener( Events.PACMAN_ATE_POWER_PELLET, OnAtePowerPellet );
-		Messenger<int>.AddListener( Events.POWER_PELLET_FINISHED, OnPowerPelletFinished );
+		Messenger<int>.RemoveListener( Events.PACMAN_ATE_POWER_PELLET, OnAtePowerPellet );
+		Messenger<int>.RemoveListener( Events.POWER_PELLET_FINISHED, OnPowerPelletFinished );
 	}
+
 
 	public void OnPowerPelletFinished(int playerNum )
 	{
