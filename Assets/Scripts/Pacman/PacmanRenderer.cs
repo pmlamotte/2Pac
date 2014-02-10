@@ -41,7 +41,6 @@ public class PacmanRenderer : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		this.transform.position = Board.convertToRenderPos( Data.boardLocation );
-		this.transform.position = transform.position + new Vector3( 0, 0, -this.transform.localScale.x / 2 );
 		IntVector2 direction = Data.direction;
 		// rotate to face direction traveling 
 		bool[] point = new bool[]{direction.x > 0, direction.y > 0, direction.x < 0, direction.y < 0 };

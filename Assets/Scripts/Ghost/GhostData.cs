@@ -26,6 +26,7 @@ public class GhostData : BoardObject {
 	public LinkedList<int> PlayersCanEat {get; set;}
 
 
+
 	public GhostData( )
 	{
 		PlayersCanEat = new LinkedList<int>();

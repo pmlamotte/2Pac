@@ -47,7 +47,6 @@ public class GhostMover : MonoBehaviour {
 	{
 		Messenger<int>.Broadcast( Events.PACMAN_ATE_POWER_PELLET, playerNum );
 
-		// todo, potentially bug location, should test
 		Data.direction = Data.direction * -1;
 		Data.HasTurned = false;
 
