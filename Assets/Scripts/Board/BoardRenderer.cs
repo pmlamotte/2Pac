@@ -8,12 +8,14 @@ public class BoardRenderer : MonoBehaviour {
 	
 	public GameObject pelletPrefab;
 	public GameObject powerPelletPrefab;
+	public GameObject directionArrowPrefab;
 	
 
 	public GameObject filledCell;
 	
 	public Dictionary<IntVector2, GameObject> PelletObjects;
 	public Dictionary<IntVector2, GameObject> PowerPelletObjects;
+	public Dictionary<IntVector2, GameObject> DirectionArrowObjects;
 
 	public BoardAccessor _Board;
 	public BoardAccessor Accessor
@@ -243,6 +245,38 @@ public class BoardRenderer : MonoBehaviour {
 
 		PowerPelletObjects[pos.location] = g;
 	}
+
+	private void renderArrow( BoardLocation pos )
+	{
+		IntVector2 direction = Accessor.Data.PossibleDirectionsMap[pos.location][Accessor.Data.DirectionIndex[pos.location]];
+
+
+		int directionInt = 0;
+		for ( int i = 0; i < 4; i++ )
+		{
+			if ( direction.Equals( Constants.directions[i] ) )
+			{
+				directionInt = i;
+				break;
+			}
+		}
+		
+		Vector3 renderPos = Accessor.convertToRenderPos( pos );
+		Quaternion rot = Quaternion.Euler( new Vector3( 0, 0, 90.0f * directionInt) );
+		
+		GameObject g = null;
+		if ( GameProperties.isSinglePlayer )
+		{
+			g = (GameObject)Instantiate( directionArrowPrefab, renderPos, rot );
+		}
+		else
+		{
+			g = (GameObject)Network.Instantiate( directionArrowPrefab, renderPos, rot, 0 );
+		}
+
+		DirectionArrowObjects[pos.location] = g;
+
+	}
 	
 	public void AtePellet(IntVector2 pos)
 	{
@@ -267,10 +301,29 @@ public class BoardRenderer : MonoBehaviour {
 		}
 	}
 
+	public void AfterGhostOverIntersection( IntVector2 intersection )
+	{
+		IntVector2 direction = Accessor.Data.PossibleDirectionsMap[intersection][Accessor.Data.DirectionIndex[intersection]];
+
+		int directionInt = 0;
+		for ( int i = 0; i < 4; i++ )
+		{
+			if ( direction.Equals( Constants.directions[i] ) )
+			{
+				directionInt = i;
+				break;
+			}
+		}
+
+		Quaternion rot = Quaternion.Euler( new Vector3( 0, 0, 90.0f * directionInt) );
+		this.DirectionArrowObjects[intersection].transform.rotation = rot;
+	}
+
 
 	public void CreateBoard () {
 		PowerPelletObjects = new Dictionary<IntVector2, GameObject>();
 		PelletObjects = new Dictionary<IntVector2, GameObject>();
+		DirectionArrowObjects = new Dictionary<IntVector2, GameObject>();
 
 		for ( int y = 0; y < Accessor.Height; y++ )
 		{
@@ -280,9 +333,9 @@ public class BoardRenderer : MonoBehaviour {
 			}
 		}
 
-		// pellets are networked. 
 		if ( GameProperties.isSinglePlayer || Network.isServer )
 		{
+			// pellets are networked. 
 			// render power pellets
 			foreach ( IntVector2 powerPelletPos in this.Accessor.Data.PowerPellets )
 			{
@@ -294,7 +347,14 @@ public class BoardRenderer : MonoBehaviour {
 			{
 				renderPellet( new BoardLocation( pelletPos, new IntVector2( 0, 0 ) ) );
 			}
+
+			// arrows are networked
+			foreach ( IntVector2 arrowPos in this.Accessor.Data.DirectionIndex.Keys )
+			{
+				renderArrow( new BoardLocation( arrowPos, new IntVector2( 0, 0 ) ) );
+			}
 		}
+
 
 		// make sure entire board is visible.
 		Camera cam = GameObject.Find( "Camera" ).GetComponent<Camera>();

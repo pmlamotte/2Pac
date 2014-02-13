@@ -52,10 +52,5 @@ public class PacmanRenderer : MonoBehaviour {
 			}
 		}
 		
-		Animator a = (Animator) GetComponent( "Animator" );
-		
-		// if not moving turn off the animation
-		// todo, animation does not exist anymore
-		//a.enabled = BoardLocation.SqrDistance( Data.boardLocation, Data.lastBoardLocation ) > 0;
 	}
 }

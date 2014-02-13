@@ -118,7 +118,7 @@ namespace AssemblyCSharp
 			this.y = y;
 		}
 		
-		public string ToString() 
+		public override string ToString() 
 		{
 			return "( " + x + ", " + y + " )" ;
 		}

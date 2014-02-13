@@ -44,7 +44,6 @@ public class BoardAccessor : MonoBehaviour {
 	public List<IntVector2> EatPowerPelletsInRadius(BoardLocation pos, int radius )
 	{
 		List<IntVector2> result = new List<IntVector2>();
-		BoardObject inSqare;
 		if ( pos.offset.OrthogonalMagnitude() <= radius && Data.PowerPellets.Contains( pos.location ) )
 		{
 			result.Add( pos.location );
@@ -52,6 +51,14 @@ public class BoardAccessor : MonoBehaviour {
 		}
 		
 		return result;
+	}
+
+	public void GhostOverIntersection( IntVector2 intersection )
+	{
+		// this is a ghost, rotate
+		Data.DirectionIndex[intersection] = ( Data.DirectionIndex[intersection] + 1 ) % Data.PossibleDirectionsMap[intersection].Count;
+
+		this.gameObject.BroadcastMessage( "AfterGhostOverIntersection", intersection );
 	}
 
 
@@ -159,18 +166,11 @@ public class BoardAccessor : MonoBehaviour {
 		
 		LinkedList<IntVector2> path = new LinkedList<IntVector2>();
 		IntVector2 curr = closestReachable;
-		try
-		{
+
 		while ( !curr.Equals( thisPos ) && previous.ContainsKey( curr ) )
 		{
 			path.AddFirst( curr );
 			curr = previous[curr];
-		}
-		}
-		catch ( KeyNotFoundException e )
-		{
-			int x = 0;  
-			x++;
 		}
 
 		distance = path.Count;
@@ -237,6 +237,7 @@ public class BoardAccessor : MonoBehaviour {
 		GhostMover mover = ghost.GetComponent<GhostMover>();
 		BoardObject obj = ghost.GetComponent<BoardObject>();
 		obj.boardLocation = new BoardLocation(Data.GhostSpawns[mover.Data.ghostNumber].Clone(), new IntVector2(0,0));
+		ghost.Data.PlayersCanEat.Clear();
 	}
 
 	public void resetBoard() {
@@ -245,9 +246,7 @@ public class BoardAccessor : MonoBehaviour {
 			GameObject[] players = Data.getPlayers();
 
 			foreach (GameObject ghost in ghosts) {
-				GhostMover mover = ghost.GetComponent<GhostMover>();
-				BoardObject obj = ghost.GetComponent<BoardObject>();
-				obj.boardLocation = new BoardLocation(Data.GhostSpawns[mover.Data.ghostNumber].Clone(), new IntVector2(0,0));
+				resetGhost( ghost.GetComponent<GhostMover>() );
 			}
 
 			foreach (GameObject player in players) {

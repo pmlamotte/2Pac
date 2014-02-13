@@ -117,9 +117,6 @@ public class GhostMover : MonoBehaviour {
 
 		IntVector2 normalizedDirection = Data.direction.Normalized();
 		
-		IntVector2 newOffset = Data.boardLocation.offset + normalizedDirection;
-		// ensure that turns are only allowed as "preturns" and not "postturns"
-
 		IntVector2 reverseDirection = normalizedDirection * -1;
 		foreach ( IntVector2 dir in Constants.directions )
 		{

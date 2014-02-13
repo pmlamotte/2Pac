@@ -7,6 +7,7 @@ public class GameData : Singleton<GameData> {
 	private Dictionary<int, float> scores = new Dictionary<int, float>();
 	public int level = 0;
 	public int PlayerLives = 5;
+	public bool isDirectional = true;
 
 
 	public float getScore(int id) {

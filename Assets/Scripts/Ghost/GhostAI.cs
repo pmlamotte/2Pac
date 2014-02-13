@@ -28,16 +28,30 @@ namespace AssemblyCSharp
 
 		public IntVector2 ProcessTurn(  List<IntVector2> legalTurns, int maxSpeed )
 		{
-			if ( Data.PlayersCanEat.Count > 0 )
+			IntVector2 result = null;
+			if ( GameData.Instance.isDirectional )
+			{
+				if ( Accessor.Data.DirectionIndex.ContainsKey( Data.boardLocation.location ) )
+				{
+					result = Accessor.Data.PossibleDirectionsMap[Data.boardLocation.location][Accessor.Data.DirectionIndex[Data.boardLocation.location]];
+					Accessor.gameObject.BroadcastMessage( "GhostOverIntersection", Data.boardLocation.location );
+				}
+				else
+				{
+					// wander aimlessly, rare case.
+					result = legalTurns[Constants.random.Next( legalTurns.Count - 1 )];
+				}
+			}
+			else if ( Data.PlayersCanEat.Count > 0 )
 			{
 				// wander aimlessly
-				return legalTurns[Constants.random.Next( legalTurns.Count - 1 )];
+				result = legalTurns[Constants.random.Next( legalTurns.Count - 1 )];
 			}
 			else
 			{
-				return ComputeDirection(legalTurns, maxSpeed );
+				result = ComputeDirection(legalTurns, maxSpeed );
 			}
-
+			return result;
 
 		}
 

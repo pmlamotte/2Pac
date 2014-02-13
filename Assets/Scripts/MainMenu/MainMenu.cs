@@ -10,11 +10,8 @@ public class MainMenu : MonoBehaviour {
 	public const int POPUP_HEIGHT = 150;
 	public GUIStyle style;
 
-	private bool stylesInitialized = false;
-
 	// Use this for initialization
 	void Start () {
-		PlayerInfo playerInfo = PlayerInfo.Instance;
 	}
 
 	void OnEnable() {

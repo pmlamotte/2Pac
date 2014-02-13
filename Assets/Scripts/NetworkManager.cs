@@ -4,9 +4,6 @@ using System.Collections;
 using AssemblyCSharp;
 
 public class NetworkManager : MonoBehaviour {
-
-
-	private string gameName = "";
 	private int playerNum = 0;
 	private int playerCount = 1;
 

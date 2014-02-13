@@ -4,15 +4,19 @@ using AssemblyCSharp;
 using System.Text.RegularExpressions;
 
 public class BoardData : MonoBehaviour {
-
-
-
+	
 	public bool[,] board;
 	public Dictionary<int, IntVector2> GhostSpawns {get; private set;}
 	public Dictionary<int, IntVector2> PlayerSpawns {get; private set;}
 	public HashSet<IntVector2> Pellets {get; private set;}
 	public HashSet<IntVector2> PowerPellets {get; private set;}
+	public Dictionary<IntVector2, List<IntVector2>> PossibleDirectionsMap {get; private set;}
+	public Dictionary<IntVector2, int> DirectionIndex {get; private set;}
+
+
 	public Dictionary<int, Warp> WarpPoints { get; private set; }
+	private GameObject[] players;
+	private GameObject[] ghosts;
 	
 	public int Height {get; private set;}
 	public int Width {get; private set; }
@@ -59,6 +63,8 @@ public class BoardData : MonoBehaviour {
 		PlayerSpawns = new Dictionary<int, IntVector2>();
 		Pellets = new HashSet<IntVector2>();
 		PowerPellets = new HashSet<IntVector2>();
+		PossibleDirectionsMap = new Dictionary<IntVector2, List<IntVector2>>();
+		DirectionIndex = new Dictionary<IntVector2, int>();
 		WarpPoints = new Dictionary<int, Warp>();
 
 		Debug.Log("Loading level: " + GameData.Instance.level);
@@ -145,20 +151,26 @@ public class BoardData : MonoBehaviour {
 				{
 					// place pellets
 					createPellet( new BoardLocation( new IntVector2( j, i ), new IntVector2( 0, 0 ) ) );
-						// removed, only one pellet per tile
-						//IntVector2 check = new IntVector2( j, i ) + dir;
-					
-					//foreach ( IntVector2 dir in Constants.directions )
-					//{
-
-
-						//if ( Accessor.isOpen( check.x, check.y ) )
-						//{
-							// pelet goes there
-//							createPellet( new BoardLocation( new IntVector2( j, i ), dir * ( 2 * Constants.BoardCellRadius / 3 ) ) );
-						//}
-					//}
 				}
+
+				if ( Accessor.isOpen( j, i ) )
+				{
+					// determine if intersection
+					List<IntVector2> possibleDirections = new List<IntVector2>();
+					foreach ( IntVector2 dir in Constants.directions )
+					{
+						if ( Accessor.isOpen( dir + new IntVector2( j, i ) ) )
+						{
+							possibleDirections.Add ( dir );
+						}
+					}
+					if ( possibleDirections.Count > 2 )
+					{
+						this.PossibleDirectionsMap.Add( new IntVector2( j, i ), possibleDirections );
+						this.DirectionIndex.Add( new IntVector2( j, i ), 0 );
+					}
+				}
+
 			}
 		}
 		
@@ -172,10 +184,18 @@ public class BoardData : MonoBehaviour {
 	}
 
 	public GameObject[] getPlayers() {
-		return GameObject.FindGameObjectsWithTag("Pacman");
+		if ( players == null )
+		{
+			players = GameObject.FindGameObjectsWithTag("Pacman");
+		}
+		return players;
 	}
 
 	public GameObject[] getGhosts() {
-		return GameObject.FindGameObjectsWithTag("Ghost");
+		if ( ghosts == null )
+		{
+			ghosts = GameObject.FindGameObjectsWithTag("Ghost");
+		}
+		return ghosts;
 	}
 }
