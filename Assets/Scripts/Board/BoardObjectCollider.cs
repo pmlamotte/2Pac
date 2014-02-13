@@ -103,15 +103,13 @@ public class BoardObjectCollider : MonoBehaviour {
 			PacmanData player = playerObject.GetComponent<PacmanData>();
 			foreach ( IntVector2 pellet in Accessor.EatPelletsInRadius( player.boardLocation, Constants.BoardCellRadius / 2 * 4 / 5 /*todo*/ ) )
 			{
-				this.gameObject.BroadcastMessage( "AtePellet", pellet );
 				if ( GameProperties.isSinglePlayer )
 				{
 					player.gameObject.SendMessage( "AtePellet" );
 				}
 				else 
 				{
-					player.gameObject.networkView.RPC( "AtePellet", RPCMode.Server );
-					this.gameObject.BroadcastMessage( "AtePellet", pellet );
+					player.gameObject.networkView.RPC( "AtePellet", RPCMode.All );
 				}
 				// inform board
 				this.gameObject.BroadcastMessage( "AtePellet", pellet );
