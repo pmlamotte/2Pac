@@ -80,6 +80,11 @@ namespace AssemblyCSharp
 		{
 			return x * x + y * y;
 		}
+		
+		public int OrthogonalMagnitude()
+		{
+			return Math.Abs( x ) + Math.Abs( y );
+		}
 
 		public IntVector2 Normalized( )
 		{

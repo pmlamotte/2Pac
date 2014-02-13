@@ -2,24 +2,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AssemblyCSharp;
 
 public class BoardRenderer : MonoBehaviour {
+	
+	public GameObject pelletPrefab;
+	public GameObject powerPelletPrefab;
+	
 
 	public GameObject filledCell;
+	
+	public Dictionary<IntVector2, GameObject> PelletObjects;
+	public Dictionary<IntVector2, GameObject> PowerPelletObjects;
 
 	public BoardAccessor _Board;
-	public BoardAccessor Board
+	public BoardAccessor Accessor
 	{
 		get
 		{
 			if ( _Board == null )
 			{
-				_Board = GameObject.FindObjectOfType<BoardAccessor>();
+				_Board = GetComponent<BoardAccessor>();
 			}
 			return _Board;
 		}
 		private set {}
 	}
+
 
 	public void createCell( int x, int y, bool fill )
 	{
@@ -122,7 +131,7 @@ public class BoardRenderer : MonoBehaviour {
 				string toAdd = "";
 				for ( int j = 0; j < 3; j++ )
 				{
-					toAdd += ( Board.isOpen( x - 1 + j, y + 1 - i ) ) ? "0" : "1";
+					toAdd += ( Accessor.isOpen( x - 1 + j, y + 1 - i ) ) ? "0" : "1";
 				}
 				boardMatch[i] = toAdd;
 			}
@@ -196,14 +205,94 @@ public class BoardRenderer : MonoBehaviour {
 		return result;
 	}
 
-
-	// Use this for initialization
-	public void CreateBoard () {
-		for ( int y = 0; y < Board.Height; y++ )
+	
+	private void renderPellet( BoardLocation pos )
+	{
+		if ( !( GameProperties.isSinglePlayer || Network.isServer ) ) return;
+		
+		Vector3 renderPos = Accessor.convertToRenderPos( pos );
+		Quaternion rot = Quaternion.identity;
+		GameObject g = null;
+		if ( GameProperties.isSinglePlayer )
 		{
-			for ( int x = 0; x < Board.Width; x++ )
+			g = (GameObject)Instantiate( pelletPrefab, renderPos, rot );
+		}
+		else
+		{
+			g = (GameObject)Network.Instantiate( pelletPrefab, renderPos, rot, 0 );
+		}
+
+		PelletObjects[pos.location] = g;
+	}
+	
+	private void renderPowerPellet( BoardLocation pos )
+	{
+		if ( !( GameProperties.isSinglePlayer || Network.isServer ) ) return;
+		
+		Vector3 renderPos = Accessor.convertToRenderPos( pos );
+		Quaternion rot = Quaternion.identity;
+		GameObject g = null;
+		if ( GameProperties.isSinglePlayer )
+		{
+			g = (GameObject)Instantiate( powerPelletPrefab, renderPos, rot );
+		}
+		else
+		{
+			g = (GameObject)Network.Instantiate( powerPelletPrefab, renderPos, rot, 0 );
+		}
+
+		PowerPelletObjects[pos.location] = g;
+	}
+	
+	public void AtePellet(IntVector2 pos)
+	{
+		if ( GameProperties.isSinglePlayer )
+		{
+			Destroy( PelletObjects[pos] );
+		}
+		else
+		{
+			Network.Destroy( PelletObjects[pos] );
+		}
+	}
+	public void AtePowerPellet(IntVector2 pos)
+	{
+		if ( GameProperties.isSinglePlayer )
+		{
+			Destroy( PowerPelletObjects[pos] );
+		}
+		else
+		{
+			Network.Destroy( PowerPelletObjects[pos] );
+		}
+	}
+
+
+	public void CreateBoard () {
+		PowerPelletObjects = new Dictionary<IntVector2, GameObject>();
+		PelletObjects = new Dictionary<IntVector2, GameObject>();
+
+		for ( int y = 0; y < Accessor.Height; y++ )
+		{
+			for ( int x = 0; x < Accessor.Width; x++ )
 			{
-				createCell( x, y, !Board.isOpen( x, y ) );
+				createCell( x, y, !Accessor.isOpen( x, y ) );
+			}
+		}
+
+		// pellets are networked. 
+		if ( GameProperties.isSinglePlayer || Network.isServer )
+		{
+			// render power pellets
+			foreach ( IntVector2 powerPelletPos in this.Accessor.Data.PowerPellets )
+			{
+				renderPowerPellet( new BoardLocation( powerPelletPos, new IntVector2( 0, 0 ) ) );
+			}
+			
+			// render pellets
+			foreach ( IntVector2 pelletPos in this.Accessor.Data.Pellets )
+			{
+				renderPellet( new BoardLocation( pelletPos, new IntVector2( 0, 0 ) ) );
 			}
 		}
 
@@ -213,7 +302,7 @@ public class BoardRenderer : MonoBehaviour {
 		{
 			// todo logic could be simpler given that we have similar triangles...
 
-			cam.transform.position = new Vector3( Board.Width / 2f, Board.Height / 2f, -10 );
+			cam.transform.position = new Vector3( Accessor.Width / 2f, Accessor.Height / 2f, -10 );
 			
 			Ray rayToLeft = cam.ScreenPointToRay( new Vector3( -1, 0, 0 ) );
 			Ray rayToTop = cam.ScreenPointToRay( new Vector3( 0, 1, 0 ) );
@@ -227,18 +316,18 @@ public class BoardRenderer : MonoBehaviour {
 			gamePlane.Raycast( rayToLeft, out leftDistance );
 			
 			Vector3 leftWorldPoint = rayToLeft.GetPoint( leftDistance );
-			float leftAngle = Mathf.Atan( Mathf.Abs( leftWorldPoint.x - Board.Width / 2.0f ) / 10f );
-			leftZ = ( Board.Width + 2 ) / 2 / Mathf.Tan( leftAngle );
+			float leftAngle = Mathf.Atan( Mathf.Abs( leftWorldPoint.x - Accessor.Width / 2.0f ) / 10f );
+			leftZ = ( Accessor.Width + 2 ) / 2 / Mathf.Tan( leftAngle );
 
 			
 			float topDistance;
 			gamePlane.Raycast( rayToTop, out topDistance );
 			
 			Vector3 topWorldPoint = rayToTop.GetPoint( topDistance );
-			float topAngle = Mathf.Atan( Mathf.Abs( topWorldPoint.y - Board.Height / 2.0f ) / 10f );
-			topZ = ( Board.Height + 2 ) / 2 / Mathf.Tan( topAngle );
+			float topAngle = Mathf.Atan( Mathf.Abs( topWorldPoint.y - Accessor.Height / 2.0f ) / 10f );
+			topZ = ( Accessor.Height + 2 ) / 2 / Mathf.Tan( topAngle );
 
-			cam.transform.position = new Vector3( Board.Width / 2.0f, Board.Height / 2.0f, -Mathf.Max( topZ, leftZ ) );
+			cam.transform.position = new Vector3( Accessor.Width / 2.0f, Accessor.Height / 2.0f, -Mathf.Max( topZ, leftZ ) );
 		}
 	}
 	

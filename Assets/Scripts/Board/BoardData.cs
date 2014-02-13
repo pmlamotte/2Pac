@@ -5,17 +5,13 @@ using System.Text.RegularExpressions;
 
 public class BoardData : MonoBehaviour {
 
-	public GameObject pelletPrefab;
-	public GameObject powerPelletPrefab;
-
-
 
 
 	public bool[,] board;
 	public Dictionary<int, IntVector2> GhostSpawns {get; private set;}
 	public Dictionary<int, IntVector2> PlayerSpawns {get; private set;}
-	public Dictionary<IntVector2, List<BoardObject>> Pellets {get; private set;}
-	public Dictionary<IntVector2, BoardObject> PowerPellets {get; private set;}
+	public HashSet<IntVector2> Pellets {get; private set;}
+	public HashSet<IntVector2> PowerPellets {get; private set;}
 	public Dictionary<int, Warp> WarpPoints { get; private set; }
 	
 	public int Height {get; private set;}
@@ -42,51 +38,27 @@ public class BoardData : MonoBehaviour {
 	{
 		if ( !( GameProperties.isSinglePlayer || Network.isServer ) ) return;
 		
-		if ( !Pellets.ContainsKey( pos.location ) )
+		if ( !Pellets.Contains( pos.location ) )
 		{
-			Pellets.Add( pos.location, new List<BoardObject>());
+			Pellets.Add( pos.location );
 		}
 		
-		Vector3 renderPos = Accessor.convertToRenderPos( pos );
-		Quaternion rot = Quaternion.identity;
-		BoardObject g = null;
-		if ( GameProperties.isSinglePlayer )
-		{
-			g = ((GameObject)Instantiate( pelletPrefab, renderPos, rot )).GetComponent<BoardObject>();
-		}
-		else
-		{
-			g = ((GameObject)Network.Instantiate( pelletPrefab, renderPos, rot, 0 )).GetComponent<BoardObject>();
-		}
-		g.boardLocation = pos;
-		Pellets[pos.location].Add( g );
+		Pellets.Add(pos.location);
 	}
 
 	private void createPowerPellet( BoardLocation pos )
 	{
 		if ( !( GameProperties.isSinglePlayer || Network.isServer ) ) return;
 		
-		Vector3 renderPos = Accessor.convertToRenderPos( pos );
-		Quaternion rot = Quaternion.identity;
-		BoardObject g = null;
-		if ( GameProperties.isSinglePlayer )
-		{
-			g = ((GameObject)Instantiate( powerPelletPrefab, renderPos, rot )).GetComponent<BoardObject>();
-		}
-		else
-		{
-			g = ((GameObject)Network.Instantiate( powerPelletPrefab, renderPos, rot, 0 )).GetComponent<BoardObject>();
-		}
-		g.boardLocation = pos;
-		PowerPellets[pos.location] = g;
+		PowerPellets.Add(pos.location);
 	}
 
 	public void CreateBoard()
 	{
 		GhostSpawns = new Dictionary<int, IntVector2>();
 		PlayerSpawns = new Dictionary<int, IntVector2>();
-		Pellets = new Dictionary<IntVector2, List<BoardObject>>();
-		PowerPellets = new Dictionary<IntVector2, BoardObject>();
+		Pellets = new HashSet<IntVector2>();
+		PowerPellets = new HashSet<IntVector2>();
 		WarpPoints = new Dictionary<int, Warp>();
 
 		Debug.Log("Loading level: " + GameData.Instance.level);

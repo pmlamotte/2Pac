@@ -101,31 +101,35 @@ public class BoardObjectCollider : MonoBehaviour {
 		foreach ( GameObject playerObject in players )
 		{
 			PacmanData player = playerObject.GetComponent<PacmanData>();
-			foreach ( BoardObject pellet in Accessor.EatPelletsInRadius( player.boardLocation, Constants.BoardCellRadius / 2 * 4 / 5 /*todo*/ ) )
+			foreach ( IntVector2 pellet in Accessor.EatPelletsInRadius( player.boardLocation, Constants.BoardCellRadius / 2 * 4 / 5 /*todo*/ ) )
 			{
+				this.gameObject.BroadcastMessage( "AtePellet", pellet );
 				if ( GameProperties.isSinglePlayer )
 				{
 					player.gameObject.SendMessage( "AtePellet" );
-					Destroy(pellet.gameObject);
 				}
 				else 
 				{
-					player.gameObject.networkView.RPC( "AtePellet", RPCMode.All );
-					Network.Destroy( pellet.gameObject );
+					player.gameObject.networkView.RPC( "AtePellet", RPCMode.Server );
+					this.gameObject.BroadcastMessage( "AtePellet", pellet );
 				}
+				// inform board
+				this.gameObject.BroadcastMessage( "AtePellet", pellet );
+				
 			}
 			
-			foreach ( BoardObject pellet in Accessor.EatPowerPelletsInRadius( player.boardLocation, Constants.BoardCellRadius / 2 * 4 / 5 /*todo*/ ) )
+			foreach ( IntVector2 pellet in Accessor.EatPowerPelletsInRadius( player.boardLocation, Constants.BoardCellRadius / 2 * 4 / 5 /*todo*/ ) )
 			{
+				// inform board
+				this.gameObject.BroadcastMessage( "AtePowerPellet", pellet );
+				
 				if ( GameProperties.isSinglePlayer )
 				{
 					player.gameObject.SendMessage( "AtePowerPellet" );
-					Destroy(pellet.gameObject);
 				}
 				else 
 				{
 					player.gameObject.networkView.RPC( "AtePowerPellet", RPCMode.All );
-					Network.Destroy( pellet.gameObject );
 				}
 				foreach ( GameObject _ghost in Ghosts )
 				{

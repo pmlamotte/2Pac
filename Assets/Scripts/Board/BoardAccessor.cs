@@ -29,37 +29,25 @@ public class BoardAccessor : MonoBehaviour {
 	
 	}
 	
-	public List<BoardObject> EatPelletsInRadius(BoardLocation pos, int radius )
+	public List<IntVector2> EatPelletsInRadius(BoardLocation pos, int radius )
 	{
-		List<BoardObject> result = new List<BoardObject>();
-		List<BoardObject> inSqare;
-		if ( Data.Pellets.TryGetValue( pos.location, out inSqare ) )
+		List<IntVector2> result = new List<IntVector2>();
+		if ( pos.offset.OrthogonalMagnitude() <= radius && Data.Pellets.Contains( pos.location ) )
 		{
-			foreach ( BoardObject g in inSqare )
-			{
-				int distance = BoardLocation.SqrDistance(g.boardLocation, pos );
-				if ( distance <= radius * radius )
-				{
-					result.Add( g );
-				}
-			}
-		}
-		
-		foreach (BoardObject g in result )
-		{
-			inSqare.Remove( g );
+			Data.Pellets.Remove( pos.location );
+			result.Add( pos.location );
 		}
 		
 		return result;
 	}
 	
-	public List<BoardObject> EatPowerPelletsInRadius(BoardLocation pos, int radius )
+	public List<IntVector2> EatPowerPelletsInRadius(BoardLocation pos, int radius )
 	{
-		List<BoardObject> result = new List<BoardObject>();
+		List<IntVector2> result = new List<IntVector2>();
 		BoardObject inSqare;
-		if ( Data.PowerPellets.TryGetValue( pos.location, out inSqare ) )
+		if ( pos.offset.OrthogonalMagnitude() <= radius && Data.PowerPellets.Contains( pos.location ) )
 		{
-			result.Add( inSqare );
+			result.Add( pos.location );
 			Data.PowerPellets.Remove( pos.location );
 		}
 		

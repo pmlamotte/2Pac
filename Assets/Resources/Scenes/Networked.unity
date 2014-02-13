@@ -682,6 +682,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f8ac6f6523d48146ab6eb5243b02843, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pelletPrefab: {fileID: 100000, guid: 80b327d7072a8904596ec91296ab4ae0, type: 2}
+  powerPelletPrefab: {fileID: 100000, guid: a81652c013dffe443afe50ae8e6c9df4, type: 2}
   filledCell: {fileID: 100000, guid: 7bc4f500f55582444aa62b7aebb5c097, type: 2}
   _Board: {fileID: 0}
 --- !u!114 &1452738684
@@ -719,8 +721,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2126c8f2df63fc24b95a18da5df9f91e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pelletPrefab: {fileID: 100000, guid: 80b327d7072a8904596ec91296ab4ae0, type: 2}
-  powerPelletPrefab: {fileID: 100000, guid: a81652c013dffe443afe50ae8e6c9df4, type: 2}
   _Board: {fileID: 0}
 --- !u!114 &1452738687
 MonoBehaviour:
