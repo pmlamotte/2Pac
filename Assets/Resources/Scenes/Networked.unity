@@ -684,6 +684,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pelletPrefab: {fileID: 100000, guid: 80b327d7072a8904596ec91296ab4ae0, type: 2}
   powerPelletPrefab: {fileID: 100000, guid: a81652c013dffe443afe50ae8e6c9df4, type: 2}
+  directionArrowPrefab: {fileID: 100000, guid: 4675632f1f6dca644bf1364215cb67b0, type: 2}
   filledCell: {fileID: 100000, guid: 7bc4f500f55582444aa62b7aebb5c097, type: 2}
   _Board: {fileID: 0}
 --- !u!114 &1452738684
