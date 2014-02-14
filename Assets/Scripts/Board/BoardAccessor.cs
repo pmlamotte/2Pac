@@ -61,6 +61,30 @@ public class BoardAccessor : MonoBehaviour {
 		this.gameObject.BroadcastMessage( "AfterGhostOverIntersection", intersection );
 	}
 
+	public void PacmanOverIntersection( GameObject g )
+	{
+		PacmanMover mover = g.GetComponent<PacmanMover>();
+		IntVector2 intersection = mover.Data.boardLocation.location;
+		IntVector2 direction = mover.Data.direction;
+
+		int newDirection = Data.DirectionIndex[intersection];
+		List<IntVector2> possibleDirections = Data.PossibleDirectionsMap[intersection];
+		for ( int i = 0; i < possibleDirections.Count; i++ )
+		{
+			if ( possibleDirections[i].Equals( direction.Normalized() ) )
+			{
+				newDirection = i;
+				break;
+			}
+		}
+		
+		Data.DirectionIndex[intersection] = newDirection;
+		
+		this.gameObject.BroadcastMessage( "AfterPacmanOverIntersection", intersection );
+
+
+	}
+
 
 	public bool isOpen( IntVector2 v )
 	{

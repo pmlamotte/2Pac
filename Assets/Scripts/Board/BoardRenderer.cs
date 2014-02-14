@@ -319,6 +319,11 @@ public class BoardRenderer : MonoBehaviour {
 		this.DirectionArrowObjects[intersection].transform.rotation = rot;
 	}
 
+	public void AfterPacmanOverIntersection( IntVector2 intersection )
+	{
+		// for now, do the same as ghost, update the arrow
+		AfterGhostOverIntersection( intersection );
+	}
 
 	public void CreateBoard () {
 		PowerPelletObjects = new Dictionary<IntVector2, GameObject>();

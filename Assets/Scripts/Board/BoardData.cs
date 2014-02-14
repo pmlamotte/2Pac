@@ -173,8 +173,29 @@ public class BoardData : MonoBehaviour {
 
 			}
 		}
-		
-		
+
+		foreach( IntVector2 intersection in this.PossibleDirectionsMap.Keys )
+		{
+			List<IntVector2> possibleDirections = this.PossibleDirectionsMap[intersection];
+			
+			int bestIndex = 0;
+			int shortestDistance = int.MaxValue;
+			for ( int i = 0; i < possibleDirections.Count; i++ )
+			{
+				IntVector2 thisDirection = possibleDirections[i];
+				foreach ( IntVector2 playerSpawn in PlayerSpawns.Values )
+				{
+					int thisDistance = IntVector2.OrthogonalDistance( playerSpawn, intersection + thisDirection );
+					if ( thisDistance < shortestDistance )
+					{
+						bestIndex = i;
+						shortestDistance = thisDistance;
+					}
+				}
+			}
+			this.DirectionIndex[intersection] = bestIndex;
+		}
+
 		this.Height = board.GetLength(0);
 		this.Width = board.GetLength(1);
 	}

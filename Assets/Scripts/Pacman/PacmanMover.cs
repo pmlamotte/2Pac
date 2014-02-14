@@ -99,8 +99,13 @@ public class PacmanMover : MonoBehaviour {
 			Data.direction *= maxSpeed;
 			
 			Data.boardLocation = Board.tryMove( Data.boardLocation, Data.direction );
-			
-			
+
+			if ( Board.Data.DirectionIndex.ContainsKey( this.Data.boardLocation.location ) )
+			{
+				// tell the board that pacman was here
+				// todo, this happens maybe more often than necessary
+				Board.gameObject.BroadcastMessage( "PacmanOverIntersection", this.gameObject );
+			}
 		}
 	}
 
